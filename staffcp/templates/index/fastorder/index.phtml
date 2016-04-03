@@ -1,0 +1,149 @@
+<div style="min-height:600px;">
+
+<script type="text/javascript">
+<?php if (isset($brandsList)&&count($brandsList)>0){?>
+$().ready(function() {
+	<?php $str = '';?>
+	<?php $i=0; foreach ($brandsList as $dd){ $i++;?>
+		<?php $str .= '"'.addslashes($dd['BRA_BRAND']).'"'.(($i!=count($brandsList))?',':'');?>
+	<?php }?>
+	var str = [<?=$str?>];
+	$(".auto-searcher").focus().autocomplete(str, {
+		matchContains: true,
+		minChars: 0
+	});
+	function treeviewer(event, data, formatted) {}
+	$(".auto-searcher").result(treeviewer);
+});
+<?php }?>
+</script>
+
+<form action="/staffcp/index/fastorder/" method="POST">
+<input type="hidden" name="action" value="confirm">
+<h1>Быстрое оформление заказа</h1>
+<table width="100%" id="fast-form">
+<thead>
+<tr>
+	<th>Поставщик</th>
+	<th>Бренд</th>
+	<th>Артикул</th>
+	<th>Наименование</th>
+	<th>Кол-во</th>
+	<th>Стоимость</th>
+	<th>Стоимость Закупки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>
+		<select name="add[importer_id][]" class="iput">
+			<option value="0"></option>
+		<?php if (isset($ImportersModel)&&count($ImportersModel)>0){?>
+		<?php foreach ($ImportersModel as $dd){?>
+			<option value="<?=$dd['id']?>"><?=$dd['name']?></option>
+		<?php }?>
+		<?php }?>
+		</select>
+	</td>
+	<td><input type="text" class="iput auto-searcher" value="" name="add[brand][]"></td>
+	<td><input type="text" class="iput" value="" name="add[article][]"></td>
+	<td><input type="text" class="iput" value="" name="add[name][]"></td>
+	<td><input type="text" class="iput" value="" name="add[count][]"></td>
+	<td><input type="text" class="iput" value="" name="add[price][]"></td>
+	<td><input type="text" class="iput" value="" name="add[price_purchase][]"></td>
+	<td><input type="button" value="еще" class="btn btn-blue" onclick="formreply();"></td>
+</tr>
+</tbody>
+</table>
+<script type="text/javascript">
+function formreply(){
+	var row = '<tr>'
+	+ '<td><select name="add[importer_id][]" class="iput"><option value="0"></option><?php if (isset($ImportersModel)&&count($ImportersModel)>0){?><?php foreach ($ImportersModel as $dd){?><option value="<?=$dd['id']?>"><?=$dd['name']?></option><?php }?><?php }?></select></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[brand][]"></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[article][]"></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[name][]"></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[count][]"></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[price][]"></td>'
+	+ '<td><input type="text" class="iput" value="" name="add[price_purchase][]"></td>'
+	+ '<td><input type="button" value="x" class="btn btn-red" onclick="removereply(this);"></td>'
+	+ '</tr>';
+	$('#fast-form').append(row);
+}
+function removereply(id){
+	$(id).parent().parent().remove();
+}
+</script>
+
+<table width="100%" style="margin-top:10px;">
+<tr>
+	<td valign="top" style="padding:15px;">
+	
+		<center><h1>Контактные данные</h1></center>
+		<table width="300px">
+		<tr>
+			<td><b>ФИО</b></td>
+			<td><input type="text" class="iput" value="" name="contact[name]" style="width:100%;"></td>
+		</tr>
+		<tr>
+			<td><b>Телефон</b></td>
+			<td><input type="text" class="iput" value="" name="contact[phone]" style="width:100%;"></td>
+		</tr>
+		<tr>
+			<td><b>E-mail</b></td>
+			<td><input type="text" class="iput" value="" name="contact[email]" style="width:100%;"></td>
+		</tr>
+		<tr>
+			<td><b>Сообщение</b></td>
+			<td><textarea name="contact[message]" class="iput" style="width:100%;height:100px;"></textarea></td>
+		</tr>
+		</table>
+		
+	</td>
+	<td valign="top" style="padding:15px;">
+	
+		<center><h1>Способ доставки</h1></center>
+		<?php if (isset($deliveryList) && count($deliveryList)>0){?>
+		<table width="300px" class="cart-delivery-data">
+		<?php foreach ($deliveryList as $dd){?>
+		<tr>
+			<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+				<input type="radio" name="contact[current_delivery]" value="<?=$dd['id']?>">
+			</td>
+			<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+				<b><?=$dd['name']?></b>
+				<?=mb_substr(strip_tags($dd['content']),0,300)?>...<br>
+				<b><?=PriceHelper::number($dd['price'])?> <?=$translates['admin.currency']?></b>
+			</td>
+		</tr>
+		<?php }?>
+		</table>
+		<?php }?>
+		
+	</td>
+	<td valign="top" style="padding:15px;">
+		
+		<center><h1>Способ оплаты</h1></center>
+		<?php if (isset($Merchants_listModel) && count($Merchants_listModel)>0){?>
+		<table width="300px" class="cart-delivery-data">
+		<?php foreach ($Merchants_listModel as $dd){?>
+		<tr>
+			<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+				<input type="radio" name="contact[current_payment]" value="<?=$dd['id']?>">
+			</td>
+			<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+				<b><?=$dd['name']?></b>
+			</td>
+		</tr>
+		<?php }?>
+		</table>
+		<?php }?>
+		
+	</td>
+</tr>
+</table>
+<center>
+	<input type="submit" value="Оформить заказ" class="btn btn-green">
+</center>
+</form>
+
+</div>

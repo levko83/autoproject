@@ -1,0 +1,16 @@
+<h1>Выполняем генерацию мета данных для <?=($totalitems)?> товаров</h1>
+<h1>Этап <?=$page?> из <?=$pages_num?></h1>
+
+<?php if ($page != $pages_num){?>
+
+<p><span style="color:red;">Внимание!</span> Обязательно дождитесь конца операции, чтоб данные небыли утеряны, либо <a href="/staffcp/cat_info_generator/generate/cancel/" style="color:red;">отмените операцию</a>.</p>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	location = '/staffcp/cat_info_generator/generate/?page=<?=($page+1)?>';
+});
+</script>
+
+<?php } else {?>
+<h1 style="color:green;">Выполнено!</h1>
+<?php }?>

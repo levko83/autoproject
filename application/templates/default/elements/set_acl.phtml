@@ -1,0 +1,7 @@
+<?php if (isset($acl) && $acl){?>
+	<?php if (isset($acl_isset) && $acl_isset){?>
+	<li><a href="<?=HTTP_ROOT?>/staffcp/index/shopping/"><?=$translates['front.admin']?></a> <img src="<?=HTTP_ROOT?>/media-templates/img/key.png" alt="" title=""/></li>
+	<?php }else{?>	
+	<li><a href="<?=HTTP_ROOT?>/staffcp/"><?=$translates['front.admin']?></a> <img src="<?=HTTP_ROOT?>/media-templates/img/key.png" alt="" title=""/></li>
+	<?php }?>
+<?php }?>

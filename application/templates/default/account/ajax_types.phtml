@@ -1,0 +1,8 @@
+<?php if (isset($items)&&count($items)>0){?>
+	<select name="car[type]" class="inputs" onchange="ajax_set_car(this);" id="s3">
+		<option value=""></option>
+	<?php foreach ($items as $item){?>
+		<option value="<?=$item->TYP_ID?>"><?=$item->TYP_CDS_TEXT?> (<?=substr($item->TYP_PCON_START,0,4)?>.<?=substr($item->TYP_PCON_START,4,6)?> / <?=$item->TYP_CCM?>V / <?=$item->TYP_KW_FROM?>kW / <?=$item->TYP_HP_FROM?> / <?=$item->ENG_CODE?>) </option>
+	<?php }?>
+	</select>
+<?php }?>

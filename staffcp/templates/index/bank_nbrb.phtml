@@ -1,0 +1,21 @@
+<?php $informer = Informer::money();?>
+<?php if (isset($informer) && count($informer)>0){?>
+<table>
+<?php foreach ($informer as $cur=>$val){?>
+<tr>
+	<td><b>Курс <?=$cur?></b></td>
+	<td>
+		<input type="hidden" name="<?=$cur?>" id="ex_<?=$cur?>" value="<?=$val?>">
+		<?=$val?>
+	</td>
+</tr>
+<?php }?>
+<tr>
+	<td><b>Курс EUR/USD</b></td>
+	<td>
+		<input type="hidden" name="EUR_USD" id="ex_EUR_USD" value="<?=$informer['EUR']/$informer['USD']?>">
+		<?=$informer['EUR']/$informer['USD']?>
+	</td>
+</tr>
+</table>
+<?php }?>

@@ -1,0 +1,54 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase"><?=$translates['front.operation']?> / <?=$translates['front.operation2']?></h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<div class="h2">Баланс</div>
+	<style>
+	.saldo {}
+	.saldo td { padding:5px 10px; }
+	</style>
+	<table class="details-list saldo" cellpadding="0px" cellspacing="0px">
+	<tr>
+		<td>На счету</td>
+		<td><b><?=PriceHelper::universal($account['balance'])?> <?=$translates['front.money']?></b></td>
+		
+		<td>сальдо баланса</td>
+		<td><b><?=PriceHelper::universal($account['balance']-$sumMoneyInWork)?> <?=$translates['front.money']?></b></td>
+	</tr>
+	<tr>
+		<td>в заказе без оплаты</td>
+		<td><b><?=PriceHelper::universal($sumMoneyInWork)?> <?=$translates['front.money']?></b></td>
+		
+		<td>остаток средств для заказа</td>
+		<td><b><?=PriceHelper::universal(($account['balance']-$sumMoneyInWork>0)?$account['balance']-$sumMoneyInWork:0)?> <?=$translates['front.money']?></b></td>
+	</tr>
+	</table>
+	
+	
+	<?php if (isset($operations)&&count($operations)>0){?>
+	<table class="details-list top-20" cellpadding="5px" cellspacing="0px">
+	<thead>
+	<tr>
+		<th><?=$translates['front.rasxod']?></th>
+		<th><?=$translates['front.prixod']?></th>
+		<th><?=$translates['front.datetime']?></th>
+		<th><?=$translates['front.descr']?></b></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php $i=0;?>
+	<?php foreach ($operations as $dd){?>
+	<?php $i++;?>
+	<tr bgcolor="<?=($i%2)?'#f1f1f1':'';?>">
+		<td class="err"><?=($dd['operation'] == 'minus')?'-'.PriceHelper::number($dd['sum']):'';?></td>
+		<td class="green"><?=($dd['operation'] == 'plus')?'+'.PriceHelper::number($dd['sum']):'';?></td>
+		<td><?=date("d.m.Y",$dd['dt'])?> / <?=date("H:i:s",$dd['dt'])?></td>
+		<td><?=$dd['comment']?></td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
+	<?php }?>
+	
+</div>

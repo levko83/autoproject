@@ -1,0 +1,50 @@
+<?php
+$actions = array();
+$actions = $this->dataModel_places->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<h1>
+	<span>Зоны</span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl_places)){?>
+		<input type="button" name="" value="<?=$addTitle_places;?>" onclick="location='<?=$addUrl_places;?>';" class="btn btn-blue"/>
+		<?php }?>
+	<?php }?>
+</h1>
+
+<table class="list">
+	<thead>
+	<tr>
+		<?foreach ($fieldTitles_places as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?}?>
+		<?if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?}?>
+		<?if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?}?>
+	</tr>
+	</thead>
+	<tbody>
+	<?foreach ($data_places as $row){?>
+		<? $dataModel_places->setValues($row);?>
+		<tr>
+			<?foreach ($dataModel_places->getListFields() as $field){?>
+			<td><?=$field->getViewValue();?></td>
+			<?}?>
+			<?if ($acl->canViewMenuItem($dataModel_places->getModelName().'/edit/?'.$indexField_places.'='.$row[$indexField_places])){?>
+			
+			<?if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel_places->getModelName();?>/edit/?<?=$indexField_places;?>=<?=$row[$indexField_places];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?}?>
+			
+			<?if (!in_array("delete", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel_places->getModelName();?>/delete/?<?=$indexField_places;?>=<?=$row[$indexField_places];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?}?>
+			
+			<?} else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?}?>
+		</tr>
+	<?}?>
+	</tbody>
+</table>

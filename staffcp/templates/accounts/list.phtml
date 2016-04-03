@@ -1,0 +1,168 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.content table:eq(4)').css('display', 'none !important');
+	console.log('consol');
+});
+</script>
+
+<style>
+.clear { clear:both; }
+.ttdwn { margin-bottom:20px; }
+</style>
+<?php 
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<?php if (isset($tableajax) && $tableajax) {?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.list-ajax').dataTable({
+		"oLanguage":{ "sUrl": "/staffcp/media/language/<?=$lang?>.txt" },
+		"sPaginationType":"full_numbers",
+		"iDisplayLength":100,
+		"aaSorting":[[1, 'desc']],
+		"bAutoWidth":false,
+		"bInfo":false,
+		"fnFooterCallback": function ( nRow, aaData, iDataStart, iDataEnd ) {
+			$('.dataTables_length').remove();
+			$('.dataTables_filter').remove();
+		},
+	});
+});
+</script>
+<?php }?>
+
+<div class="h1 h1-header">
+	<span><?=$title;?></span>	
+	<a class="btn btn-green" href="/staffcp/accounts/export/">Выгрузить в формат xlsx</a>
+	
+	<?php if (isset($aoffices) && count($aoffices)>0) {?>
+	<select class="iput" onchange="location=this.value" style="width:200px;">
+	<option>Поиск по офисам</option>
+	<?php foreach ($aoffices as $dds){?>
+		<option value="?office=<?=$dds['id']?>" <?=(isset($office)&&$office==$dds['id'])?'selected="selected"':'';?>><?=$dds['name']?> (<?=$dds['C']?>)</option>
+	<?php }?>
+	</select>
+	<?php }?>
+	
+	<?php if (isset($agroups) && count($agroups)>0) {?>
+	<select class="iput" onchange="location=this.value" style="width:200px;">
+	<option>Группы пользователей</option>
+	<?php foreach ($agroups as $dds){?>
+		<option value="?group=<?=$dds['id']?>" <?=(isset($group)&&$group==$dds['id'])?'selected="selected"':'';?>><?=$dds['name']?> (<?=$dds['C']?>)</option>
+	<?php }?>
+	</select>
+	<?php }?>
+	
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue f-right">
+		<?php }?>
+	<?php }?>
+</div>
+
+<?php if (isset($tableajax) && $tableajax) {?>
+	<?php if ($totalPage>1) {?>
+	<div class="simple-paging">
+	Страницы: <?=PagingViewHelper::paging("/staffcp/".$this->_controller."/?page=:page:",$totalPage,$currentPage);?>
+	</div>
+	<?php }?>
+	<div class="static-search-ajax f-right">
+	<form action="">
+		Поиск на странице из <?=(isset($total)?$total:0)?> записей: 
+		<input type="text" name="search" value="<?=$search?>" class="iput">
+		<input type="submit" value="искать" class="btn btn-blue">
+	</form>
+	</div>
+<?php }?>
+
+<div class="clear"></div>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<table class="list">
+	<thead>
+	<tr>
+	
+		<?php if (!in_array("delete", $actions)){?>
+			<th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th>
+		<?php }?>
+		
+		<?php foreach ($fieldTitles as $fieldTitle){?>
+			<th><?=$fieldTitle;?></th>
+		<?php }?>
+		
+			<th style="text-align:center;">Общая сумма вып.заказов</th>
+			<th style="text-align:center;"><?=$translates['admin.account.properts']?></th>
+			
+		<?php if (!in_array("edit", $actions)){?>
+			<th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th>
+		<?php }?>
+		
+		<?php if (!in_array("delete", $actions)){?>
+			<th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th>
+		<?php }?>
+		
+	</tr>
+	</thead>
+	<tbody>
+	<?php $i=0;?>
+	<?php foreach ($data as $row){?>
+	<?php $i++;?>
+	<?php $dataModel->setValues($row);?>
+		<tr id="key[<?=$row[$indexField];?>][]">
+		
+			<?php if (!in_array("delete", $actions)){?>
+				<td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td>
+			<?php }?>
+			
+			<?php foreach ($dataModel->getListFields() as $field){?>
+				<td><?=$field->getViewValue();?></td>
+			<?php }?>
+			
+			<?php $totalSum = AccountsModel::gettotalSum($row[$indexField]);?>
+			<td style="text-align:center;font-weight:bold;"><?=PriceHelper::number($totalSum)?></td>
+			
+			<td style="text-align:center;font-size:11px;width:100px;">
+				<?php $account = BillsModel::getAccount($row[$indexField]);?>
+				<a href="#" onclick="addLogin('<?=$account['email']?>','<?=$account['pass']?>');return false;"><img src="/media-templates/icons/key.png" alt="Войти как клиент" title="Войти как клиент"></a>
+				<a class="popup-info" href="/staffcp/accounts/ajax/?id=<?=$row[$indexField];?>" title=""><img src="/staffcp/media/images/message.gif" alt="Последние 20 операций" title="Последние 20 операций"/></a>
+				<?php $cc = BillsModel::getBills($row[$indexField]);?>
+				<a href="/staffcp/index/crm/?search[account_id]=<?=$row[$indexField]?>"><img src="/media-templates/icons/cart.png" alt="Показать все заказы клиента (<?=$cc?>)" title="Показать все заказы клиента (<?=$cc?>)"><sup style="font-size: 10px;vertical-align: top;">(<?=$cc?>)</sup></a>
+				<a href="/staffcp/index/shopping/?account_id=<?=$row[$indexField];?>"><img src="/media-templates/icons/cart_go.png" alt="Оформить заказ на клиента" title="Оформить заказ на клиента"></a>
+			</td>
+			
+			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+				<?php if (!in_array("edit", $actions)){?>
+					<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+				<?php }?>
+				<?php if (!in_array("delete", $actions)){?>
+					<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+				<?php }?>
+			<?php } else {?>
+				<td width="100px" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+				<td width="50px" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?php }?>
+		</tr>
+	<?}?>
+	</tbody>
+</table>
+<?if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="<?=$translates['admin.main.delete']?>" id="submit_action" class="btn btn-red"/>
+<?}?>
+</form>
+
+<form action="/account/login/" method="POST" id="login" target="_blank">
+	<input type="hidden" name="form[email]" id="login_email" value=""/>
+	<input type="hidden" name="form[pass]" id="login_pass" value=""/>
+</form>
+
+<script>
+function addLogin(email,pass) {
+	$('#login_email').val(email);
+	$('#login_pass').val(pass);
+	$('#login').submit();
+}
+</script>

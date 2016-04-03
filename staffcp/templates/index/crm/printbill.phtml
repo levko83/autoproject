@@ -1,0 +1,226 @@
+<?php $db = new mysqli('178.63.86.9', 'admin_autoresurs', 'nI82GlX4mV', 'admin_autoresursde'); ?>
+<html>
+<head>
+<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/bootstrap.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<script src="<?=HTTP_ROOT?>/static/js/bootstrap.min.js"></script>
+</head>
+<style>
+body {
+	width: 960px;
+	margin: 10px auto;
+}
+.article {
+	padding: 5px 20px;
+	margin-top: -50px;
+    border-radius: 10px;
+    width: 200px;
+    font-weight: bold;
+    text-align: center;
+}
+.footer {
+	clear: both;
+    border-top: 3px solid black;
+    background: #cddbf8;
+    color: #2d2da5;
+    height: 130px;
+    font-weight: bold;
+}
+.bloc-footer {
+	width: 220px;
+	float: left;
+	padding-left: 10px;
+}
+</style>
+
+<body>
+
+<div style="float: left">
+	<p> <img src="<?=HTTP_ROOT?>/staffcp/media/images/logo2.png" alt="" width="300px"/> </p>
+</div>
+<div style="float: right">
+	<button onclick="window.print()" class="btn btn-success"> <i class="fa fa-print"></i>Print </button>
+</div>
+<div style="clear: both"></div>
+
+<p class="bg-primary" style="padding: 5px 20px; border-radius: 10px"> AUTORESURS * Alt-Friedrichsfelde 103 * 10315 Berlin </p>
+
+<div>
+	<div style="width: 400px; float: left">
+		<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+			<tr>
+				<td>Vorname:</td>
+				<td><?=$bill['f1']?></td>
+			</tr>
+			<tr>
+				<td>Familien-oder Nachname: </td>
+				<td>
+				<?php
+					$kundnumber = $bill['account_id'];
+					$account = $db->query(" SELECT * FROM w_accounts WHERE id=$kundnumber ");
+					$account = $account->fetch_array();
+					echo $account['nachname'];
+				?>
+				</td>
+			</tr>
+			<tr>
+				<td>Land:</td>
+				<td><?=$account['country']?></td>
+			</tr>
+			<tr>
+				<td>Stadt:</td>
+				<td><?=$account['city']?></td>
+			</tr>
+			<tr>
+				<td>Strasse:</td>
+				<td><?=$account['address']?></td>
+			</tr>
+			<tr>
+				<td>Hausnummer:</td>
+				<td><?=$account['hausnummer']?></td>
+			</tr>
+			<tr>
+				<td>Zip Code:</td>
+				<td><?=$account['zip']?></td>
+			</tr>
+			<tr>
+				<td>Tel.:</td>
+				<td><?=$bill['f2']?></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><?=$bill['f3']?></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div style="width: 400px; float: right">
+		<center>
+		<img src="<?=HTTP_ROOT?>/staffcp/media/images/banner2.jpg" alt="" />
+		<br>
+		<h3><b>Vielen Dank für Ihre Bestellung!</b></h3>
+		</center>
+	</div>
+</div>
+<div style="clear: both"></div>
+
+<div style="height: 10px"></div>
+<p class="article bg-primary"> Rechnung Nr.: <?=$bill['number']?> </p>
+
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+	<tr class="info">
+		<td>Auftragsdatum</td>
+		<td>Liefer- oder Leistungsdatum</td>
+		<td>Versandart</td>
+		<td>Zahlungsart</td>
+		<td>Kundennummer</td>
+		<td>Rechnungsnummer</td>
+		<td>Rechnungsdatum</td>
+	</tr>
+	<tr>
+		<td><?=date("d.m.Y H:i",$bill['dt'])?></td>
+		<td>Liefer- oder Leistungsdatum</td>
+		<td><?=$bill['delivery']?></td>
+		<td><?=$bill['payment_name']?></td>
+		<td><?=$bill['account_id']?></td>
+		<td><?=$bill['number']?></td>
+		<td><?=date("d.m.Y")?></td>
+	</tr>
+</table>
+
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+	<tr class="info">
+		<td>Pos.</td>
+		<td>Artikel Nr.</td>
+		<td>Bezeichnung</td>
+		<td>Einzelpreis</td>
+		<td>Menge</td>
+		<td>Gesamtpreis</td>
+	</tr>
+	<?php $pfand=$sum=$i=0;?>
+	<?php foreach ($scSID as $element){ ?>
+	<?php $i++;?>
+		<tr>
+			<td><?=$i?></td>
+			<td><?=$element['article']?></td>
+			<td>
+				<?php
+					$article = $element['article'];
+					$descr = $db->query(" SELECT * FROM w_products WHERE art_nr='$article' ");
+					$descr = $descr->fetch_array();
+					echo $descr['name_de'];
+					$pfand += $descr['pfand'];
+				?>		
+			</td>
+			<td><?=PriceHelper::number($element['price'])?> &euro;</td>
+			<td><?=$element['cc']?></td>
+			<!-- Total sum -->
+			<?php $ss = $element['price']*$element['cc'];?>
+			<?php $sum += $ss;?>
+			<td><?=PriceHelper::number($ss)?> &euro;</td>
+		</tr>
+	<?php } ?>
+</table>
+
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+	<tr>
+		<td>Netto Warenpreis:</td>
+		<td><?=$sum?> &euro;</td>
+	</tr>	
+	
+	<tr>
+		<td>Pfand netto:</td>
+		<td><?=$pfand?> &euro;</td>
+	</tr>
+	
+	<tr>	
+		<td>Versand netto:</td>
+		<td><?=$bill['delivery_price']?> &euro;</td>
+	</tr>
+	
+	<tr>
+		<td>Nachnamegebühr:</td>
+		<td></td>
+	</tr>	
+	
+	<tr>
+		<td>Gesamtnettobetrag zzgl. 19 % MwSt.:</td>
+		<td><?=number_format(($sum / 100)*81, 2)?> &euro;</td>
+	</tr>	
+	
+	<tr class="danger">	
+		<td>Brutto Zahlbetrag:</td>
+		<td><?=$sum+$pfand+$bill['delivery_price']?> &euro;</td>
+	</tr>
+</table>
+
+<div class="footer">
+	<div class="bloc-footer">
+		AUTORESURS
+		<br>Alt-Friedrichsfelde 103
+		<br>10315 Berlin
+		<br>Tel.: +49 176 323 60 425
+	</div>
+	
+	<div class="bloc-footer">
+		Fur Kunden: service@autoresurs.de
+		<br>Fur Handler: info@autoresurs.de
+		<br>bestellung@autoresurs.de
+		<br>Internet: www.autoresurs.de
+	</div>
+	
+	<div class="bloc-footer">
+		Alexander Weis
+		<br>Ust-IdNr.: DE300247020
+	</div>
+	
+	<div class="bloc-footer">
+		Commerzbank
+		<br>IBAN: DE26 1204 0000 0083 8953 00
+		<br>BIC: COBADEFFXXX
+	</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<form method="post" action="https://www.sofort.com/payment/start" name="cf7pp">
+	<input type="hidden" name="user_id" value="<?php echo($user_id); ?>" />
+	<input type="hidden" name="project_id" value="<?php echo($project_id); ?>" />
+	<input type="hidden" name="currency_id" value="<?php echo($currency); ?>"/>
+	<input type="hidden" name="reason_1" value="<?php echo($invoice); ?>" />
+	<input type="hidden" name="reason_2" value="" />
+	<input type="hidden" name="amount" value="<?php echo($total); ?>" />
+	<input type="hidden" name="user_variable_0" value="<?php echo($invoice); ?>" />
+	<input type="hidden" name="user_variable_1" value="AutoResurs" />
+	<input type="hidden" name="hash" value="<?php echo($hasha); ?>" />
+</form>
+ <script type="text/javascript">
+    document.cf7pp.submit();
+</script>

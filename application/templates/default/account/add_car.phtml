@@ -1,0 +1,149 @@
+<p><a class="custom-button gradient f-none top-10" href="#" onclick="$('#add_car').slideToggle();return false;"><span><?=$translates['front.add.car.todo']?></span></a></p>
+<div id="add_car">
+	<form action="" method="POST" onsubmit="return checkaddcar();" enctype="multipart/form-data">
+	<input type="hidden" name="action" value="save_car"/>
+	<input type="hidden" name="car[name]" id="car_name" value=""/>
+	<table class="table-info top-10">
+	<tr>
+		<th><?=$translates['front.request.vin.info6']?></th>
+		<td>
+		<?php if (isset($manufacturers)&&count($manufacturers)>0){?>
+			<select name="car[mark]" class="inputs" onchange="ajax_models(this);" id="s1">
+				<option value=""></option>
+			<?php foreach ($manufacturers as $mark){?>
+				<option value="<?=$mark['MFA_ID']?>"><?=$mark['MFA_BRAND']?> </option>
+			<?php }?>
+			</select>
+		<?php }?>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.request.vin.info7']?></th>
+		<td>
+			<div id="ajax_models_result"><?=$translates['front.no.choose.todo']?></div>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.modify']?> <span id="car_done"></span></th>
+		<td>
+			<div id="ajax_types_result"><?=$translates['front.no.choose.todo']?></div>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.car.start']?></th>
+		<td><input type="text" name="car[car_year]" id="cyear" value="" class="inputs"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		
+		<table width="100%">
+		<tr>
+			<td align="center"><?=$translates['front.AKKP']?></td>
+			<td align="center"><?=$translates['front.usilitel.ruli']?></td>
+			<td align="center"><?=$translates['front.car.conditioner']?></td>
+			<td align="center">ABS</td>
+			<td align="center"><?=$translates['front.car.awd']?></td>
+			<td align="center"><?=$translates['front.request.vin.info23']?></td>
+		</tr>
+		<tr>
+			<td align="center"><input type="checkbox" name="car[car_kpp]" value="" class="inputs"/></td>
+			<td align="center"><input type="checkbox" name="car[car_rul]" value="" class="inputs"/></td>
+			<td align="center"><input type="checkbox" name="car[car_cond]" value="1" class="inputs"/></td>
+			<td align="center"><input type="checkbox" name="car[car_abs]" value="1" class="inputs"/></td>
+			<td align="center"><input type="checkbox" name="car[car_quattro]" value="1" class="inputs"/></td>
+			<td align="center"><input type="checkbox" name="car[car_body]" value="" class="inputs"/></td>
+		</tr>
+		</table>
+		
+		</td>
+	</tr>
+	<tr>
+		<th>VIN</th>
+		<td><input type="text" name="car[car_vin]" id="cvin" value="" class="inputs"/></td>
+	</tr>
+	<tr>
+		<th><?=$translates['more.info']?></th>
+		<td>
+			<textarea name="car[car_info]" class="inputs"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>Фото автомобиля</th>
+		<td><input type="file" name="add_photo" value="" class="inputs"/><br>формат: png, jpg, gif, jpeg</td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><input type="submit" value="<?=$translates['font.btn.save']?>" class="custom-button gradient"/></td>
+	</tr>
+	</table>
+	</form>
+</div>
+
+<script type="text/javascript">
+function checkaddcar(){
+	var err = '';
+	var f = $('#s1').val();
+	if (f=="") {
+		err += '<?=$translates['front.need.to.click']?> - <?=$translates['front.request.vin.info6']?>'+'\n';
+	}
+	var f = $('#s2').val();
+	if (f=="") {
+		err += '<?=$translates['front.need.to.click']?> - <?=$translates['front.request.vin.info7']?>'+'\n';
+	}
+	var f = $('#s3').val();
+	if (f=="") {
+		err += '<?=$translates['front.need.to.click']?> - <?=$translates['front.modify']?>'+'\n';
+	}
+	var f = $('#cyear').val();
+	if (f=="") {
+		err += '<?=$translates['front.need.to.click']?> - Год выпуска'+'\n';
+	}
+	var f = $('#cvin').val();
+	if (f=="") {
+		err += '<?=$translates['front.need.to.click']?> - VIN'+'\n';
+	}
+	if (err == "") {
+		return true;
+	}
+	else {
+		alert(err);
+		return false;
+	}
+}
+function ajax_models(items){
+	$('#car_name').val('');
+	$("#ajax_models_result").html('<?=$translates['front.please.wait']?>...');
+	var id = $(items).val();
+	$.post('/account/ajax_models/?id='+id, null,
+	function(data){
+		$("#ajax_models_result").html(data);
+		
+		var val  = $("#s1 option:selected").text();
+		
+		$('#car_name').val(val);
+	});
+}
+function ajax_types(items){
+	$('#car_name').val('');
+	$("#ajax_types_result").html('<?=$translates['front.please.wait']?>...');
+	var id = $(items).val();
+	$.post('/account/ajax_types/?id='+id, null,
+	function(data){
+		$("#ajax_types_result").html(data);
+
+		var val1  = $("#s1 option:selected").text();
+		var val2  = $("#s2 option:selected").text();
+		
+		$('#car_name').val(val1+val2);
+	});
+}
+function ajax_set_car(items){
+
+	var val1  = $("#s1 option:selected").text();
+	var val2  = $("#s2 option:selected").text();
+	var val3  = $("#s3 option:selected").text();
+	
+	$('#car_name').val(val1+val2+val3);
+	$('#car_done').html('OK!');
+}
+</script>

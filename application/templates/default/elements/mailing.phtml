@@ -1,0 +1,31 @@
+<form action="<?=HTTP_ROOT?>/mailing/add/" method="POST">
+<table>
+	<tr>
+		<td><input type="text" name="mailing[email]" value=""></td>
+		<td><input type="submit" value="<?=$translates['front.scribe']?>"><td>
+	</tr>
+</table>
+</form>
+
+<?if (isset($mailing)){?>
+	<?
+	switch ($mailing){
+		case 1: 
+			?>
+			<?=$translates['front.scribe1']?>
+			<?
+			break;
+		case 2: 
+			?>
+			<?=$translates['front.scribe2']?>
+			<?
+			break;
+		case 3: 
+			?>
+			<?=$translates['front.scribe3']?>
+			<?
+			break;
+		default:break;
+	}
+	?>
+<?}?>

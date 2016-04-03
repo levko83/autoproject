@@ -1,0 +1,179 @@
+<style>
+.harv-content h1:first-child { margin-top:0px; }
+.harv-content h1 { margin:10px 0px 10px 0px; }
+.harv-content { padding:0px 5px; margin-bottom:100px; }
+.harv-content p { padding:0px 2px; margin:0px; }
+.harv-content .details-list input, .harv-content .details-list select { width:70%; }
+.harv-content th { border:solid 1px #dadada; padding:4px 2px; font-size:12px; text-align:center; }
+.harv-content .data td { border:solid 1px #dadada; padding:4px 2px; font-size:12px; text-align:center; }
+
+.ftpcrawler {}
+.ftpcrawler td { padding:5px; border:solid 1px #dadada; }
+</style>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#hform").validationEngine();
+});
+</script>
+
+<div class="harv-content">
+
+	<h1 class="h1-header">Настройка FTP подключения</h1>
+	<form action="" method="post" id="hform">
+	<table class="details-list" width="100%">
+	<thead>
+	<tr>
+		<th colspan="9"></th>
+		<th colspan="7" style="text-align: center;">Номера колонок</th>
+	</tr>
+	<tr>
+		<th style="width:50px;">ID</th>
+		<th>Название</th>
+		<th>Хост</th>
+		<th>Логин</th>
+		<th>Пароль</th>
+		<th>Папка</th>
+		<th>Поставщик</th>
+		<th>Формат</th>
+		<th title="Разделитель данных">Р/Д</th>
+		
+		<th style="width:50px;">Артикул</th>
+		<th style="width:50px;">Бренд</th>
+		<th style="width:50px;">Название</th>
+		<th style="width:50px;">Колво</th>
+		<th style="width:50px;">Цена</th>
+		<th style="width:0px;"><img src="/staffcp/media/images/pencil_16.png" title="редактировать" alt="редактировать"/></th>
+		<th style="width:0px;"><img src="/staffcp/media/images/trash_16.png" title="удалить" alt="удалить"/></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php if (isset($list) && count($list)>0){?>
+	<?php foreach ($list as $dd){?>
+	<tr class="data">
+		<td>
+			ID: <?=$dd['id']?>
+			<a href="?do=<?=$dd['id']?>"><img src="/media-templates/icons/lightning.png" title="Открыть соединение" alt="Открыть соединение"></a>
+		</td>
+		<td><?=$dd['name']?></td>
+		<td><?=$dd['host']?></td>
+		<td><?=$dd['hlogin']?></td>
+		<td>●●●</td>
+		
+		<td><?=$dd['hsearch']?></td>
+		<td><a href="/staffcp/details/?select_imports=<?=$dd['importer_id']?>"><?=$dd['importer']?></a></td>
+		<td><?=$dd['format']?></td>
+		<td><?=$dd['split']?></td>
+		
+		<td><?=$dd['colum_article']?></td>
+		<td><?=$dd['colum_brand']?></td>
+		<td><?=$dd['colum_name']?></td>
+		<td><?=$dd['colum_box']?></td>
+		<td><?=$dd['colum_price']?></td>
+		<td><a href="/staffcp/harverster_ftp__params/edit/?id=<?=$dd['id']?>"><img src="/staffcp/media/images/pencil_16.png" title="редактировать" alt="редактировать"/></a></td>
+		<td><a href="?delete_param_id=<?=$dd['id']?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img src="/staffcp/media/images/trash_16.png" title="удалить" alt="удалить"/></a></td>
+	</tr>
+	<?php }?>
+	<?php }?>
+	<tr class="data">
+		<td></td>
+		<td><input class="validate[required] iput" type="text" name="form[name]" value=""/></td>
+		<td><input class="validate[required] iput" type="text" name="form[host]" value=""/></td>
+		<td><input class="validate[required] iput" type="text" name="form[hlogin]" value=""/></td>
+		<td><input class="validate[required] iput" type="text" name="form[hpass]" value=""/></td>
+		<td><input class="iput" type="text" name="form[hsearch]" value=""/></td>
+		<td>
+			<select class="validate[required] iput" name="form[importer_id]" id="form_importer_id" style="width:100px;">
+			<?php if (isset($importers) && count($importers)>0){?>
+			<?php foreach ($importers as $dd){?>
+				<option value="<?=$dd['id']?>"><?=$dd['name']?></option>
+			<?php }?>
+			<?php }?>
+			</select>
+		</td>
+		<td>
+			<select class="validate[required] iput" name="form[format]">
+				<option value="csv">*.csv</option>
+				<option value="txt">*.txt</option>
+				<option value="xlsx">*.xlsx (от 2007 Excel)</option>
+			</select>
+		</td>
+		<td><input class="iput" type="text" name="form[split]" value=""/></td>
+		
+		<td><input style="width:30px;" class="validate[required] iput" type="text" name="form[colum_article]" value=""/></td>
+		<td><input style="width:30px;" class="validate[required] iput" type="text" name="form[colum_brand]" value=""/></td>
+		<td><input style="width:30px;" class="iput" type="text" name="form[colum_name]" value=""/></td>
+		<td><input style="width:30px;" class="iput" type="text" name="form[colum_box]" value=""/></td>
+		<td><input style="width:30px;" class="validate[required] iput" type="text" name="form[colum_price]" value=""/></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr class="data">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>
+			[tab] - табуляц.<br/>
+			; - csv
+		</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	</tbody>
+	</table>
+	<input type="submit" value="Сохранить" class="btn btn-blue">
+	</form>
+	
+	<?php if (isset($ftp_result) && $ftp_result){?>
+	<h1 class="h1-header">Чтение FTP сервера <?=$params['name']?></h1>
+	<?=$ftp_result?>
+	<?php }?>
+	
+	<h1 class="h1-header">Задачи на обработку</h1>
+	<?php if (isset($tasks) && count($tasks)>0){?>
+	<table class="details-list" width="100%">
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>Обработать</th>
+		<th>Файл</th>
+		<th>Дата создания</th>
+		<th>Состояние</th>
+		<th>Статус</th>
+		<th>Удалить</th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($tasks as $dd){?>
+	<tr class="data">
+		<td><?=$dd['task_id']?></td>
+		<td>
+			<?php if ($dd['task_err']){?>
+			<img src="/media-templates/icons/error.png" alt="Обработка невозможна" title="Обработка невозможна"/>
+			<?php }else{?>
+			<a href="/staffcp/harvester_email/process/?ftp=true&task_id=<?=$dd['task_id']?>"><img src="/media-templates/icons/database_go.png"/></a>
+			<?php }?>
+		</td>
+		<td><a href="/xreaders/cache_emails/<?=$dd['task_filename']?>" target="_blank"><?=$dd['task_filename']?></a></td>
+		<td><?=date("d.m.Y H:i",$dd['task_dt'])?></td>
+		<td style="color:red;"><?=$dd['task_err']?></td>
+		<td><?=$dd['task_status']?></td>
+		<td><a href="?delete_task_id=<?=$dd['task_id']?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img src="/staffcp/media/images/trash_16.png" title="удалить" alt="удалить"/></a></td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
+	<?php } else {?>
+	<p>Задач нет</p>
+	<?php }?>
+	
+</div>

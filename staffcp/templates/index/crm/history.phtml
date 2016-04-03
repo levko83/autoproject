@@ -1,0 +1,26 @@
+<h1>Протокол событий. Заказ №<?=$bill_item['bill_number']?></h1>
+<p><b style="font-size:14px;"><?=$bill_item['article']?> <?=$bill_item['brand']?> <?=strip_tags($bill_item['descr'])?></b></p>
+<table class="data-grid-finance" width="100%">
+<tr>
+	<th>Действие</th>
+	<th>Дата изменения</th>
+	<th>Цена</th>
+	<th>Менеджер</th>
+</tr>
+<?php if (isset($history) && count($history)>0){?>
+<?php foreach ($history as $dd){?>
+<tr>
+	<td><?=$dd['status_name']?></td>
+	<td><?=date("d.m.Y H:i",$dd['dt'])?></td>
+	<td><?=PriceHelper::universal($dd['price'])?></td>
+	<td><?=$dd['manager']?></td>
+</tr>
+<?php }?>
+<?php }?>
+<tr>
+	<td>Создание позиции</td>
+	<td><?=date("d.m.Y H:i",$bill_item['createDT'])?></td>
+	<td><?=PriceHelper::universal($bill_item['price'])?></td>
+	<td>&nbsp;</td>
+</tr>
+</table>

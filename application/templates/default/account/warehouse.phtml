@@ -1,0 +1,205 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase"><?=$translates['front.warehouse.for.me']?> (<?=count($myorderWH)?>)</h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<?php if (isset($myorderWH) && count($myorderWH)>0){?>
+	<form method="POST">
+	<input type="hidden" name="act" value="accept_my_orders"/>
+	<table class="details-list top-10">
+	<thead>
+    <tr>
+        <th width="100px"><?=$translates['front.brand']?></th>
+	    <th width="100px"><?=$translates['front.article']?></th>
+	    <th width="205px"><?=$translates['front.descr']?></th>
+	    <th><?=$translates['front.price']?></th>
+	    <th><?=$translates['front.box']?></th>
+	    <th><?=$translates['front.summ']?></th>
+	    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+	<?php foreach ($myorderWH as $dd){?>
+	<?php $sum = ($dd['price']*$dd['count']);?>
+	<tr>
+		<td><?=$dd['brand']?></td>
+		<td><?=$dd['article']?></td>
+		<td><?=$dd['descr_tecdoc']?></td>
+		<td><?=$dd['price']?></td>
+		<td><?=$dd['count']?></td>
+		<td><?=$sum?></td>
+		<td align="center"><input type="checkbox" name="item[<?=$dd['id']?>]" value="1" <?=($dd['is_account_accept'])?'checked':'';?>/><?=$translates['front.accept']?></td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
+	<input type="submit" value="<?=$translates['front.send']?>" class="custom-button gradient top-10"/>
+	<div class="clear"></div>
+	</form>
+	<?php }else{?>
+	<p><?=$translates['noorders']?></p>
+	<?php }?>
+	
+	<h2 class="uppercase top-20"><?=$translates['front.warehouse']?> (<?=$mydetailsCC?>)</h2>
+	
+	<?php if (isset($mydetails) && count($mydetails)>0){?>
+	<table class="details-list top-10">
+	<thead>
+    <tr>
+        <th width="100px"><?=$translates['front.brand']?></th>
+	    <th width="100px"><?=$translates['front.article']?></th>
+	    <th><?=$translates['front.price']?></th>
+	    <th width="205px"><?=$translates['front.descr']?></th>
+	    <th width="50px"><?=$translates['front.search.box']?></th>
+	    <th><?=$translates['front.search.timedelivery']?></th>
+	    <th></th>
+	    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+	<?php foreach ($mydetails as $dd){?>
+	<tr>
+		<td><?=$dd['BRA_BRAND']?></td>
+		<td><?=$dd['ARTICLE']?></td>
+		<td><?=$dd['PRICE']?></td>
+		<td><?=$dd['DESCR']?></td>
+		<td><?=$dd['BOX']?></td>
+		<td><?=$dd['DELIVERY']?></td>
+		<td><a href="?edit=<?=$dd['ID']?>"><img src="<?=HTTP_ROOT?>/media-templates/img/pencil.png"/></a></td>
+		<td><a href="<?=HTTP_ROOT?>/account/deletedetail/?delete=<?=$dd['ID']?>"><img src="<?=HTTP_ROOT?>/media-templates/img/delete.png"/></a></td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
+	<?php }?>
+	
+	<?php if(!isset($edit)){?>
+	<a href="#" onclick="$('#wh-add').toggle();return false;" class="custom-button gradient top-10"><span><?=$translates['additemweare']?></span></a>
+	<div class="clear"></div>
+	<?php }?>
+	
+	<div id="wh-add" <?=(!isset($edit))?'class="no-display"':'';?>>
+	<h2 class="uppercase top-20"><?=$translates['adding']?></h2>
+	<form action="<?=HTTP_ROOT?>/account/savedetail/" method="POST" onsubmit="return chk();">
+	<?php if (isset($edit)){?>
+	<input type="hidden" name="form[EDIT]" value="<?=$edit['ID']?>"/>
+	<?php }?>
+	<table class="contact-form top-10">
+		<?php if (isset($errors) && count($errors)>0){?>
+		<tr>
+			<th></th>
+			<td>
+				<ul class="err">
+				<?php foreach ($errors as $dd){?>
+					<li><?=$dd?></li>
+				<?php }?>
+				</ul>
+			</td>
+		</tr>
+		<?php }?>
+		<tr>
+			<th><?=$translates['front.brand']?>*</th>
+			<td>
+				<select name="form[BRAND_ID]" id="BRAND_ID" class="form_elements">
+				<?php if (isset($brands) && count($brands)>0){?>
+				<?php foreach ($brands as $dd){?>
+				<option value="<?=$dd['BRA_ID']?>" <?=(isset($edit['BRAND_ID']) && $edit['BRAND_ID']==$dd['BRA_ID'])?'selected':''?>><?=$dd['BRA_BRAND']?></option>
+				<?php }?>
+				<?php }?>
+				</select>
+				<p class="msg-error" id="BRAND_ID_err"></p>
+			</td>
+		</tr>
+		<tr>
+			<th><?=$translates['front.article']?>*</th>
+			<td>
+				<input type="text" name="form[ARTICLE]" id="ARTICLE" class="form_elements" value="<?=isset($edit['ARTICLE'])?$edit['ARTICLE']:''?>"/>
+				<p class="msg-error" id="ARTICLE_err"></p>
+			</td>
+		</tr>
+		<tr>
+			<th><?=$translates['front.price']?>*</th>
+			<td>
+				<input type="text" name="form[PRICE]" id="PRICE" class="form_elements" value="<?=isset($edit['PRICE'])?$edit['PRICE']:''?>"/>
+				<span class="msg-error" id="PRICE_err"></span>
+			</td>
+		</tr>
+		<tr>
+			<th><?=$translates['front.descr']?>*</th>
+			<td>
+				<input type="text" name="form[DESCR]" id="DESCR" class="form_elements" value="<?=isset($edit['DESCR'])?$edit['DESCR']:''?>"/>
+				<p class="msg-error" id="DESCR_err"></p>
+			</td>
+		</tr>
+		<tr>
+			<th><?=$translates['front.full.box']?>*</th>
+			<td>
+				<input type="text" name="form[BOX]" id="BOX" class="form_elements" value="<?=isset($edit['BOX'])?$edit['BOX']:''?>"/>
+				<p class="msg-error" id="BOX_err"></p>
+			</td>
+		</tr>
+		<tr>
+			<th><?=$translates['timewaitoidays']?>*</th>
+			<td>
+				<select name="form[DELIVERY]" id="DELIVERY" class="form_elements">
+				<?php for ($i=0;$i<=40;$i++){?>
+				<option value="<?=$i?>" <?=(isset($edit['DELIVERY']) && $edit['DELIVERY']==$i)?'selected':''?>><?=$i?></option>
+				<?php }?>
+				</select>
+				<p class="msg-error" id="DELIVERY_err"></p>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" value="<?=$translates['front.send']?>" class="custom-button gradient"/></td>
+		</tr>
+	</table>
+	</form>
+	<br/>
+	</div>
+	
+	<script>
+	function chk() {
+		var err = "";
+		$('.form_elements_err').removeClass('form_elements_err').addClass('form_elements');
+		$('.msg-error').html('');
+		var f = $('#BRAND_ID').val();
+		if (f=="") {
+			err += 'err';
+			$('#BRAND_ID_err').html('<?=$translates['front.fields.err']?>');
+			$('#BRAND_ID').removeClass('form_elements').addClass('form_elements_err');
+		}
+		var f = $('#ARTICLE').val();
+		if (f=="") {
+			err += 'err';
+			$('#ARTICLE_err').html('<?=$translates['front.fields.err']?>');
+			$('#ARTICLE').removeClass('form_elements').addClass('form_elements_err');
+		}
+		var f = $('#PRICE').val();
+		if (f=="") {
+			err += 'err';
+			$('#PRICE_err').html('<?=$translates['front.fields.err']?>');
+			$('#PRICE').removeClass('form_elements').addClass('form_elements_err');
+		}
+		var f = $('#DESCR').val();
+		if (f=="") {
+			err += 'err';
+			$('#DESCR_err').html('<?=$translates['front.fields.err']?>');
+			$('#DESCR').removeClass('form_elements').addClass('form_elements_err');
+		}
+		var f = $('#BOX').val();
+		if (f=="") {
+			err += 'err';
+			$('#BOX_err').html('<?=$translates['front.fields.err']?>');
+			$('#BOX').removeClass('form_elements').addClass('form_elements_err');
+		}
+		if (err == "") {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	</script>
+
+</div>

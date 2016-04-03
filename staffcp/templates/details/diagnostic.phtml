@@ -1,0 +1,70 @@
+<style type="text/css">
+.table-info {}
+.table-info td { border:solid 1px #dadada; padding:10px; }
+.table-info th { text-align:right; }
+</style>
+<h1 class="h1-header"><span>Диагностика цены</span></h1>
+
+<table class="table-info">
+<tr>
+	<th>ID</th>
+	<td><?=$detail['ID']?></td>
+</tr>
+<tr>
+	<th>Поставщик</th>
+	<td>
+		<p>ID:<?=$detail['IMPORT_ID']?></p>
+		<p><?=$importer['name']?></p>
+	</td>
+</tr>
+<tr>
+	<th>Найденный бренд по базе брендов</th>
+	<td style="<?=(isset($brand['BRA_ID_GET']) && $brand['BRA_ID_GET'] == $detail['BRAND_ID'])?'border:solid 2px #70e42a;':'border:solid 2px red';?>">
+	<?php if (isset($brand)&&count($brand)>0){?>
+		<p>ID:<?=$brand['BRA_ID_GET']?></p>
+		<p><?=$brand['BRA_BRAND']?></p>
+	<?php }else{?>
+		<b style="color:red;">Бренд не установлен</b>
+	<?php }?>
+	</td>
+</tr>
+<tr>
+	<th>Бренд по прайсу</th>
+	<td style="<?=(isset($brand['BRA_ID_GET']) && $brand['BRA_ID_GET'] == $detail['BRAND_ID'])?'border:solid 2px #70e42a;':'border:solid 2px red';?>">
+		<p>ID по базе:<?=$detail['BRAND_ID']?></p>
+		<p><b><?=$detail['BRAND_NAME']?></b></p>
+	</td>
+</tr>
+<tr>
+	<th>Артикул</th>
+	<td><b><?=$detail['ARTICLE']?></b></td>
+</tr>
+<tr>
+	<th>Цена</th>
+	<td><?=$detail['PRICE']?></td>
+</tr>
+<tr>
+	<th>Цена по единой валюте</th>
+	<td><?=$detail['PRICE_UNI']?></td>
+</tr>
+<tr>
+	<th>Описание</th>
+	<td><?=$detail['DESCR']?></td>
+</tr>
+<tr>
+	<th>Количество</th>
+	<td><?=$detail['BOX']?></td>
+</tr>
+<tr>
+	<th>Доставка</th>
+	<td><?=$detail['DELIVERY']?></td>
+</tr>
+<tr>
+	<th>Вес</th>
+	<td><?=$detail['WEIGHT']?></td>
+</tr>
+<tr>
+	<th>Изображение</th>
+	<td><?=$detail['IMG_URL']?></td>
+</tr>
+</table>

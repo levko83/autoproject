@@ -1,0 +1,66 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.list-ajax').dataTable({
+		"oLanguage":{ "sUrl": "/staffcp/media/language/<?=$lang?>.txt" },
+		"sPaginationType":"full_numbers",
+		"iDisplayLength":100,
+		"aaSorting":[[1, 'desc']],
+		"bAutoWidth":false,
+		"bInfo":false,
+		"fnFooterCallback": function ( nRow, aaData, iDataStart, iDataEnd ) {
+			$('.dataTables_length').remove();
+			$('.dataTables_filter').remove();
+		},
+	});
+});
+</script>
+
+<div class="h1 h1-header">
+	<span><?=$title;?></span>
+	<a href="/staffcp/accounts/finances/" class="btn btn-green">Показывать всех</a>
+	<a href="?balance=minus" class="btn btn-red">Показывать с отрицательным балансом</a>
+</div>
+
+<?php if ($totalPage>1) {?>
+<div class="simple-paging">
+Страницы: <?=PagingViewHelper::paging("/staffcp/".$this->_controller."/?page=:page:",$totalPage,$currentPage);?>
+</div>
+<?php }?>
+<div class="static-search-ajax f-right">
+<form action="">
+	Поиск на странице из <?=(isset($total)?$total:0)?> записей: 
+	<input type="text" name="search" value="<?=$search?>" class="iput">
+	<input type="submit" value="искать" class="btn btn-blue">
+</form>
+</div>
+
+<table class="list-ajax">
+<thead>
+<tr>
+	<th>ID</th>
+	<th>Имя</th>
+	<th>Телефон</th>
+	<th>E-mail</th>
+	<th>Дата регистрации</th>
+	<th>Баланс</th>
+</tr>
+</thead>
+<tbody>
+<?php if(isset($data) && count($data)>0){?>
+<?php foreach ($data as $dd){?>
+<tr>
+	<td><?=$dd['id']?></td>
+	<td><?=$dd['name']?></td>
+	<td><?=$dd['phones']?></td>
+	<td><?=$dd['email']?></td>
+	<td><?=date("d.m.Y",$dd['dt'])?> (<?=AgoViewHelper::since($dd['dt'])?> назад)</td>
+	<td <?=($dd['balance'] < 0)?'style="background:#fda6a6;"':'';?>>
+		<b><?=PriceHelper::universal($dd['balance'])?></b><br>
+		<a href="/staffcp/accounts/operation/?id=<?=$dd['id']?>">пополнить или списать</a><br>
+		Операций: (<?=$dd['cc']?>)
+	</td>
+</tr>
+<?php }?>
+<?php }?>
+</tbody>
+</table>

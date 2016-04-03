@@ -1,0 +1,66 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase"><?=$translates['sitemap']?></h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<ul class="sitemap">
+		<li><a href="<?=HTTP_ROOT?>/"><b><?=$translates['front.home']?></b></a></li>
+		<li><a href="<?=HTTP_ROOT?>/"><?=$translates['front.search.by.article.index']?></a></li>
+		<li>
+			<a href="<?=HTTP_ROOT?>/catalog/"><?=$translates['searchbycatalogname']?></a>
+			<?php if (isset($allcars) && count($allcars)>0){?>
+			<ul>
+				<?php foreach ($allcars as $dd){?>
+				<li class="sitemap-flt-left"><a href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/"><?=$dd['MFA_BRAND']?></a></li>
+				<?php }?>
+			</ul>
+			<?php }?>
+		</li>
+		<li><a href="<?=HTTP_ROOT?>/account/autolist/"><?=$translates['myautosname']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/vin/"><?=$translates['front.vin']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/contacts/"><b><?=$translates['front.contacts']?></b></a></li>
+		<li><a href="<?=HTTP_ROOT?>/cart/"><b><?=$translates['front.cart']?></b></a></li>
+		
+		<li><a href="<?=HTTP_ROOT?>/account/"><?=$translates['profilename']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/account/signup/"><?=$translates['front.act.reg']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/account/remide/"><?=$translates['front.profile.forgot']?></a></li>
+		
+		<li>
+			<a href="<?=HTTP_ROOT?>/category/"><b><?=$translates['front.catalog.title']?></b></a>
+			<ul>
+			<?php if (isset($catalog_main) && count($catalog_main)>0){?>
+			<?php foreach ($catalog_main as $cm){?>
+			<li>
+				<?php if ($cm['url']){?>
+					<a href="<?=$cm['url']?>"><?=$dd['name']?></a>
+				<?php }else{?>
+					<a href="<?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($cm['name'])?>-<?=$cm['id']?>/"><b><?=$cm['name']?></b></a>
+				<?php }?>
+				<?php $nextCats = CatModel::getSecondLevel($cm['id']);?>
+				<ul class="second-level">
+				<?php $a=0; foreach ($nextCats as $dd){ $a++;?>
+					<li class="sitemap-flt-left">
+						<?php if ($dd['url']){?>
+						<a href="<?=$dd['url']?>"><?=$dd['name']?></a>
+						<?php }else{?>
+						<a href="<?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($dd['name'])?>-<?=$dd['id']?>/"><?=$dd['name']?></a>
+						<?php }?>
+					</li>
+				<?php }?>
+				</ul>
+			</li>
+			<?php }?>
+			<?php }?>
+			</ul>
+		</li>
+		<?php foreach ($informations as $dd){?>
+		<li><a href="<?=HTTP_ROOT?>/page/<?=$dd['code']?>/"><?=$dd['name']?></a></li>
+		<?php }?>
+		<li><a href="<?=HTTP_ROOT?>/calc/"><?=$translates['shincalc']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/news/"><?=$translates['front.news.title']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/articles/"><?=$translates['articles']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/faq/"><?=$translates['front.qa.title']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/pricelist/"><?=$translates['front.price.title']?></a></li>
+		<li><a href="<?=HTTP_ROOT?>/brand/"><?=$translates['brands']?></a></li>
+	</ul>
+</div>

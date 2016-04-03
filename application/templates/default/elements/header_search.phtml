@@ -1,0 +1,26 @@
+<?php if (isset($getTempListArticles) && count($getTempListArticles)>0){?>
+					<script type="text/javascript">
+					$(document).ready(function() {
+						var listarticles = new Array();
+						<?php $trees = '';?>
+						<?php $i=0; foreach ($getTempListArticles as $tArticle){ $i++;?>
+							<?php $trees .= '"'.$tArticle.'"'.(($i!=count($getTempListArticles))?',':'');?>
+						<?php }?>
+						var listarticles = [<?=$trees?>];
+						$("#article-field").focus().autocomplete(listarticles, {
+							matchContains: true,
+							minChars: 0
+						});
+						$('#tartslist').click(function() {
+							$("#article-field").autocomplete("enable");
+							$('.ac_results').show();
+						});
+					});
+					</script>
+					<?php }?>
+					<div id="search-box">
+						<form action="<?=HTTP_ROOT?>/search/preload/" method="get" id="search-articles">
+							<input type="text" placeholder="Искать по каталогу" value="<?=(isset($_REQUEST['article']))?$_REQUEST['article']:''?>" name="article" id="article-field"><br>
+							<button type="submit" id="search-button">Искать</button>
+						</form>
+					</div>

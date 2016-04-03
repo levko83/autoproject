@@ -1,0 +1,24 @@
+<style>
+.page_wrapper {background: url('<?=HTTP_ROOT?>/static/images/background-primary.jpg') center no-repeat; background-size: cover;}
+</style><div class="container">
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <h1><?=$translates["f.katalog_avtomobiley"];?></h1>
+				<br/>
+				<?php foreach ($allcountries as $AC){?>
+					<?php foreach ($marks[$AC['country']] as $dd){
+						if (!empty($dd['MY_IMG'])) $bgurl = HTTP_ROOT."/media/files/logos/".$dd['MY_IMG'];
+						else $bgurl = HTTP_ROOT."/media-templates/img/nopic.jpg";
+						?>
+						<a class="tdmbut carsbuts" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/">
+								
+								<img src="<?=$bgurl?>" height="36" class="tdmbut-logo"/>
+								<div class="tdmbut-text"><?=ucfirst(($dd['MFA_BRAND']))?></div>
+							</a>
+					<?php }?>
+				
+			<?php }?>
+				
+        </main>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <aside class="col-md-3 col-sm-4">
+			<?php $this->block('elements/home_quick_search');?>
+			<div class="col-md-12 col-sm-12 stickybanner"  style="margin-top:10px;">
+				<img src="http://autoresurs.de/static/images/banners/banner3.jpg"  >
+			</div>
+		</aside>
+		<main class="col-md-9 col-sm-8">
+			<h3 class="widget_title"><?=$translates['front.search.title']?></h3>
+            <div class="theme_box clearfix">
+				<div id="ajax_indicator" class="align_center">
+					<h3><?=$translates['front.please.wait']?>...</h3>
+					<p><img src="<?=HTTP_ROOT?>/media-templates/img/35-0.gif"/></p>
+				</div>
+                <div id="ajax_load_search_data"></div>
+				<div id="ajax_load_search_data_result_articles"></div>
+            </div> 
+        </main>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+var search_article = "<?=$article?>";
+</script>

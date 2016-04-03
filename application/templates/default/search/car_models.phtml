@@ -1,0 +1,38 @@
+<div class="container" itemscope itemtype="http://schema.org/Product">
+    <ul class="breadcrumbs">
+        <li><span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/" itemprop="url"><span itemprop="title"><?=$translates['front.home']?></span></a> &rarr;</span>
+		<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/catalog/" itemprop="url"><span itemprop="title"><?=$translates["f.katalog_avtomobiley"];?></span></a> &rarr;</span>
+		<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=$_SERVER['REQUEST_URI']?>" itemprop="url"><span itemprop="title"><?=($MFA['h1'])?$MFA['h1']:(($MFA['name'])?$MFA['name']:$MFA['MFA_BRAND'])?></span></a></span></li>
+    </ul>
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <h1><span itemprop="name"><?=($MFA['h1'])?$MFA['h1']:(($MFA['name'])?$MFA['name']:$MFA['MFA_BRAND'])?></span></h1>
+            <div class="theme_box clearfix" itemprop="description">
+                <div class="top-20 container-auto">
+				<?php if (isset($data) && count($data)>0){?>
+				<?php foreach ($data as $letter=>$models){?>
+				<div class="auto-container auto-container-long">
+					<div class="letter" id="<?=$letter?>"><?=$letter?></div>
+					<?php $component = ceil(count($models)/3);?>
+					<?php $i=$j=0; foreach ($models as $dd){ $i++; $j++;?>
+						<?=($i == 1)?'<ul class="list">':''?>
+						<li>
+							<a href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/<?=AliasViewHelper::doTraslitSearchAuto($dd->MOD_CDS_TEXT)?>-<?=$dd->MOD_ID?>"><?=$dd->MOD_CDS_TEXT?> <span><?=substr($dd->MOD_PCON_START,0,4)?>/<?=substr($dd->MOD_PCON_START,4,6)?> — <?=($dd->MOD_PCON_END)?(substr($dd->MOD_PCON_END,0,4).'/'.substr($dd->MOD_PCON_END,4,6)):'*'?></span></a>
+						</li>
+						<?php if ($i == $component || $j == count($models)){?>
+						</ul>
+						<?php $i=0; }?>
+					<?php }?>
+				</div>
+				<div class="clear"></div>
+				<?php }?>
+				<?php }?>
+				</div>
+					
+				<div class="top-20">
+					<?=$MFA['content']?>
+				</div>
+            </div>
+        </main>
+    </div>
+</div>

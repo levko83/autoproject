@@ -1,0 +1,21 @@
+<style>
+.td-obj { border: 1px solid #CCCCCC; border-collapse: collapse; padding:10px; }
+.odd { background-color: #F5F5FF; }
+.even { background-color: #FFFFFF; }
+</style>
+
+<table>
+<tr>
+	<td class="td-obj"><b><?=$translates['admin.main.lineextra']?></b></td>
+	<td class="td-obj">
+		<?php $this->block('margins/margins-fromto');?>		
+	</td>
+</tr>
+<tr>
+	<td class="td-obj odd"><b><?=$translates['admin.main.brandsforextra']?></b></td>
+	<td class="td-obj odd">
+		<?php $this->block('margins/margins-brands');?>		
+	</td>
+</tr>
+</table>
+

@@ -1,0 +1,175 @@
+<div class="container">
+    <div class="row">
+        <aside class="col-md-4 col-sm-5">
+            <?php $this->block('elements/home_quick_search');?>	
+        </aside>
+
+        <main class="col-md-8 col-sm-7">
+			<header class="on_the_sides">
+					<div class="left_side">
+						<?php if (isset($errors) && count($errors)>0){?>
+							<br/>
+							<ul class="simple_vertical_list">
+								<?php foreach ($errors as $dd){?>
+									<li class="error"><?=$dd?></li>
+								<?php }?>
+							</ul>
+							<br/>
+						<?php }?>
+					</div>
+					<div class="right_side"></div>
+				</header>
+				
+				
+			<h3 class="widget_title"><?=$translates['front.profile.reg']?></h3>
+			<div class="theme_box">
+				<form class="type_2" action="<?=HTTP_ROOT?>/account/add/" method="POST">
+					<div class="row">
+						<div class="col-sm-12">
+								<ul>
+									<div class="col-xs-12">
+										<label><?=$translates["f.anrede"];?>*:</label>
+											<div class="form_el">
+												<input type="radio" id="radio_1" name="form[is_firm]" <?php if (!isset($tab2)) { ?>checked=""<?php } ?>>
+												<label for="radio_1"><?=$translates['front.profile.man']?></label>
+												<input type="radio" id="radio_2" name="form[is_firm]" value="1" <?php if (isset($tab2)) { ?>checked=""<?php } ?>>
+												<label for="radio_2"><?=$translates['front.profile.lowman']?></label>
+											</div>
+									</div>
+								</ul>
+						</div>
+					 </div>
+					 </br>
+					 <div class="type_2">
+					 <ul>
+						<li class="row" id="firm_name" style="display:none;">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="firm"><?=$translates['front.account.firm']?></label>
+								<input type="text" id="firm" name="form[firm_name]" value="<?=(isset($errors_data['firm_name'])?$errors_data['firm_name']:'')?>">
+
+							</div>
+							<div class="col-sm-6">
+
+								<label></label>
+
+							</div>
+
+						</li>
+						<li class="row">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="name"><?=$translates['front.account.name']?></label>
+								<input type="text" id="name" name="form[name]" value="<?=(isset($errors_data['name'])?$errors_data['name']:'')?>"/>
+
+							</div>
+							<div class="col-sm-6">
+
+								<label class="required" for="nachname"><?=$translates["f.familiya"];?></label>
+								<input type="text" id="nachname" name="form[nachname]" value="<?=(isset($errors_data['nachname'])?$errors_data['nachname']:'')?>"/>
+
+							</div>
+
+						</li>
+						<br/>
+						<li class="row">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="email"><?=$translates['front.account.email']?></label>
+								<input type="email" id="email" name="form[email]" value="<?=(isset($errors_data['email'])?$errors_data['email']:'')?>"/>
+
+							</div>
+							<div class="col-sm-6">
+
+								<label class="required" for="phone"><?=$translates['front.account.phones']?></label>
+								<input type="text" id="phone" name="form[phones]" value="<?=(isset($errors_data['phones'])?$errors_data['phones']:'')?>"/>
+
+							</div>
+
+						</li>
+						<br/>
+						
+						<li class="row">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="descr">Strasse</label>
+								<input type="text" id="descr" name="form[address]" value="<?=trim(isset($errors_data['address'])?$errors_data['address']:'')?>"/>
+
+							</div>
+							<div class="col-sm-6">
+
+								<label class="required" for="hausnummer">Hausnummer</label>
+								<input type="text" id="hausnummer" name="form[hausnummer]" value="<?=(isset($errors_data['hausnummer'])?$errors_data['hausnummer']:'')?>"/>
+
+							</div>
+
+						</li>
+						<br/>
+						
+						<li class="row">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="city"><?=$translates['front.account.city']?></label>
+								<input type="text" id="city" name="form[city]" value="<?=(isset($errors_data['city'])?$errors_data['city']:'')?>"/>
+
+							</div>
+							<div class="col-sm-6">
+
+								<label class="required" for="zip"><?=$translates["f.pochtovyy_kod"];?></label>
+								<input type="text" id="zip" name="form[zip]" value="<?=(isset($errors_data['zip'])?$errors_data['zip']:'')?>"/>
+
+							</div>
+
+						</li>
+						<br/>
+						<li class="row">
+
+							<div class="col-sm-6">
+
+								<label class="required" for="city"><?=$translates['front.account.password']?></label>
+								<input type="password" id="pass" name="form[pass1]" value="<?=(isset($errors_data['pass1'])?$errors_data['pass1']:'')?>"/>
+
+							</div>
+							<div class="col-sm-6">
+
+								<label class="required" for="zip"><?=$translates['front.account.password.repeat']?></label>
+								<input type="password" id="passdr" name="form[pass2]" value="<?=(isset($errors_data['pass2'])?$errors_data['pass2']:'')?>"/>
+
+							</div>
+
+						</li>
+						<br/>
+						<li class="row">
+							<div class="col-xs-12">
+								<label>&nbsp;</label>
+								<div class="form_el">
+									<input type="checkbox" id="checkbox_3" value="1" name="form[agree]" checked="">
+									<label for="checkbox_3">
+										<?=$translates['agreewithacartrules']?>
+									</label>
+								</div>
+							</div>
+						</li>
+						<br/>
+						<li class="row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<div class="form_el">
+									<input class="button_blue" type="submit" value="<?=$translates['front.reg']?>">
+								</div>
+							</div>
+						</li>
+					</ul>
+					</div>
+				</div>
+            </form>
+        </main>
+		<script>
+			var reg_page = true;
+		</script>
+    </div>
+</div>

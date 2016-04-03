@@ -1,0 +1,9 @@
+<h1><?=$translates['admin.langs.name']?></h1>
+
+<?php if(isset($langs) && count($langs)>0){?>
+<?php foreach ($langs as $key=>$lang){?>
+
+<p><a href="/staffcp/langs/set/?lang=<?=$key?>"><img src="/media-templates/img/langs/<?=$key?>.png" title="<?=$lang['TEX_TEXT']?>" alt="<?=$lang['TEX_TEXT']?>" align="absmiddle"/> <b><?=$lang['TEX_TEXT']?></b></a></p>
+
+<?php }?>
+<?php }?>

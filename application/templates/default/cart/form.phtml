@@ -1,0 +1,92 @@
+<form action="<?=HTTP_ROOT?>/cart/send/" method="POST" id="form_reg" onsubmit="return chkreg();">
+
+	<?php if (isset($merchants_list) && count($merchants_list)>0){?>
+	<div class="page-title top-20"><h2><?=$translates['paymentlist']?></h2></div>
+	<?php foreach ($merchants_list as $dd){?>
+	<div class="merchant-info-item">
+		<div class="m-title">
+			<input type="radio" name="merchant_type" value="<?=$dd['mcode']?>"> 
+			<a class="croll" href="#" onclick="return false;"><?=$dd['name']?> <i>(<?=$translates['front.more']?>)</i></a>
+		</div>
+		<div class="slide-info no-display"><?=$dd['content']?></div>
+	</div>
+	<?php }?>
+	<?php }?>
+	
+	
+	<div class="page-title top-20"><h2><?=$translates['front.contact.data']?></h2></div>
+	<table width="100%" class="contact-form">
+		<tr><td colspan="2"><b><?=$translates['front.cart.form.name']?></b></td></tr>
+		<tr><td colspan="2"><input type="text" name="form[name]" id="form_name" class="form_elements" value="<?=(isset($error_data)&&!empty($error_data['name']))?$error_data['name']:((isset($account['name'])&&!empty($account['name']))?$account['name']:'');?>"/><br/><span class="msg-error" id="form_name_err"></span></td></tr>
+		
+		<tr><td colspan="2"><b><?=$translates['front.cart.form.phone']?></b></td></tr>
+		<tr><td colspan="2"><input type="text" name="form[phone]" id="form_phone" class="form_elements" value="<?=(isset($error_data)&&!empty($error_data['phone']))?$error_data['phone']:((isset($account['phones'])&&!empty($account['phones']))?$account['phones']:'');?>"/><br/><span class="msg-error" id="form_phone_err"></span></td></tr>
+		
+		<tr><td colspan="2"><b><?=$translates['front.account.email']?></b></td></tr>
+		<tr><td colspan="2"><input type="text" name="form[email]" id="form_email" class="form_elements" value="<?=(isset($error_data)&&!empty($error_data['email']))?$error_data['email']:((isset($account['email'])&&!empty($account['email']))?$account['email']:'');?>"/><br/><span class="msg-error" id="form_email_err"></span></td></tr>
+		
+		<tr><td colspan="2"><b>Адрес доставки</b></td></tr>
+		<tr><td colspan="2"><textarea name="form[address]" id="form_address" class="form_elements"><?=(isset($error_data)&&!empty($error_data['address']))?$error_data['address']:((isset($account['address'])&&!empty($account['address']))?$account['address']:'');?></textarea><br/><span class="msg-error" id="form_address_err"></span></td></tr>
+		
+		<tr><td colspan="2"><b>Комментрий</b></td></tr>
+		<tr><td colspan="2"><textarea name="form[message]" id="form_message" class="form_elements"><?=(isset($error_data)&&!empty($error_data['message']))?$error_data['message']:''?></textarea><br/><span class="msg-error" id="form_message_err"></span></td></tr>
+		
+		<tr>
+			<td colspan="2">
+				<input type="checkbox" value="1" name="form[agree_check_items]" id="is_agree_check_items" style="vertical-align:text-bottom;"/> 
+				<b><?=$translates['front.need.to.check']?></b> (<?=$translates['posimvininsertfiledcomment']?>)
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="checkbox" value="1" name="form[agree]" id="is_agree" style="vertical-align:text-bottom;"/> 
+				<a href="<?=HTTP_ROOT?>/cartrules/" target="_blank"><b><?=$translates['agreewithacartrules']?></b></a>
+				<br/><span class="msg-error" id="form_agree_err"></span>
+			</td>
+		</tr>
+		<tr><td colspan="2"><input  class="crt-nxt" style="float:none;padding:5px;font-size:16px;font-weight:bold;cursor:pointer;display:block;" type="submit" value="<?=$translates['front.cart.form.send.order']?>" class="custom-button gradient f-left"/></td></tr>
+	</table>
+</form>
+
+<script>
+function chkreg() {
+	var err = "";
+	
+	$('.form_elements_err').removeClass('form_elements_err').addClass('form_elements');
+	$('.msg-error').html('');
+	
+	var msg1 = $('#form_name').val();
+	if (msg1=="") {
+		err += 'err';
+		$('#form_name_err').html('<?=$translates['front.fields.err']?> - <?=$translates['front.cart.form.name']?>');
+		$('#form_name').removeClass('form_elements').addClass('form_elements_err');
+	}
+	
+	var msg1 = $('#form_phone').val();
+	if (msg1=="") {
+		err += 'err';
+		$('#form_phone_err').html('<?=$translates['front.fields.err']?> - <?=$translates['front.cart.form.phone']?>');
+		$('#form_phone').removeClass('form_elements').addClass('form_elements_err');
+	}
+	
+	var email = $('#form_email').val();
+	if (email=="" || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+		err += 'err';
+		$('#form_email_err').html('<?=$translates['front.fields.err.email']?>');
+		$('#form_email').removeClass('form_elements').addClass('form_elements_err');
+	}
+	
+	if (!$('#is_agree').is(":checked")){
+		err += 'err';
+		$('#form_agree_err').html('<?=$translates['agreecartrul']?>');
+		$('#form_agree').removeClass('form_elements').addClass('form_elements_err');
+	}
+	
+	if (err == "") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+</script>

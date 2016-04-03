@@ -1,0 +1,85 @@
+<div class="parent-menu">
+	<div class="menu-title">
+		<div class="menu-left">
+			<div class="menu-right">
+				<div class="titles"><?=$translates['admin.components']?></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="block menu" id="main_menu_open">
+	<div style="float: none; clear: both;" class="container">
+		<script type="text/javascript">
+		// <![CDATA[
+		d = new dTree('d');
+		d.add(0,-1,'<b><?=$_SERVER['SERVER_NAME']?></b>','#');
+		<?php 
+			$dKey = 0;
+			global $selected;
+			$selected = 0;
+			function menuItem($key, $val, $parent = 0, $acl = null) {
+				global $dKey, $selected;
+				$dKey++;
+				$id = $dKey;
+				if (!is_array($val))
+				{	
+					if (strpos($_SERVER['REQUEST_URI'],str_replace("/staffcp/", "", $val))){
+						$selected = $id;
+					}
+					echo 'd.add('.$id.','.$parent.',"'.$key.'","'.$val.'","'.$key.'");';
+				} else {
+					if (count($val) == 2 && is_string(@$val[1])) {
+						
+						if (strpos($_SERVER['REQUEST_URI'],str_replace("/staffcp/", "", $val[0])))
+							$selected = $id;
+						
+						echo 'd.add('.$id.','.$parent.',"'.$key.'","'.$val[0].'","'.$key.'",null,d.icon.'.$val[1].');';
+					} else {
+						echo 'd.add('.$id.','.$parent.',"'.$key.'","#");';
+						foreach ($val as $k=>$v) {
+							menuItem($k, $v, $id, $acl);
+						}
+					}
+				}
+			}
+			reset($menu);
+			foreach ($menu as $key=>$value){
+				menuItem($key, $value, 0, $acl);
+			}
+		?>
+		document.write(d);
+		d.openTo(<?=@$selected;?>, true);
+		// ]]>
+		</script>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<?php if (!$isManager){?>
+<?/* ***************************** */?>
+<div class="parent-menu padd">
+	<div class="menu-title">
+		<div class="menu-left"><div class="menu-right"><div class="titles"><?=$translates['admin.user.name']?></div></div></div>
+	</div>
+</div>
+<div class="block menu" id="main_menu_open_3" style="">
+	<div style="float: none; clear: both;" class="container texts">
+		<p <?=($_controller=='user')?'':'';?>><img src="/staffcp/media/images/group.png" align="absmiddle"/> <a title="<?=$translates['admin.control.user']?>" href="/staffcp/user/"><span><?=$translates['admin.control.user.name']?></span></a></p>
+		<p <?=($_controller=='logs')?'':'';?>><img src="/staffcp/media/images/group.png" align="absmiddle"/> <a title="Логи действий" href="/staffcp/logs/"><span>Логи действий</span></a></p>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<?/* ***************************** */?>
+<?php }?>
+
+<div class="parent-menu padd">
+	<div class="menu-title">
+		<div class="menu-left">
+			<div class="menu-right">
+				<div class="titles">Online: <?=(isset($online)?$online:0)?></div>
+			</div>
+		</div>
+	</div>
+</div>

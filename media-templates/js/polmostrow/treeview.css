@@ -1,0 +1,190 @@
+.treeview, .treeview ul { 
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.treeview ul {
+	background-color: white;
+	margin-top: 4px;
+}
+
+.treeview .hitarea {
+	background: url(http://www.polmostrow.pl//gfx/tree/treeview-default.gif) -64px -25px no-repeat;
+	height: 16px;
+	width: 16px;
+	margin-left: -16px;
+	float: left;
+	cursor: pointer;
+}
+/* fix for IE6 */
+* html .hitarea {
+	display: inline;
+	float:none;
+}
+
+.treeview li { 
+	margin: 0;
+	padding: 3px 0pt 3px 16px;
+}
+
+.treeview a.selected {
+	background-color: #eee;
+}
+
+#treecontrol { margin: 1em 0; display: none; }
+
+.treeview .hover { color: red; cursor: pointer; }
+
+.treeview li { background: url(http://www.polmostrow.pl//gfx/tree/treeview-default-line.gif) 0 0 no-repeat; }
+.treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }
+
+.treeview .expandable-hitarea { background-position: -80px -3px; }
+
+.treeview li.last { background-position: 0 -1766px }
+.treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(http://www.polmostrow.pl//gfx/tree/treeview-default.gif); }  
+.treeview li.lastCollapsable { background-position: 0 -111px }
+.treeview li.lastExpandable { background-position: -32px -67px }
+
+.treeview div.lastCollapsable-hitarea, .treeview div.lastExpandable-hitarea { background-position: 0; }
+
+.treeview-red li { background-image: url(http://www.polmostrow.pl//gfx/tree/treeview-red-line.gif); }
+.treeview-red .hitarea, .treeview-red li.lastCollapsable, .treeview-red li.lastExpandable { background-image: url(../gfx/tree/treeview-red.gif); } 
+
+.treeview-black li { background-image: url(http://www.polmostrow.pl//gfx/tree/treeview-black-line.gif); }
+.treeview-black .hitarea, .treeview-black li.lastCollapsable, .treeview-black li.lastExpandable { background-image: url(../gfx/tree/treeview-black.gif); }  
+
+.treeview-gray li { background-image: url(http://www.polmostrow.pl//gfx/tree/treeview-gray-line.gif); }
+.treeview-gray .hitarea, .treeview-gray li.lastCollapsable, .treeview-gray li.lastExpandable { background-image: url(../gfx/tree/treeview-gray.gif); } 
+
+.treeview-famfamfam li { background-image: url(http://www.polmostrow.pl//gfx/tree/treeview-famfamfam-line.gif); }
+.treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .treeview-famfamfam li.lastExpandable { background-image: url(../gfx/tree/treeview-famfamfam.gif); } 
+
+.treeview .placeholder {
+	background: url(http://www.polmostrow.pl//gfx/tree/ajax-loader.gif) 0 0 no-repeat;
+	height: 16px;
+	width: 16px;
+	display: block;
+}
+
+.filetree li { padding: 3px 0 2px 16px; }
+.filetree span.folder, .filetree span.file { padding: 1px 0 1px 5px; display: block; }
+/* background: url(http://www.polmostrow.pl//gfx/tree/folder.gif) 0 0 no-repeat;*/
+.filetree span.folder {  }
+/* background: url(http://www.polmostrow.pl//gfx/tree/folder-closed.gif) 0 0 no-repeat;*/
+.filetree li.expandable span.folder {  }
+/* background: url(http://www.polmostrow.pl//gfx/tree/file.gif) 0 0 no-repeat;*/
+.filetree span.file {  }
+
+
+
+/* CSS Document */
+.table{border: 1px solid #C0C0C0;border-collapse: collapse;margin: 2px;}
+.table td{FONT-SIZE: 13px; COLOR: #333333; font-family: Verdana, Helvetica CE;  border: 1px solid #C0C0C0; padding: 2px;}
+.table .toptable{background-color: #E6F2F2;}
+.line_1{
+	BACKGROUND: #FBFBFB;
+	HEIGHT: 30px;
+}
+.line_2{
+	BACKGROUND: #FFFFFF;
+	HEIGHT: 30px;
+}
+.trline_3{
+	BACKGROUND: #CCFFCC;
+	HEIGHT: 30px;
+}
+.filediv{display: block; clear:both; line-height:20px;border-bottom: 1px solid #F8F8F8;margin-bottom: 5px; background-color: #F6F6F6;padding: 2px;}
+.stringfilediv{float:left;font-family:  Tahoma, Arial, Verdana, Arial CE, sans-serif;font-size: 13px; color: #3d3d3d;}
+.icofilediv{float:right;margin-right: 10px;margin-top: 5px;}
+.top_tab{font-family: Arial;font-size: 10pt;color:#FFFFFF;height:25px;background-color:#F0F0F0;}
+label.dwa{
+      width: 105px;
+      display: block;
+      clear:both;
+      font-family: Arial, Vernada, sans-serif;
+      font-weight:bold;
+      text-decoration: none;
+      font-size: 12px;   
+      line-height:20px;
+}
+
+A.t1:Visited,
+A.t1:Link {
+          color: #646464;
+          font-family: Arial, Vernada, sans-serif;
+          font-weight:none;
+          text-decoration: none;
+          font-size: 12px;     
+          padding:2px;}
+A.t1:Hover { color: #ffffff;background-color:#009049;}
+.but0  {margin:2px;font-family: Arial;font-size: 11px; width:80px;border: 1px solid #aaa9a0;background-color: #009049;color: #ffffff;}
+.inp0  {margin:2px;font-family: Arial;font-size: 11px;width:100px;border: 1px solid #cccccc;background-color: #ffffff;color: #464646;}
+.tr_podswietlenie, .tr_podswietlenie td, .tr_podswietlenie td.srodek, .tr_podswietlenie td.srodek_bialy { background-color : #c6eba1;}
+#menukat li{list-style: none;}
+.divpole{background-color: #FBFBFB;padding: 2px;}
+
+
+#content .topnav {
+    font-family: Arial,Helvetica,sans-serif;
+    padding: 40px 28px 25px 0;
+    width: auto;
+}
+#content ul.topnav {
+    font-size: 1em;
+    line-height: 0.5em;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+#content ul.topnav li {
+    float: none;
+}
+#content ul.topnav li a {
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid #C4D7F3;
+    border-radius: 0;
+    color: #000000;
+    display: block;
+    font-size: 12px;
+    height: 10px !important;
+    line-height: 10px;
+    padding: 10px 5px;
+    text-decoration: none;
+}
+#content ul.topnav li a:hover {
+    background-color: #007700;
+    color: #FFF !important;
+}
+#content ul.topnav ul {
+    display: none;
+    margin: 0;
+    padding: 0;
+}
+#content ul.topnav ul li {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+#content ul.topnav ul li a {
+    font-size: 12px;
+    font-weight: normal;
+    padding-left: 20px;
+}
+#content ul.topnav ul li a:hover {
+    background-color: #009B00;
+    color: #FFF !important;
+}
+#content ul.topnav ul ul li a {
+    color: #000000;
+    max-width: 226px;
+    padding-left: 40px;
+}
+#content ul.topnav ul ul li a:hover {
+    background-color: #00AF00;
+    color: #FFF !important;
+}
+#content ul.topnav span {
+    float: right;
+    margin: 0 0 0 10px;
+}

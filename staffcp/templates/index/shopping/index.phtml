@@ -1,0 +1,566 @@
+<style>
+.h1 { font-family:'franklingothicmedicondcRg'; font-size: 17px; font-weight:normal; }
+.shop-title { padding:5px; border-right:solid 1px #B8B8B8; }
+.shopping-main {}
+.shopping-main tr:hover { background:#f5ffce; }
+.shopping-main td,.shopping-main th { padding:5px; font-size:11px; }
+.shopping-main th { font-weight:bold; }
+.iput { border: 1px solid #DADADA; border-radius: 5px 5px 5px 5px; padding: 5px; vertical-align: middle; width: 50px; }
+.inputs { border: 1px solid #DADADA; border-radius: 5px 5px 5px 5px; padding: 5px; vertical-align: middle; }
+.line { width:100%; border-top:solid 1px #b8b8b8; margin:15px 0px; }
+.odd { background-color: #F5F5FF; }
+
+.cart-delivery-data { width:450px; }
+.cart-delivery-data p { padding:0px;margin:0px; }
+</style>
+<table class="shopping-main" width="100%">
+<tr>
+	<td valign="top" style="border:solid 1px #dadada;">
+		
+		<table>
+		<tr>
+		<td valign="top">
+		
+			<form action="" method="POST">
+			<input type="hidden" name="action" value="save_info"/>
+			<table cellpadding="2px" cellspacing="3px">
+			<tr>
+				<td colspan="2"><div class="h1">Заказ</div></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Дата</b></td>
+				<td><?=date("d.m.Y H:i")?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>№ заказа</b></td>
+				<td>формируется после подтверждения заказа</td>
+			</tr>
+			<?php if (isset($deliveryList) && count($deliveryList)>0){?>
+			<tr>
+				<td colspan="2">
+				
+					<?php if (isset($info['current_delivery']) && $info['current_delivery']){?>
+					<?php $deliveryNameView = DeliveriesModel::getById($info['current_delivery']);?>
+					<?php }else{?>
+					<?php $deliveryNameView = false;?>
+					<?php }?>
+					<div><a class="h1" href="#" onclick="$('#deliverymodel').toggle();return false;">Доставка<?=($deliveryNameView?': '.$deliveryNameView['name']:'')?></a></div>
+					<table width="100%" class="cart-delivery-data no-display" id="deliverymodel">
+					<?php foreach ($deliveryList as $dd){?>
+					<tr>
+						<td valign="top" style="padding:0px;border-bottom:dotted 1px #b8b8b8;">
+							<input type="radio" name="info[current_delivery]" value="<?=$dd['id']?>" <?=(isset($info['current_delivery']) && $info['current_delivery']==$dd['id']?'checked':'')?> />
+						</td>
+						<td valign="top" style="padding:0px;border-bottom:dotted 1px #b8b8b8;">
+							<p><b><?=$dd['name']?></b></p>
+							<?=$dd['content']?>
+						</td>
+					</tr>
+					<?php }?>
+					</table>
+					
+				</td>
+			</tr>
+			<?php }?>
+			<tr>
+				<td colspan="2">
+				
+					<div><a class="h1" href="#" onclick="$('#paymentmodel').toggle();return false;">Способ оплаты<?=((isset($info['current_payment']) && $info['current_payment'])?': '.$info['current_payment']:'')?></a></div>
+					<?php if (isset($Merchants_listModel) && count($Merchants_listModel)>0){?>
+					<table width="300px" class="cart-delivery-data no-display" id="paymentmodel">
+					<?php foreach ($Merchants_listModel as $dd){?>
+					<tr>
+						<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+							<input type="radio" name="info[current_payment]" value="<?=$dd['name']?>" <?=(isset($info['current_payment']) && $info['current_payment']==$dd['name']?'checked':'')?>>
+						</td>
+						<td valign="top" style="padding:3px;border-bottom:dotted 1px #b8b8b8;">
+							<?=$dd['name']?>
+						</td>
+					</tr>
+					<?php }?>
+					</table>
+					<?php }?>
+					
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<b>Дополнительная информация</b><br/>
+					<textarea name="info[notice]" class="inputs" style="width:100%;height:100px;"><?=(isset($info['notice'])&&$info['notice'])?$info['notice']:''?></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					
+				</td>
+			</tr>
+			</table>
+			
+		</td>
+		<td valign="top">
+		
+			<table cellpadding="2px" cellspacing="3px">
+			<tr>
+				<td colspan="2"><h1 class="h1">Контактные данные</h1></td>
+			</tr>
+			<?php if (isset($account_info) && count($account_info)>0){?>
+			<tr>
+				<td class="shop-title"><b>№ клиента</b></td>
+				<td><?=$account_info['id']?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Имя клиента</b></td>
+				<td><?=$account_info['name']?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Телефон</b></td>
+				<td><?=$account_info['phones']?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Адрес доставки</b></td>
+				<td><?=$account_info['address']?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Баланс</b></td>
+				<td><?=$account_info['balance']?></td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Скидка(Наценка) клиента</b></td>
+				<td>
+					<?=$account_info['discountname']?><br>
+					<?=($account_info['discount'])?''.$account_info['discount'].'%':''?>
+				</td>
+			</tr>
+			<?php }else{?>
+			<tr>
+				<td class="shop-title"><b>ФИО</b></td>
+				<td><input type="text" name="info[f1]" value="<?=(isset($info['f1'])&&$info['f1'])?$info['f1']:''?>" class="iput" style="width:100%;"/> </td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Телефон</b></td>
+				<td><input type="text" name="info[f2]" value="<?=(isset($info['f2'])&&$info['f2'])?$info['f2']:''?>" class="iput" style="width:100%;"/> </td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>E-mail</b></td>
+				<td><input type="text" name="info[f3]" value="<?=(isset($info['f3'])&&$info['f3'])?$info['f3']:''?>" class="iput" style="width:100%;"/> </td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Адрес доставки</b></td>
+				<td><input type="text" name="info[message]" value="<?=(isset($info['message'])&&$info['message'])?$info['message']:''?>" class="iput" style="width:100%;"/> </td>
+			</tr>
+			<?php }?>
+			<tr>
+				<td class="shop-title"><b>Дата получения товара</b></td>
+				<td>
+					<input type="text" id="dt_from" name="info[time_give_order]" value="<?=(isset($info['time_give_order'])&&$info['time_give_order'])?$info['time_give_order']:''?>" class="iput" style="width:100px;"/>
+					<input type="button" id="dt_from_picker" value="&raquo;" class="btn">
+					<script>
+					Calendar.setup({inputField: 'dt_from',button: 'dt_from_picker',date: '<?=(isset($info['time_give_order']) && $info['time_give_order'])?$info['time_give_order']:date('d.m.Y')?>'});
+					Calendar.setup({inputField: 'dt_from',button: 'dt_from',date: '<?=(isset($info['time_give_order']) && $info['time_give_order'])?$info['time_give_order']:date('d.m.Y')?>',eventName: 'focus'});
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Время доставки</b></td>
+				<td>
+					с <input type="text" name="info[time_from]" id="time_from" value="<?=(isset($info['time_from'])&&$info['time_from'])?$info['time_from']:''?>" class="iput"/> 
+					по <input type="text" name="info[time_to]" id="time_to" value="<?=(isset($info['time_to'])&&$info['time_to'])?$info['time_to']:''?>" class="iput"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="shop-title"><b>Примечание</b></td>
+				<td>
+					<textarea name="info[info]" class="inputs" style="width:100%;height:100px;"><?=(isset($info['info'])&&$info['info'])?$info['info']:''?></textarea>
+				</td>
+			</tr>
+			</table>
+			
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="Сохранить" class="btn btn-blue">
+				<a href="?action=order.temp" class="btn btn-green">Обработать позже</a> 
+				<a href="?action=unsetperson" class="btn btn-red">Отменить заказ</a>
+				<a href="/staffcp/index/crm/" class="btn btn-blue">Список всех заказов</a>
+				<?php if (isset($account_info) && count($account_info)>0){?>
+				<a href="/staffcp/index/crm/?search[account_id]=<?=$account_info['id']?>" class="btn btn-blue">Список всех заказов по покупателю</a>
+				<?php }?>
+			</td>
+		</tr>
+		</table>
+		</form>
+		
+	</td>
+	<?php if (isset($account_info) && count($account_info)>0){?>
+	<td valign="top" style="border:solid 1px #dadada;">
+	
+		<h1 class="h1">Автомобили клиента</h1>
+		
+		<?php if (isset($personal_cars) && count($personal_cars)>0){?>
+		<table width="100%" cellpadding="0px" cellspacing="0px">
+		<?php foreach ($personal_cars as $pc){?>
+			<tr>
+				<td valign="top" style="border-bottom:dotted 1px #b8b8b8;"><p>ID: <?=$pc['id']?></p></td>
+				<td valign="top" style="border-bottom:dotted 1px #b8b8b8;">
+					<p><b><?=$pc['car_name']?></b></p>
+					<p><?=$pc['car_vin']?></p>
+					<p>
+						<input type="button" name="" value="Выбрать" onclick="location='?selected_car=<?=$pc['id']?>';" class="btn btn-blue">
+						<a href="?action=delete_car&car_id=<?=$pc['id']?>" style="color:red;">удалить</a>
+					</p>
+				</td>
+			</tr>
+		<?php }?>
+		</table>
+		<?php } else {?>
+			<p>Нет ниодного автомобиля</p>
+		<?php }?>
+		
+		<p><input type="button" name="" value="Добавить автомобиль" onclick="$('#add_car').slideToggle();return false;" class="btn btn-blue"></p>
+		<div id="add_car" style="display:none;">
+			<form action="" method="POST">
+			<input type="hidden" name="action" value="save_car"/>
+			<input type="hidden" name="car[name]" id="car_name" value=""/>
+			<table>
+			<tr>
+				<td><b>Марка</b></td>
+				<td>
+				<?php if (isset($marks)&&count($marks)>0){?>
+					<select name="car[mark]" class="inputs" style="width:100%;" onchange="ajax_models(this);" id="c_auto_1">
+						<option value=""></option>
+					<?php foreach ($marks as $mark){?>
+						<option value="<?=$mark['MFA_ID']?>"><?=$mark['MFA_BRAND']?> </option>
+					<?php }?>
+					</select>
+				<?php }?>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Модель</b></td>
+				<td>
+					<div id="ajax_models_result">не выбрано</div>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Модификация</b> <span id="car_done" style="color:green;"></span></td>
+				<td>
+					<div id="ajax_types_result">не выбрано</div>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Год</b></td>
+				<td><input type="text" name="car[car_year]" value="" class="inputs" style="width:100%;"/></td>
+			</tr>
+			<tr>
+				<td><b>АКПП</b></td>
+				<td><input type="checkbox" name="car[car_kpp]" value="1" class="inputs"/></td>
+			</tr>
+			<tr>
+				<td><b>Усилитель руля</b></td>
+				<td><input type="checkbox" name="car[car_rul]" value="1" class="inputs"/></td>
+			</tr>
+			<tr>
+				<td><b>Кондиционер</b></td>
+				<td><input type="checkbox" name="car[car_cond]" value="1" class="inputs"/></td>
+			</tr>
+			<tr>
+				<td><b>ABS</b></td>
+				<td><input type="checkbox" name="car[car_abs]" value="1" class="inputs"/></td>
+			</tr>
+			<tr>
+				<td><b>Полный привод</b></td>
+				<td><input type="checkbox" name="car[car_quattro]" value="1" class="inputs"/></td>
+			</tr>
+			<tr>
+				<td><b>Универсал</b></td>
+				<td><input type="checkbox" name="car[car_body]" value="1" class="inputs" /></td>
+			</tr>
+			<tr>
+				<td><b>VIN</b></td>
+				<td><input type="text" name="car[car_vin]" value="" class="inputs" style="width:100%;"/></td>
+			</tr>
+			<tr>
+				<td><b>Дополнительно</b></td>
+				<td>
+					<textarea name="car[car_info]" class="inputs" style="width:100%;"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Сохранить" class="btn btn-blue"></td>
+			</tr>
+			</table>
+			</form>
+		</div>
+		<script>
+		function ajax_models(items){
+			$('#car_name').val('');
+			$("#ajax_models_result").html('пожалуйста, подождите...');
+			var id = $(items).val();
+			$.post('/staffcp/index/ajax_models/?id='+id, null,
+			function(data) {
+				$("#ajax_models_result").html(data);
+				var val  = $("#c_auto_1 option:selected").text();
+				var lastVal = $('#car_name').val();
+				$('#car_name').val(lastVal+val);
+			});
+		}
+		function ajax_types(items){
+			$("#ajax_types_result").html('пожалуйста, подождите...');
+			var id = $(items).val();
+			$.post('/staffcp/index/ajax_types/?id='+id, null,
+			function(data) {
+				$("#ajax_types_result").html(data);
+				var val  = $("#c_auto_2 option:selected").text();
+				var lastVal = $('#car_name').val();
+				$('#car_name').val(lastVal+val);
+			});
+		}
+		function ajax_set_car(items){
+			var id = $(items).val();
+			var val  = $("#c_auto_3 option:selected").text();
+			var lastVal = $('#car_name').val();
+			$('#car_name').val(lastVal+val);
+			$('#car_done').html('<b>OK!</b>');
+		}
+		</script>
+		
+	</td>
+	<?php }?>
+</tr>
+</table>
+
+<?php if (isset($selectedCar) && count($selectedCar)>0){?>
+<div class="line"></div>
+<h1 class="h1">Выбранный автомобиль</h1>
+
+<form action="" method="POST">
+<input type="hidden" name="action" value="refreshcar"/>
+<table class="shopping-main" width="100%">
+<tr>
+	<th class="td-obj odd">Марка / Модель / Тип / Год / Объем / Л.сил</th>
+	<th class="td-obj odd">Год</th>
+	<th class="td-obj odd">АКПП</th>
+	<th class="td-obj odd">Усилитель руля</th>
+	
+	<th class="td-obj odd">Кондиционер</th>
+	<th class="td-obj odd">ABS</th>
+	<th class="td-obj odd">Полный привод</th>
+	<th class="td-obj odd">Универсал</th>
+	
+	<th class="td-obj odd">VIN</th>
+	<th class="td-obj odd">Дополнительно</th>
+	<th class="td-obj odd" align="center"><input type="button" name="" value="отменить выбор" onclick="location='?action=unsetcar';" class="btn btn-red"></th>
+</tr>
+<tr>
+	<td class="td-obj">
+		<textarea name="carinfo[car_name]" class="inputs" style="width:96%;"><?=$selectedCar['car_name']?></textarea>
+	</td>
+	<td class="td-obj">
+		<input type="text" name="carinfo[car_year]" value="<?=$selectedCar['car_year']?>" class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_kpp]" value="1" <?=($selectedCar['car_kpp'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_rul]" value="1" <?=($selectedCar['car_rul'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_cond]" value="1" <?=($selectedCar['car_cond'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_abs]" value="1" <?=($selectedCar['car_abs'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_quattro]" value="1" <?=($selectedCar['car_quattro'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="checkbox" name="carinfo[car_body]" value="1" <?=($selectedCar['car_body'])?'checked':''?> class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<input type="text" name="carinfo[car_vin]" value="<?=$selectedCar['car_vin']?>" class="inputs"/>
+	</td>
+	<td class="td-obj">
+		<textarea name="carinfo[car_info]" class="inputs"><?=$selectedCar['car_info']?></textarea>
+	</td>
+	<td class="td-obj" align="center"><input type="submit" value="сохранить" class="btn btn-blue"></td>
+</tr>
+</table>
+</form>
+<?php }?>
+
+<form action="" method="POST" id="form_order_done" style="margin-top:10px;">
+<table class="shopping-main" id="xboxlist" width="100%">
+<thead>
+<tr>
+	<th class="td-obj odd" align="center" style="width:150px;">Предварительный заказ<br/><input type="button" value="добавить группу" onclick="xboxPrepare();" class="btn btn-blue"></th>
+	<th class="td-obj odd">Статус</th>
+	<th class="td-obj odd">Артикул</th>
+	<th class="td-obj odd">Бренд</th>
+	<th class="td-obj odd">Наименование</th>
+	<th class="td-obj odd">Поставщик</th>
+	<th class="td-obj odd">Кол-во</th>
+	<th class="td-obj odd" align="center">В&nbsp;заказ</th>
+	<th class="td-obj odd">Закупка</th>
+	<th class="td-obj odd" align="center" style="width:100px;">Закупка(сумма)</th>
+	<th class="td-obj odd">Продажа</th>
+	<th class="td-obj odd" align="center" style="width:100px;">Продажа(сумма)</th>
+</tr>
+</thead>
+<tbody>
+<?php if (isset($xbox) && count($xbox)>0){?>
+<?php $sum1 = $sum2 = 0; $stopItem = 0;?>
+<?php foreach ($xbox as $item){ $stopItem++; ?>
+<?php $importer = ImportersModel::getById($item['wbs_id']);?>
+<tr>
+
+	<?php if ($stopItem <= 1){?>
+	<td class="td-obj" align="center" rowspan="<?=$item['rowspan']?>">
+		<?php if (isset($GroupsAll[$item['scSID_group']]) && $GroupsAll[$item['scSID_group']]){?>
+		<input type="text" name="scSIDGroup[<?=$item['scSID']?>][<?=$item['scSID_group']?>]" value="<?=$GroupsAll[$item['scSID_group']]?>" class="inputs" style="width:90px;<?=(isset($GroupId) && $GroupId == $item['scSID_group'])?'border:solid 2px #a7e511;':'';?>"/>
+		<input type="button" name="" value="&raquo;" onclick="location='?action=setgroupid&groupid=<?=$item['scSID_group']?>';" class="btn btn-blue">
+		<?php }?>
+	</td>
+	<?php } if ($stopItem==$item['rowspan']) $stopItem=0; ?>
+	
+	<td class="td-obj">
+		<select name="items_save_statuses[<?=$item['id']?>]" style="padding:2px;width:91%;" class="inputs">
+			<option value="0"></option>
+		<?php if (isset($statuses)&&count($statuses)>0){?>
+		<?php foreach ($statuses as $st){?>
+			<option value="<?=$st['id']?>" style="background:#<?=$st['color']?>;" <?//=((isset($impId))&&$impId==$st['id'])?'selected':''?>><?=$st['name']?></option>
+		<?php }?>
+		<?php }?>
+		</select>
+	</td>
+	<td class="td-obj"><?=$item['article']?></td>
+	<td class="td-obj"><?=$item['brand']?></td>
+	<td class="td-obj"><?=$item['descr_tecdoc']?></td>
+	<td class="td-obj"><?=$importer['name']?></td>
+	<td class="td-obj"><input type="text" name="count[<?=$item['id']?>]" value="<?=$item['count']?>" class="inputs" style="width:91%;"/></td>
+	<td class="td-obj" align="center"><input type="checkbox" name="xbox[<?=$item['id']?>]" value="<?=$item['id']?>" checked/></td>
+	<?php $price_purchase_result = ($item['price_purchase']*$item['count'])?>
+	<?php $sum1 += $price_purchase_result;?>
+	<td class="td-obj"><input type="text" name="price_purchase[<?=$item['id']?>]" value="<?=$item['price_purchase']?>" class="inputs" style="width:91%;"/></td>
+	<td class="td-obj"><?=PriceHelper::number($price_purchase_result)?></td>
+	<?php $price_result = ($item['price']*$item['count'])?>
+	<?php $sum2 += $price_result;?>
+	<td class="td-obj"><input type="text" name="price[<?=$item['id']?>]" value="<?=$item['price']?>" class="inputs" style="width:91%;"/></td>
+	<td class="td-obj"><?=PriceHelper::number($price_result)?></td>
+</tr>
+<?php }?>
+<?php }?>
+
+<?php if (isset($Groups) && count($Groups)>0){?>
+<?php foreach ($Groups as $key=>$group){?>
+<tr>
+	<td class="td-obj" align="center">
+		<input type="text" name="scSIDGroup[<?=$scSID?>][<?=$key?>]" value="<?=$group?>" class="inputs" style="width:90px;<?=(isset($GroupId) && $GroupId == $key)?'border:solid 2px #a7e511;':'';?>"/>
+		<input type="button" name="" value="&raquo;" onclick="location='?action=setgroupid&groupid=<?=$key?>';" class="btn btn-blue">
+	</td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+</tr>
+<?php }?>
+<?php }?>
+</tbody>
+<tfoot>
+<tr>
+	<td class="td-obj" align="center"><button type="submit" name="action" value="actionPrepare" class="btn btn-blue">запомнить группы</button></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[article]" style="width:91%;"></td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[brand]" style="width:91%;"></td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[name]" style="width:91%;"></td>
+	<td class="td-obj">
+		<select name="add[importer_id]" class="iput" style="width:95%;">
+			<option value="0"></option>
+		<?php if (isset($ImportersModel)&&count($ImportersModel)>0){?>
+		<?php foreach ($ImportersModel as $dd){?>
+			<option value="<?=$dd['id']?>"><?=$dd['name']?></option>
+		<?php }?>
+		<?php }?>
+		</select>
+	</td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[box]" style="width:91%;"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[price_purchase]" style="width:91%;"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"><input type="text" class="iput" value="" name="add[price]" style="width:91%;"></td>
+	<td class="td-obj" align="center"><button type="submit" name="action" value="added_item" class="btn btn-green">добавить</button></td>
+</tr>
+
+<?php if (isset($xbox) && count($xbox)>0){?>
+<tr>
+	<td class="td-obj" align="center"><button type="submit" name="action" value="bill" class="btn btn-green">Подтвердить!</button></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj"></td>
+	<td class="td-obj" colspan="2">
+		<b>Итого:</b>
+		<b style="color:red;display:block;float:right;"><?=PriceHelper::number($sum1)?></b>
+	</td>
+	<td class="td-obj" colspan="2">
+		<b>Итого:</b>
+		<b style="color:red;display:block;float:right;"><?=PriceHelper::number($sum2)?></b>
+	</td>
+</tr>
+<?php }?>
+</tfoot>
+</table>
+<table width="100%">
+<tr>
+	<td align="right"><a class="iframe btn btn-green" href="/search/preload/?simpleview=true" title="Искать по артикулу" style="width:150px;margin-left:10px;text-align:center;">Искать по артикулу</a></td>
+</tr>
+<tr>
+	<td align="right">
+	<?php if (isset($account_info) && count($account_info)>0){?>
+		<?php if ($selectedCar['car_id'] && $selectedCar['car_model_id'] && $selectedCar['car_type_id']){?>
+			<a class="iframe btn btn-green" href="/auto/mark-<?=$selectedCar['car_id']?>/model-<?=$selectedCar['car_model_id']?>/type-<?=$selectedCar['car_type_id']?>/?simpleview=true" title="Искать по авто" style="width:150px;text-align:center;">Искать по авто</a>
+		<?php } else {?>
+			<a class="btn btn-green" href="#" onclick="alert('Автомобиль не выбран');return false;" style="width:150px;text-align:center;">Искать по авто</a>
+		<?php }?>
+	<?php }?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><button type="submit" name="action" value="refresh" class="btn" style="width:166px;text-align:center;">обновить</button></td>
+</tr>
+</table>
+</form>
+
+<script>
+$(window).load(function() {
+	$('#go_crm').click({});
+});
+function xboxPrepare(){
+	var row = '<tr>'
+	+ '<td class="td-obj"><input type="text" name="scSIDGroup[<?=$scSID?>][]" value="" class="inputs" style="width:90px;"/></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '<td class="td-obj"></td>'
+	+ '</tr>';
+	$('#xboxlist tbody').append(row);
+}
+</script>

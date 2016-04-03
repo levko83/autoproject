@@ -1,0 +1,217 @@
+<table width="100%">
+<tr>
+	<td valign="top">
+
+<div class="fast-orders-shopping-stop">
+	<ul class="systems-orders">
+		<li class="title"><b>Список заказов</b></li>
+		<li class="clear"></li>
+		<li><b><a class="btn" href="/staffcp/index/crm_list_orders/">Все заказы <span class="cc-alarm"><?=$fullOrderCCNew?></span> (<?=$fullOrderCCOther?>)</a></b></li>
+		
+		<li class="clear"></li>
+		<li class="title"><b>Позиции заказов</b></li>
+		<li class="clear"></li>
+		<?php if (isset($newBills['cc']) && $newBills['cc']){?>
+		<li><b><a class="btn btn-green" href="/staffcp/index/crm/?search[only_new]=true#tab-1">Новые позиции заказов (<?=$newBills['cc']?>)</a></b></li>
+		<?php }?>
+		<li><b><a class="btn" href="/staffcp/index/crm/#tab-1">Активные позиции заказов <span class="cc-alarm"><?=$ccBills['cc']?></span></a></b></li>
+		<li><b><a class="btn" href="/staffcp/index/crm/?search[archive]=true#tab-1">Выполненные позиции заказов (<?=$doneBills['cc']?>)</a></b></li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="clear"><br/></div>
+
+<div class="fast-orders-shopping-stop">
+	<ul class="systems-orders f-left">
+		<li class="title"><b>Добавить новый заказ</b></li>
+		<li class="clear"></li>
+		<?php if ($shopping_account){?>
+		<?php $data_account = AccountsModel::getById($shopping_account);?>
+		<li class="buttons">
+			<input type="button" name="" value="Продолжить заказ на <?=$data_account['name']?> <?=$data_account['phones']?>" onclick="location='/staffcp/index/shopping/';" class="btn btn-blue">
+		</li>
+		<li class="buttons">
+			<input type="button" name="" value="Снять заказ" onclick="location='/staffcp/index/shopping/?action=unsetperson';" class="btn btn-blue">
+		</li>
+		<?php }else{?>
+		<li class="buttons">
+			<input type="button" name="" value="Новый клиент" onclick="location='/staffcp/accounts/add/';" class="btn btn-blue">
+		</li>
+		<li class="buttons">
+			<input type="button" name="" value="Найти клиента" onclick="location='/staffcp/accounts/';" class="btn btn-blue">
+		</li>
+		<?php }?>
+	</ul>
+	<ul class="systems-orders f-left">
+		<li class="title"><b>Быстрый заказ</b></li>
+		<li class="clear"></li>
+		<li class="buttons">
+			<a href="/staffcp/index/shopping/?client=false" class="btn">Оформить заказ без клиента</a>
+		</li>
+		<li class="buttons">
+			<a href="/staffcp/index/fastorder/" class="btn btn-green form-action">Оформить быстрый заказ</a>
+		</li>
+	</ul>
+	<div class="clear"></div>
+	<?php if (isset($tempOrders) && count($tempOrders)>0){?>
+	<ul class="systems-orders">
+		<li class="title"><b>Список приостановленных заказов</b></li>
+		<li class="clear"></li>
+		<?php foreach ($tempOrders as $tempOr){?>
+		<li class="clear"><a href="/staffcp/index/shopping/?action=restore&restore_id=<?=$tempOr['id']?>">Продолжить оформление заказа за <?=date("d.m.Y H:i",$tempOr['save_dt'])?></a> / <?=$tempOr['notice']?> <?=$tempOr['name']?> <?=$tempOr['phone']?></li>
+		<?php }?>
+	</ul>
+	<?php }?>
+	<div class="clear"></div>
+</div>
+<div class="clear"><br></div>
+
+<?php if (!$isManager){?>
+
+<div class="clear"><br></div>
+<div class="fast-orders-shopping-stop">
+<b class="h-title">Позиции ожидающие подтверждение заказа</b>
+<table class="xsmall" width="100%" cellspacing="0px" cellpadding="0px">
+<thead>
+	<th>Клиент</th>
+	<th>Дата добавления</th>
+	<th>Артикул</th>
+	<th>Бренд</th>
+	<th>Описание</th>
+	<th>Кол-во</th>
+	<th>Цена</th>
+	<th>Поставщик</th>
+	<th>Удалить</th>
+	<th>Прошло времени</th>
+</thead>
+<tbody>
+<?php if (isset($unconfirmed_cart_items) && count($unconfirmed_cart_items)>0){?>
+<?php foreach ($unconfirmed_cart_items as $dd){?>
+<tr>
+	<td style="font-size:11px;">
+	<?php if($dd['account_name']){?>
+		<a style="font-size:11px;" href="/staffcp/accounts/edit/?id=<?=$dd['account_id']?>"><?=$dd['account_name']?></a>
+	<?php }else{?>
+		Незарегистрированный
+	<?php }?>
+	</td>
+	<td><?=date("d.m.Y-H:i",$dd['createDT'])?></td>
+	<td><a class="iframe" href="/search/number/?simpleview=true&simple_account_id=<?=isset($dd['account_id'])?$dd['account_id']:0?>&simple_scsid=<?=$dd['scSID']?>&article=<?=$dd['article']?>&searchbrand=<?=urlencode($dd['brand'])?>"><?=$dd['article']?></a></td>
+	<td><?=$dd['brand']?></td>
+	<td><?=$dd['descr']?></td>
+	<td><?=$dd['cc']?></td>
+	<td><?=PriceHelper::number($dd['price'])?></td>
+	<td><?php if($dd['imp_name']){?><?=$dd['imp_name']?> (<?=$dd['imp_code']?>)<?php }?></td>
+	<td><a href="?unconfirmed_id_delete=<?=$dd['id']?>" style="display:inline-block;color:#999;font-size:11px;">Удалить</a></td>
+	<td><?=AgoViewHelper::since($dd['createDT'])?></td>
+</tr>
+<?php }?>
+<?php if($unconfItemsPages_num>1){?>
+<tr>
+	<td colspan="10" class="paging">
+		Страницы: <?=PagingViewHelper::paging("?page=:page:",$unconfItemsPages_num,$unconfItemsPage)?>
+	</td>
+</tr>
+<?php }?>
+<tr>
+	<td colspan="10" style="background: none repeat scroll 0 0 #f0f0f0;">
+		<a href="?unconfirmed_all_delete=true">Очистить позиции</a>
+	</td>
+</tr>
+<?php }else{?>
+<tr>
+	<td colspan="10">
+		нет позиций
+	</td>
+</tr>
+<?php }?>
+</tbody>
+</table>
+</div>
+
+<div class="clear"><br></div>
+<div class="fast-orders-shopping-stop">
+<b class="h-title">Последние <?=$limitLog?> действий в зоне администрирования</b>
+
+<table class="xsmall" width="100%" cellspacing="0px" cellpadding="0px">
+<thead>
+	<th>Дата</th>
+	<th>Пользователь</th>
+	<th>Действие</th>
+	<th>Адрес операции</th>
+</thead>
+<tbody>
+<?php if (isset($logsList) && count($logsList)>0){?>
+<?php foreach ($logsList as $dd){?>
+<tr>
+	<td><?=date("d.m.Y-H:i:s",$dd['dt'])?></td>
+	<td><?=$dd['user']?></td>
+	<td><?=$dd['descr']?></td>
+	<td><a href="<?=$dd['url']?>" style="font-size: 10px;"><?=substr($dd['url'],0,70)?>...</a></td>
+</tr>
+<?php }?>
+<tr>
+	<td colspan="4" style="background: none repeat scroll 0 0 #f0f0f0;"><a href="?deletelogs" style="display:inline-block;color:#999;font-size:11px;">Удалить все логи действий</a></td>
+</tr>
+<?php }else{?>
+<tr>
+	<td colspan="4">нет действий</td>
+</tr>
+<?php }?>
+</tbody>
+</table>
+</div>
+
+<?php }?>
+
+	</td>
+	<td valign="top" class="fixed-data-info">
+		
+		
+		<?php if (!$isManager){?>
+		<style>
+		.staticticsuls { padding:0px; margin:0px 0px 0px 0px; list-style:none; }
+		.staticticsuls li { padding:2px; }
+		.staticticsuls a { color:#156299 !important; }
+		</style>
+		<div class="full-block-testim">
+            <h1>Финансовая статистика</h1>
+            <div class="one-ittem-chk">
+            <ul class="staticticsuls">
+            	<li>
+            		Доход за 
+            		<select onchange="location='/staffcp/?stat_month='+this.value;">
+            		<?php for ($i=1;$i<=12;$i++){?>
+            			<?php $i = (strlen($i)==1)?'0'.$i:$i;?>
+            			<option value="<?=$i?>" <?=($stat_month == $i)?'selected':'';?>><?=$i?>.<?=date("Y");?></option>
+            		<?php }?>
+            		</select> 
+            		: <span class="cc-alarm"><?=PreviewHelper::numberPreview($total_this_month)?></span>
+            	</li>
+            	<li>Доход за <?=date("Y")?>: <span class="cc-alarm"><?=PreviewHelper::numberPreview($total_this_year)?></span></li>
+            	<li style="background:#f1f1f1;">Общий доход за весь период: <?=PreviewHelper::numberPreview($total_sum-$total_sum_purchase)?></li>
+                <li>Общая сумма закупки: <?=PreviewHelper::numberPreview($total_sum_purchase)?></li>
+                <li style="background:#f1f1f1;">Общая сумма продаж: <?=PreviewHelper::numberPreview($total_sum)?></li>
+            </ul>
+            </div>
+        </div>
+        
+		<div class="full-block-testim">
+            <h1>Статистика сайта</h1>
+            <div class="one-ittem-chk">
+            <ul class="staticticsuls">
+                <li style="background:#f1f1f1;">Новых заказов за сегодня <?=date("d.m.Y")?>: <a href="/staffcp/index/crm/?search[only_new]=true"><span <?=($cc_ORDERS)?'class="cc-alarm"':'';?>><?=PreviewHelper::numberPreview($cc_ORDERS)?></span></a></li>
+                <li>Зарегистрировано пользователей за <?=date('F Y')?>: <a href="/staffcp/accounts/"><?=PreviewHelper::numberPreview($cc_accounts_this_month)?></a></li>
+                <li style="background:#f1f1f1;">Зарегистрировано пользователей: <a href="/staffcp/accounts/"><?=PreviewHelper::numberPreview($cc_accounts)?></a></li>
+                <li>Кол-во поставщиков: <a href="/staffcp/importers/"><?=PreviewHelper::numberPreview($cc_importers)?></a></li>
+                <li style="background:#f1f1f1;">База товаров магазина: <a href="/staffcp/cat/"><?=PreviewHelper::numberPreview($cc_products)?></a></li>
+                <li>Продукты с ценой выше нуля: <a href="/staffcp/products/?bez=1"><?=PreviewHelper::numberPreview($no_zero_product)?></a></li>
+                <li style="background:#f1f1f1;">Продукты с нулевой ценой: <a href="/staffcp/products/"><?=PreviewHelper::numberPreview($zero_product)?></a></li>
+            </ul>
+            </div>
+        </div>
+        <?php }?>
+		
+	</td>
+</tr>
+</table>

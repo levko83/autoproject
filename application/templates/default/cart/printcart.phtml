@@ -1,0 +1,80 @@
+<div class="package">
+	<div class="resize-wrapper">
+		<!-- .logo -->
+		<div class="clear"></div>
+		<div class="logo">
+			<div class="padding-item">
+				<table width="100%">
+				<tr>
+					<td class="logotype-width">
+					<center>
+						<div class="logotype"><?php if ($logo){?><a href="<?=HTTP_ROOT?>/" title=""><img src="<?=HTTP_ROOT?>/media/files/settings/<?=$logo?>" alt="" /></a><?php }?></div>
+					</center>
+					</td>
+					<td>
+						<div class="head-info-opacity">
+						<?php if (isset($officeIsset['contacts']) && trim(strip_tags($officeIsset['contacts']))){?>
+							<?=$officeIsset['contacts']?>
+						<?php }else{?>
+							<?=str_replace("../../../","/",$header_contacts)?>
+						<?php }?>
+						</div>
+					</td>
+				</tr>
+				</table>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<!-- .logo -->
+	</div>
+	<div class="clear"></div>
+	
+	<style>
+	h1 { text-align:center; color:#000 !important; }
+	</style>
+	<!--<h1>Предварительная печать заказа на сайте <?=$_SERVER['HTTP_HOST']?></h1>-->
+	
+	<table width="100%" class="cart-form">
+		<tr>
+			<td><b>Brend</b></td>
+			<td><b>Art. Nr.</b></td>
+			<td><b>Name</b></td>
+			<td><b>Delivery</b></td>
+			<td style="text-align: center; width: 100px;"><b><?=$translates['front.price']?></b></td>
+			<td style="text-align: center; width: 50px;"><b><?=$translates['front.box']?></b></td>
+			<td style="text-align: center; width: 100px;"><b><?=$translates['front.cost']?></b></td>
+		</tr>
+		<?php $sum=$sum_blr=$i=0;?>
+		<?php foreach ($data as $element){?>
+		<?php $i++;?>
+		<tr bgcolor="<?=($i%2)?'#f1f1f1':'';?>">
+			<td><b><?=$element['brand']?></b></td>
+			<td><b><?=$element['name']?></b></td>
+			<td><?=$element['descr']?></td>
+			<td><?=$element['time_delivery_descr']?> </td>
+			<td style="text-align: center;"><b><?=PriceHelper::number($element['price'])?></b></td>
+			<td style="text-align: center;"><?=$element['cc']?></td>
+			<td style="text-align: center;"><?=PriceHelper::number($element['cc']*$element['price'])?></td>
+		</tr>
+		<?php $sum += ($element['cc']*$element['price']);?>
+		<?php }?>
+		
+		<?php if ($set_delivery['price']){?>
+		<?php $sum = $sum+$set_delivery['price'];?>
+		<tr>
+			<td colspan="5" class="t-right"><b><?=$translates['front.delivery.block']?>:</b></td>
+			<td style="text-align: center;"><span><?=PriceHelper::number($set_delivery['price'])?></span></td>
+			<td></td>
+		</tr>
+		<?php }?>
+		
+		<tr>
+			<td colspan="5" class="t-right"><b><?=$translates['front.total']?>:</b></td>
+			<td style="text-align: center;"><span id="new_sum"><?=PriceHelper::number($sum)?></span></td>
+		</tr>
+	</table>
+</div>
+<script>
+javascript:print();
+</script>

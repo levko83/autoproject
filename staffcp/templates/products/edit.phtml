@@ -1,0 +1,45 @@
+<h1 class="h1-header">
+<span><?=$title;?></span>
+<a href="<?=$listUrl;?>" class="btn btn-blue"><?=$listTitle;?></a>
+<pre>
+<?php 
+// print_r($tabFields);
+?>
+</pre>
+</h1>
+<form action="/staffcp/<?=$this->dataModel->getModelName();?>/save/" method="POST" enctype="multipart/form-data">
+<div id="tabs" class="tabs">
+    <ul>
+    	<?php foreach ($tabs as $tabId=>$tabName){?>
+			<li><a href="#tab-<?=$tabId;?>"><span><?=$tabName;?></span></a></li>
+        <?php }?>
+    </ul>
+    <?php foreach ($tabs as $tabId=>$tabName){?>
+    <div id="tab-<?=$tabId;?>">
+	<table class="form">
+	<?php foreach ($tabFields[$tabName] as $fieldName=>$field){?>
+		<?php if ($field->fieldName=='supplier_name'){?>
+			<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->value;?></td>
+		</tr>
+		<?php } elseif ($field->fieldName=='img'){?> 
+			<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->value;?></td>
+		</tr>
+		<?php } else if ($field->hasLayout){?>
+		<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->getFormValue();?></td>
+		</tr>
+		<?php }?>
+	<?php }?>
+	</table>
+	</div>
+    <?php }?>
+    
+</div>
+<input type="hidden" name="form[<?=$indexField;?>]" value="<?=$indexValue;?>" />
+<input type="submit" value="<?=$submit?>" id="submit_action" class="btn btn-blue">
+</form>

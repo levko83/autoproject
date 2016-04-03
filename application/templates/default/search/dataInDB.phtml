@@ -1,0 +1,91 @@
+<?php if (isset($dataInDB) && count($dataInDB)>0){?>
+<table width="100%">
+<tr>
+	<td><h1 class="uppercase">Найденные результаты (<?=count($dataInDB)?>)</h1></td>
+	<td>
+    	<div class="filter-search float-right-article-search">
+			<input type="text" name="filter-query" value="" class="filter-query"  onclick="if (this.value == '<?=$translates['filtrclicktosearch']?>') this.value='';" onblur="if (this.value == '') this.value='<?=$translates['filtrclicktosearch']?>';" value="<?=$translates['filtrclicktosearch']?>"/>
+		</div>
+	</td>
+</tr>
+</table>
+<table class="filterResultTable  details-list xsmalls" width="100%">
+<thead>
+<tr>
+	<?=viewer_header($translates,$fieldFR,$acl_isset,$acl)?>
+</tr>
+</thead>
+<tbody>
+
+<?php $st_view_button = $st_view_button_last = $reset = $resetPreLast = 0;?>
+<?php $HIDE_TR_BRAND = $HIDE_TR_ARTICLE = ''; $i=0; foreach ($dataInDB as $price){ $i++;?>
+<?php
+	$fetchData = $price;
+	$itemInfo = array(
+		'DB_ID' => $fetchData['ID'],
+		'DB_IMPORT_ID' => $fetchData['IMPORT_ID'],
+		'DB_BRAND_ID' => $fetchData['BRAND_ID'],
+		'DB_BRAND_NAME' => $fetchData['BRAND_NAME'],
+		'DB_ARTICLE' => $fetchData['ARTICLE'],
+		'DB_PRICE' => $fetchData['PRICE'],
+		'DB_DESCR' => $fetchData['DESCR'],
+		'DB_BOX' => $fetchData['BOX'],
+		'DB_DELIVERY' => $fetchData['DELIVERY'],
+		'DB_WEIGHT' => $fetchData['WEIGHT'],
+		'DB_IMG_URL' => $fetchData['IMG_URL'],
+		'DB_MIN' => $fetchData['MIN'],
+		'MY_PRICE' => $price,
+		
+		'ART_ID' => 0,
+		'SUP_ID' => 0,
+		'SUP_BRAND' => $fetchData['BRAND_NAME'],
+		'ART_ARTICLE_NR' => $fetchData['ARTICLE'],
+		'TEX_TEXT' => $fetchData['DESCR'],
+		'ORIGINAL' => 0,
+		'CRITERIA' => array(),
+		'PATH_IMAGES' => array(),
+		'PATH_LOGOS' => array(),
+	);
+
+	$HIDE_TR = false;
+	if (
+		strtoupper(FuncModel::stringfilter($HIDE_TR_BRAND)) == strtoupper(FuncModel::stringfilter($fetchData['BRAND_NAME'])) && 
+		FuncModel::stringfilter($HIDE_TR_ARTICLE) == FuncModel::stringfilter($fetchData['ARTICLE']) &&
+		strlen(FuncModel::stringfilter($HIDE_TR_ARTICLE)) == strlen(FuncModel::stringfilter($fetchData['ARTICLE']))
+	){
+		$HIDE_TR = true;
+	}
+	
+	PlusnextitemViewHelper::$cc=0;
+	PlusnextitemViewHelper::simple($i,$fetchData,$dataInDB);
+	$st_view_button = PlusnextitemViewHelper::$cc;
+	
+	$reset = $st_view_button; // счетчик нахождения позиции
+	if ($resetPreLast == 1) { // проверяем пред. позицию
+		$reset = 'delimiter'; // если эта позиция последняя ставим класс конца
+		$resetPreLast = 0; // сброс цикла
+	}
+	if ($st_view_button == 0)
+		$st_view_button_last = 0;
+	if ($st_view_button_last > $st_view_button)
+		$st_view_button = 0;
+?>
+<?=viewer($i,$itemInfo,$acl,$currency,$account,false,$translates,"inDBfound",$acl_isset,$fieldFR,false,$HIDE_TR,$st_view_button,$reset);?>
+<?php 
+$HIDE_TR_BRAND = strtoupper(FuncModel::stringfilter($fetchData['BRAND_NAME'])); 
+$HIDE_TR_ARTICLE = FuncModel::stringfilter($fetchData['ARTICLE']);
+if ($st_view_button)
+	$st_view_button_last = $st_view_button;
+$resetPreLast = $reset; // запоминаем пред. позицию
+?>
+<?php }?>
+
+</tbody>
+</table>
+<?php } else {?>
+
+	<?php if (!isset($disable_not_found)){?>
+	<h1 class="uppercase"><?=$translates['front.notfound']?></h1>
+	<?php }?>
+
+<?php }?>

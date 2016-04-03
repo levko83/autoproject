@@ -1,0 +1,50 @@
+<div id="main_popular_product">
+	<?php if (isset($products) && count($products)>0){?>
+	<? /* <h3 class="title_block"><a href="<?=HTTP_ROOT?>/category/"><?=$translates['popularproducts']?></a></h3> */ ?>
+	<h3 class="uppercase title_fly"><span><?=$translates['popularproducts']?></span></h3>
+	
+	<ul id="index-products" class="jcarousel-skin-tango top-20">
+		<?php foreach ($products as $data){?>
+		<?php $prices = ProductsModel::getAllPrices($data['id']);?>			
+		<li>
+			<center class="product_images">
+				<a href="<?=HTTP_ROOT?>/product/<?=AliasViewHelper::doTraslit($data['name'])?>-<?=$data['id']?>/" title=""><img src="<?=StaticimgViewHelper::chk('products','normal-'.$data['img1'])?>" width="130px" height="100px" alt="<?=$data['name']?>" title="<?=$data['name']?>"/></a>
+			</center>
+			<div class="t-center t-weight" style="display:block; overflow:hidden; height:52px;">
+				<a href="<?=HTTP_ROOT?>/product/<?=AliasViewHelper::doTraslit($data['name'])?>-<?=$data['id']?>/">
+					<span class="product_cat"><?=$data['cat']?></span> 
+					<span class="product_name"><?=$data['name']?></span>
+					<div class="clear"></div>
+				</a>
+			</div>
+			
+			<div class="price-box">
+			<?php if (isset($prices['min']) && $prices['min']>0){?>
+				<?php if ($prices['min'] != $prices['max']){?>
+				<span class="regular-price">
+					<span class="price"><?=$translates['front.from']?> <?=PriceHelper::number($prices['min'])?> <?=$translates['front.to']?> <?=PriceHelper::number($prices['max'])?> <i class="price_money"><?=$translates['front.money']?></i></span>
+				</span>
+				<?php }else{?>
+				<span class="regular-price">
+					<span class="price"><?=PriceHelper::number($prices['min'])?> <i class="price_money"><?=$translates['front.money']?></i></span>
+				</span>
+				<?php }?>
+			<?php } else {?>
+				<span class="regular-price">
+					<span class="price">&nbsp;</span>
+				</span>
+			<?php }?>
+			</div>
+			
+			<div class="button_box">
+				<a href="<?=HTTP_ROOT?>/product/<?=AliasViewHelper::doTraslit($data['name'])?>-<?=$data['id']?>/" class="product_btn"><span>Купить</span></a>
+			</div>
+			
+		</li>
+		<?php }?>
+	</ul>
+	<?php }?>
+	
+	
+	<div class="clear"></div>
+</div>

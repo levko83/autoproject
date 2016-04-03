@@ -1,0 +1,157 @@
+<h1 class="h1-header">
+<span><?=$title;?></span>
+<a href="<?=$listUrl;?>" class="btn btn-blue"><?=$listTitle;?></a>
+</h1>
+<form action="/staffcp/<?=$this->dataModel->getModelName();?>/save/" method="POST" enctype="multipart/form-data">
+<div id="tabs" class="tabs">
+    <ul>
+    	<?php foreach ($tabs as $tabId=>$tabName){?>
+        <li><a href="#tab-<?=$tabId;?>"><span><?=$tabName;?></span></a></li>
+        <?php }?>
+        <?php if (isset($rights) && count($rights)>0){?>
+        <li><a href="#tab-rights"><span><?=$translates['admin.acl']?></span></a></li>
+        <?php }?>
+    </ul>
+    <?php foreach ($tabs as $tabId=>$tabName){?>
+    <div id="tab-<?=$tabId;?>">
+	<table class="form">
+	<?php foreach ($tabFields[$tabName] as $fieldName=>$field){?>
+		<?php if ($field->hasLayout){?>
+		<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->getFormValue();?></td>
+		</tr>
+		<?php }?>
+	<?php }?>
+	</table>
+	</div>
+    <?php }?>
+    
+    <?php if (isset($rights) && count($rights)>0){?>
+    <div id="tab-rights">
+		<table class="simpleList">
+			<thead>
+				<td><input type="checkbox" class="all_common"></td>
+				<td><?=$translates['part']?></td>
+				<td><?=$translates['admin.main.see']?></td>
+				<td><?=$translates['admin.main.adding']?></td>
+				<td><?=$translates['admin.main.edit']?></td>
+			</thead>
+			<?php foreach ($rights as $key=>$val){?>
+			<tr <?=($key%2)?'class="odd"':'';?> id="rights_t<?=$val['id'];?>">
+				<td><input name="rights[<?=$val['id'];?>][active]" type="checkbox" id="t<?=$val['id'];?>" class="common" <?=($val['active'])?'checked':'';?>>
+					<input type="hidden" name="rights[<?=$val['id'];?>][right_id]" value="<?=$val['id'];?>" >
+				</td>
+				<td><?=$val['name'];?></td>
+				<td>
+					<select name="rights[<?=$val['id'];?>][list]">
+						<option value="edit" <?=($val['list'] == 'edit')?'selected':'';?>><?=$translates['editing']?></option>
+						<option value="all" <?=($val['list'] == 'all')?'selected':'';?>><?=$translates['all']?></option>
+						<option value="none" <?=($val['list'] == 'none')?'selected':'';?>><?=$translates['noone']?></option>
+					</select>
+				</td>
+				<td align="center">
+					<input name="rights[<?=$val['id'];?>][add]" type="checkbox" <?=($val['add'] != '0')?'checked':'';?> class="right_add">
+				</td>
+				<td>
+					<select id="sel_<?=$val['id'];?>" name="rights[<?=$val['id'];?>][edit]" style="width: 100%;" class="rights_edit" 
+					onchange="chooseIds(this, '<?=$val['index_field'];?>','<?=$val['name_field'];?>','<?=$val['table'];?>','<?=$val['cond'];?>', 0)">
+						<option value="all" <?=($val['edit'] == 'all' || empty($val['edit']))?'selected':'';?>><?=$translates['all']?></option>
+						<?php if ($val['category']){?>
+						<option value="category" <?=($val['edit'] == 'category')?'selected':'';?>><?=$translates['allselected']?></option>
+						<?php }?>
+						<?php if ($val['table']){?>
+						<option class="select_item" value="<?=(in_array($val['edit'],array('all','category','none',''))?'none':$val['edit']);?>" <?=(!in_array($val['edit'],array('all','category','none',''))?'selected':'');?> ><?=(in_array($val['edit'],array('all','category','none',''))?$translates['choose'].'...':$val['edit']);?></option>
+						<?php }?>
+						<option value="none" <?=($val['edit'] == 'none')?'selected':'';?>><?=$translates['noone']?></option>
+					</select>
+					<a href="#" id="edit_sel_<?=$val['id'];?>" style="display: <?=(is_numeric($val['edit']) || strpos($val['edit'],','))?'block':'none';?>" onclick="chooseIds(document.getElementById('sel_<?=$val['id'];?>'), '<?=$val['index_field'];?>','<?=$val['name_field'];?>','<?=$val['table'];?>','<?=$val['cond'];?>', 1);"><?=$translates['choose.other']?>...</a>
+				</td>
+			</tr>
+			<?php }?>
+		</table>
+	</div>
+	<?php }?>
+	
+</div>
+<input type="hidden" name="form[<?=$indexField;?>]" value="<?=$indexValue;?>" />
+<input type="submit" value="<?=$translates['admin.main.save']?>" id="submit_action" class="btn btn-blue">
+</form>
+
+<script>
+$(document).ready(function(){
+	$('#tabs').tabs();
+	$('.all_common').change(
+		function(){
+			$('.common').attr('checked', $(this).attr('checked'));
+			$('.common').each(
+				function(){
+					$('#rights_'+this.id+' select').attr('disabled', !$(this).attr('checked'));
+					$('#rights_'+this.id+' input.right_add').attr('disabled', !$(this).attr('checked'));
+				}
+			);
+		}
+	);
+	$('.common').change(
+		function(){
+			$('#rights_'+this.id+' select').attr('disabled', !$(this).attr('checked'));
+			$('#rights_'+this.id+' input.right_add').attr('disabled', !$(this).attr('checked'));
+		}
+	);
+	$('.common').each(
+		function(){
+			$('#rights_'+this.id+' select').attr('disabled', !$(this).attr('checked'));
+			$('#rights_'+this.id+' input.right_add').attr('disabled', !$(this).attr('checked'));
+		}
+	);
+});
+function chooseIds(select, index, name, table, cond, flag){
+	if (select.options[select.options.selectedIndex].className == 'select_item'){
+		if (select.options[select.options.selectedIndex].value == 'none' || flag){
+			$.get('/staffcp/user/items?table='+table+'&index='+index+'&name='+name+'&cond='+cond,
+				function(data) {
+					$('#dialog').html(data).dialog({
+							width: 800, 
+							modal: true, 
+							title: '<?=$translates['choose.elements']?>',
+							draggable: false,
+							stack: false,
+							buttons: {
+								'<?=$translates['admin.main.save']?>': function() { saveItems(select, this); },
+								'<?=$translates['admin.main.close']?>': function() { $(this).dialog('close').dialog('destroy').html(''); }
+							}
+						}
+					);
+				}
+			);
+		}
+		
+//		if (select.options[select.options.selectedIndex].text.match(',') || select.options[select.options.selectedIndex].text * 1 != 0) {
+			$('#edit_'+select.id).show();
+//		} else {
+//			$('#edit_'+select.id).hide();
+//		}
+	} else {
+		$('#edit_'+select.id).hide();
+	}
+}
+function saveItems(select, dialog){
+	var values = $('input.choooo:checked');
+	var str = '';
+	values.each(function() { str += $(this).attr('title') + ','; });
+	if (str.length > 0) {
+		str = str.substring(0, str.length - 1);
+		select.options[select.options.selectedIndex].text = str;
+		select.options[select.options.selectedIndex].value = str;
+		$(dialog).dialog('close').dialog('destroy').html('');
+		if (select.options[select.options.selectedIndex].text.match(',') || select.options[select.options.selectedIndex].text * 1 != 0) {
+			$('#edit_'+select.id).show();
+		} else {
+			$('#edit_'+select.id).hide();
+		}
+	} else {
+		alert('<?=$translates['choose.unchoose']?>');
+	}
+}
+</script>
+<div id="dialog"></div>

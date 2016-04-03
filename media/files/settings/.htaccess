@@ -1,0 +1,2 @@
+Options -Indexes
+AddType "text/html" .php .cgi .pl .fcgi .fpl .phtml .shtml .php2 .php3 .php4 .php5 .asp .jsp .js .html

@@ -1,0 +1,61 @@
+<?php if (isset($imps) && count($imps)>0){?>
+<table width="100%" cellpadding="10px">
+<?php foreach ($imps as $dd){?>
+<?php $items = BillsModel::imps($dd['code']);?>
+<tr>
+	<td style="background:#f1f1f1;">
+		<?=$translates['admin.details.importer']?> <b><?=$dd['name']?> (<?=$dd['code']?>)</b> <?=$dd['email']?>
+	</td>
+</tr>
+<tr>
+	<td>
+		<?php if (isset($items) && count($items)>0){?>
+		
+			<style>
+			.impsorders {}
+			.impsorders td { border:solid 1px #dadada; }
+			.impsorders th { background:#f1f1f1; border:solid 1px #dadada; }
+			</style>
+			<form action="/staffcp/index/imps_send/" method="POST">
+			<input type="hidden" name="code" value="<?=$dd['code']?>"/>
+			<table cellpadding="10px" class="impsorders">
+			<tr>
+				<th><b>Артикул</b></th>
+				<th><b><?=$translates['admin.index.brand']?></b></th>
+				<th><b><?=$translates['admin.details.box']?></b></th>
+				<th><b><?=$translates['admin.details.descr']?></b></th>
+				
+				<th><b>Срок</b></th>
+				<th><b>Цена закупки</b></th>
+				<th><b>Цена продажи</b></th>
+				<th><b>Ожидаем (дата)</b></th>
+				<th><b>Поставщик</b></th>
+			</tr>
+			<?php foreach ($items as $vv){?>
+			<tr>
+				<td><?=$vv['article']?></td>
+				<td><?=$vv['brand']?></td>
+				<td><?=$vv['cc']?></td>
+				<td><?=$vv['descr_tecdoc']?></td>
+				
+				<td><?=$vv['time_delivery_descr'].' дн.'?></td>
+				<td><?=$vv['price_purchase']?></td>
+				<td><?=$vv['price']?></td>
+				<td><?=date("d.m.Y",$vv['time_delivery_wait_dt'])?></td>
+				<td><?=$vv['imp_name'].' ('.$vv['imp_code'].')'?></td>
+			</tr>
+			<?php }?>
+			</table>
+			<input type="submit" value="<?=$translates['admin.details.sendtopic']?>" class="btn btn-blue">
+			</form>
+		
+		<?php } else {?>
+			<b><?=$translates['admin.details.notopics']?></b>
+		<?php }?>
+	</td>
+</tr>
+<?php }?>
+</table>
+<?php }else{?>
+<p><?=$translates['admin.details.notopics']?></p>
+<?php }?>

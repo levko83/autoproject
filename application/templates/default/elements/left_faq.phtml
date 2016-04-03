@@ -1,0 +1,12 @@
+<?php if (isset($list_faq) && count($list_faq)>0){?>
+<div class="item-menu radius">
+	<div class="layout radius inside">
+		<div class="h2 uppercase">FAQ</div>
+		<ul class="menu-list">
+		<?php foreach ($list_faq as $dd){?>
+			<li><a href="<?=HTTP_ROOT?>/faq/<?=$dd['code']?>/"><?=$dd['name']?></a></li>
+		<?php }?>
+		</ul>
+	</div>
+</div>
+<?php }?>

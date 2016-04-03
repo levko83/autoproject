@@ -1,0 +1,49 @@
+<?php $req=$this->dataModel->getRequiredFields();?>
+<?php if (!empty($req)) {?>
+<?php foreach ($req as $field){?>
+	<?php if ($field['type']==CmsGeneratorConfig::$VALIDATE_FIELD_FILE) {
+			unset($_SESSION[$field['name']]);
+	}?>
+<?php }?>
+<?php }?>
+<h1 class="h1-header">
+<span><?=$title;?></span>
+<a href="<?=$listUrl;?>" class="btn btn-blue"><?=$listTitle;?></a>
+</h1>
+<form action="/staffcp/<?=$this->dataModel->getModelName();?>/save/" method="POST" enctype="multipart/form-data" onsubmit="return validateThisForm()">
+<div id="tabs" class="tabs">
+    <ul>
+    	<?php foreach ($tabs as $tabId=>$tabName){?>
+        <li><a href="#tab-<?=$tabId;?>"><span><?=$tabName;?></span></a></li>
+        <?php }?>
+    </ul>
+    <?php foreach ($tabs as $tabId=>$tabName){?>
+    <div id="tab-<?=$tabId;?>">
+	<table class="form">
+	<?php foreach ($tabFields[$tabName] as $fieldName=>$field){?>
+		<?php if ($field->hasLayout){?>
+		<?php if (isset($parent)&&$fieldName=='parent'){?>
+		<tr>
+			<td class="label"><?=$translates['admin.cat.parent']?></td>
+			<td><?=$parent['name']?> <input type="hidden" name="form[parent]" value="<?=$parent['id']?>"/></td>
+		</tr>
+		<?php } else {?>
+		<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->getFormValue();?></td>
+		</tr>
+		<?php }?>
+		<?php }?>
+	<?php }?>
+	</table>
+	</div>
+    <?php }?>
+</div>
+<input type="submit" value="<?=$translates['admin.main.save']?>" class="btn btn-blue">
+</form>
+<script>
+function validateThisForm(){
+	return true;	
+}
+$('#tabs').tabs();
+</script>

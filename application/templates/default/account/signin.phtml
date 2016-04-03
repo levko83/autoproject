@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+			<div class="theme_box clearfix col-md-6 col-md-offset-3">
+				<header class="on_the_sides">
+					<div class="left_side">
+						<h2><?=$translates['front.profile.name']?></h2>
+						<?php if (isset($errors) && count($errors)>0){?>
+							<br/>
+							<ul class="simple_vertical_list">
+								<?php foreach ($errors as $dd){?>
+									<li class="error"><?=$dd?></li>
+								<?php }?>
+							</ul>
+							<br/>
+						<?php }?>
+					</div>
+					<div class="right_side">
+						<a href="<?=HTTP_ROOT?>/account/signup/" class="button_grey middle_btn"><?=$translates['front.act.reg']?></a>
+					</div>
+				</header>
+
+				<form class="type_2" action="<?=HTTP_ROOT?>/account/login/" method="POST">
+
+					<ul>
+
+						<li>
+							<label for="login_email"><?=$translates['front.account.email']?></label>
+							<input type="email" name="form[email]" id="login_email">
+						</li>
+
+						<li>
+							<label for="login_password"><?=$translates['front.account.password']?></label>
+							<input type="password" name="form[pass]" id="login_password">
+						</li>
+
+						<li>
+							<input type="checkbox" name="form[rememberme]" id="checkbox_1" value="1">
+							<label for="checkbox_1"><?=$translates['rememderme']?></label>
+						</li>
+
+						<li class="v_centered">
+							<button class="button_blue middle_btn"><?=$translates['front.profile.enter']?></button>
+							<a href="<?=HTTP_ROOT?>/account/remide/" class="small_link"><?=$translates['front.profile.forgot']?></a>
+						</li>
+
+					</ul>
+
+				</form>
+			</div>
+        </main>
+    </div>
+</div>

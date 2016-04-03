@@ -1,0 +1,36 @@
+<h1 class="h1-header"><span><?=$translates['admin.settings.name']?></span></h1>
+<div id="tabs" class="tabs">
+	<ul>
+		<?php $i = 0;?>
+		<?php foreach ($groups as $groupName=>$groupSettings){?>
+			<li><a href="#tab-<?=$i;?>"><?=$groupName;?></a></li>
+			<?php $i++;?>
+		<?php }?>
+	</ul>
+	<?php $i = 0;?>
+	<?php foreach ($groups as $groupName=>$groupSettings){?>
+		<div id="tab-<?=$i;?>">
+		<table width="100%" cellspacing="0" cellpadding="0" class="list">
+			<thead>
+			<tr>
+				<th width="40%"><?=$translates['admin.main.name']?></th>
+				<th width="40%"><?=$translates['admin.main.value']?></th>
+				<th width="20%"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png" border="0"/></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach ($groupSettings as $settings){?>
+			<tr>
+				<td><?=$settings['name'];?></td>
+				<td><?=$settings['value'];?></td>
+				<td><a href="/staffcp/documents_params/edit/?id=<?=$settings['id'];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png" border="0"/></a></td>
+			</tr>
+			<?php }?>
+			</tbody>
+		</table>
+		<br/><br/>
+		</div>
+		<?php $i++;?>
+	<?php }?>
+</div>
+

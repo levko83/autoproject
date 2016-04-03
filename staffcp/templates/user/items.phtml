@@ -1,0 +1,13 @@
+<table class="simpleList" style="text-align: left; width: 100%;">
+<?php for ($i = 0; $i<count($items)/2;$i++){?>
+<tr>
+	<?php $val = @$items[$i];?>
+	<td><input class="choooo" type="checkbox" name="ids[<?=$val['id'];?>]" value="1" title="<?=$val['id'];?>"></td>
+	<td width="40%"><?=$val['name'];?></td>
+	<td style="width: 20px;"></td>
+	<?php $val = @$items[$i + count($items)/2];?>
+	<td><input class="choooo" type="checkbox" name="ids[<?=@$val['id'];?>]" value="1" title="<?=$val['id'];?>"></td>
+	<td width="40%"><?=@$val['name'];?></td>
+</tr>
+<?php }?>
+</table>

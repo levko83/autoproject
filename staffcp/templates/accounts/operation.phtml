@@ -1,0 +1,75 @@
+<h1 class="h1-header"><span>Финансовые операции</span></h1>
+
+<form action="" method="POST">
+<input type="hidden" name="update" value="balance">
+<table class="data-grid-finance">
+<tr>
+	<th>ID</th>
+	<th>Имя</th>
+	<th>Телефон</th>
+	<th>E-mail</th>
+	<th>Баланс</th>
+	<th>Отредактировать баланс</th>
+	<th>Сохранить</th>
+</tr>
+<tr>
+	<td><?=$account['id']?></td>
+	<td><?=$account['name']?></td>
+	<td><?=$account['phones']?></td>
+	<td><?=$account['email']?></td>
+	<td><b><?=PriceHelper::universal($account['balance'])?></b></td>
+	<td><input type="text" name="balance" value="<?=$account['balance']?>" class="iput"></td>
+	<td><input type="submit" value="Сохранить" class="btn btn-blue"></td>
+</tr>
+</table>
+</form>
+
+<h1 class="top-10">История финансовых операций</h1>
+<form action="" method="POST">
+<input type="hidden" name="op[account_id]" value="<?=$account['id']?>">
+<table class="data-grid-finance">
+<tr>
+	<th></th>
+	<th>Пополнить (сумма)</th>
+	<th>Списать (сумма)</th>
+	<th>Дата</th>
+	<th>Комментарий</th>
+	<th></th>
+</tr>
+<tr>
+	<td></td>
+	<td><input type="text" name="op[plus]" value="" class="iput"></td>
+	<td><input type="text" name="op[minus]" value="" class="iput"></td>
+	<td><input type="text" name="op[date]" value="<?=date('d.m.Y H:i')?>" class="iput" id="date"></td>
+	<td><input type="text" name="op[comment]" value="" class="iput"></td>
+	<td><input type="submit" value="Сохранить" class="btn btn-blue"></td>
+</tr>
+<tr>
+	<th>ID</th>
+	<th>Пополнение</th>
+	<th>Списание</th>
+	
+	<th>Дата операции</th>
+	<th>Комментарий</th>
+	<th></th>
+</tr>
+<?php if (isset($operations) && count($operations)>0){?>
+<?php foreach ($operations as $dd){?>
+<tr>
+	<td><?=$dd['id']?></td>
+	<td class="f-green"><?=($dd['operation']=='plus')?'+'.PriceHelper::universal($dd['sum']):'';?></td>
+	<td class="f-red"><?=($dd['operation']=='minus')?'-'.PriceHelper::universal($dd['sum']):'';?></td>
+	
+	<td><?=date("d.m.Y H:i",$dd['dt'])?><br>(<?=AgoViewHelper::since($dd['dt'])?> назад)</td>
+	<td><?=$dd['comment']?></td>
+	<td align="center"><a href="/staffcp/accounts/operation/?id=<?=$account['id']?>&del=<?=$dd['id']?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+</tr>
+<?php }?>
+<?php }?>
+</table>
+</form>
+
+<script>
+Calendar.setup({showsTime: true, ifFormat:"%d.%m.%Y %H:%M", daFormat:"%d.%m.%Y %H:%M", inputField: 'date',button: 'date_picker',date: '<?=date('d.m.Y H:i')?>'});
+Calendar.setup({showsTime: true, ifFormat:"%d.%m.%Y %H:%M", daFormat:"%d.%m.%Y %H:%M", inputField: 'date',button: 'date',date: '<?=date('d.m.Y H:i')?>',eventName: 'focus'});
+</script>

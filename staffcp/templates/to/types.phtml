@@ -1,0 +1,66 @@
+<?php 
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<h1 class="h1-header">
+	<span><?=$title;?></span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+		<?php }?>
+	<?php }?>
+</h1>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('Вы действительно хотите удалить эту запись?');return false;">
+<table class="list">
+	<thead>
+	<tr>
+		<?php if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?}?>
+		<?php foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?php }?>
+		
+		<th>Каталог</th>
+		
+		<?php if (!in_array("edit", $actions)){?><th><img title="Редактировать" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?php }?>
+		<?php if (!in_array("delete", $actions)){?><th><img title="Удалить" border="0" src="/staffcp/media/images/trash_16.png"/></th><?php }?>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($data as $row){?>
+		<?php $dataModel->setValues($row);?>
+		<tr id="key[<?=$row[$indexField];?>][]">
+			<?php if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?php }?>
+			
+			<?php foreach ($dataModel->getListFields() as $field){?>
+				<td><?=$field->getViewValue();?></td>
+			<?php }?>
+			
+			<?php $Count = ToModel::getAllToByIdCount($row[$indexField]);?>
+			<td><a href="/staffcp/to/?type_id=<?=$row[$indexField];?>">Каталог (<?=$Count?>)</a></td>
+			
+			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?php if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="Редактировать" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?php }?>
+			
+			<?php if (!in_array("delete", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('Вы действительно хотите удалить эту запись?');"><img title="Вы действительно хотите удалить эту запись?" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?php }?>
+			
+			<?php } else {?>
+			<td width="100" align="center"><i>запрещено</i></td>
+			<td width="50" align="center"><i>запрещено</i></td>
+			<?php }?>
+		</tr>
+	<?php }?>
+	</tbody>
+</table>
+<?php if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="Удалить" id="submit_action" class="btn btn-red">
+<?php }?>
+</form>

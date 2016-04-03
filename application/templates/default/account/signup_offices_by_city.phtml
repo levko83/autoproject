@@ -1,0 +1,6 @@
+<select name="form[office_id]" id="form_office_id" class="form_elements">
+<?php foreach ($offices as $office){?>
+	<option value="<?=$office['id']?>" <?=(isset($default_office_id['id'])&&$default_office_id['id']==$office['id'])?'selected':''?>><?=$office['city']?> > <?=$office['office']?></option>
+<?php }?>
+</select>
+<p class="msg-error" id="form_office_id_err"></p>

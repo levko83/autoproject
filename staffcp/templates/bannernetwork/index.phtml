@@ -1,0 +1,19 @@
+<div id="tabs" class="tabs">
+    <ul>
+        <li><a href="#tab-1"><span><?=$translates['admin.banners.name']?></span></a></li>
+        <li><a href="#tab-2"><span><?=$translates['admin.banners.zones']?></span></a></li>
+        <li><a href="#tab-3"><span><?=$translates['admin.main.stat']?></span></a></li>
+    </ul>
+	<div id="tab-1">
+		<?$this->block('bannernetwork/list_banners');?>
+		<div class="clear"></div>
+	</div>
+	<div id="tab-2">
+		<?$this->block('bannernetwork/list_places');?>
+		<div class="clear"></div>
+	</div>
+	<div id="tab-3">
+		<?$this->block('bannernetwork/list_stats');?>
+		<div class="clear"></div>
+	</div>
+</div>

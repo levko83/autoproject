@@ -1,0 +1,20 @@
+<?php if (isset($switch_on_off_shop) && $switch_on_off_shop){?>
+<div class="ui-overlay">
+	<div class="ui-widget-overlay z-index-main"></div>
+	<div class="z-index-main shadow-closed-notice">
+		<div class="ui-widget-shadow ui-corner-all shadow-closed-notice-back"></div>
+	</div>
+</div>
+<div class="ui-widget ui-widget-content ui-corner-all z-index-king shadow-notice-text-back">
+	<div class="ui-dialog-content ui-widget-content shadow-text-up-view">
+		<center><h1><?=$switch_on_off_shop_msg?></h1></center>
+	</div>
+	<center>
+		<a href="?close" class="h1" style="background:#FFF; padding:10px; margin-top:30px; display: inline-block;">Перейти на сайт</a>
+	</center>
+</div>
+<?php }?>
+
+<?php if (isset($background_img_static) && $background_img_static){?>
+<div id="page-background"><img width="100%" alt="" title="" src="<?=HTTP_ROOT?>/media/files/settings/<?=$background_img_static?>"/></div>
+<?php }?>

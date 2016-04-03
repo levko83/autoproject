@@ -1,0 +1,381 @@
+<script>
+$(document).ready(function(){
+	$('#radio_button_paypal').prop('checked', 'true');
+  
+	function select_method()
+	{
+		//button shiping DHL nachname = 2 € 
+		if ($('input[id=radio_button_10]:checked').val() == 10 && $('input[id=radio_button_OFFICE_COUR]:checked').val() == 'OFFICE_COUR') {
+			$('#paymenttotal').empty().text(2);
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+			return false;
+		}
+		if ($('input[id=radio_button_10]:checked').val() != 10) {
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+		}		
+		//button shiping UPS nachname = none
+		if ($('input[id=radio_button_11]:checked').val() == 11) {
+			$('#paymenttotal').empty().text(0);
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'none');
+			return false;
+		}
+		if ($('input[id=radio_button_11]:checked').val() != 11) {
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+		}
+		//button shiping GLS nachname = 5 €
+		if ($('input[id=radio_button_12]:checked').val() == 12 && $('input[id=radio_button_OFFICE_COUR]:checked').val() == 'OFFICE_COUR') {
+			$('#paymenttotal').empty().text(5);
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+			return false;
+		}
+		if ($('input[id=radio_button_12]:checked').val() != 12) {
+			$('#paymenttotal').empty().text(0);
+		}
+		//button shiping TNT nachname = none
+		if ($('input[id=radio_button_13]:checked').val() == 13) {
+			$('#paymenttotal').empty().text(0);
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'none');
+			return false;
+		}
+		if ($('input[id=radio_button_13]:checked').val() != 13) {
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+		}
+		//button shiping Selbstabholung nachname = 0 €
+		if ($('input[id=radio_button_14]:checked').val() == 14 && $('input[id=radio_button_OFFICE_COUR]:checked').val() == 'OFFICE_COUR') {
+			$('#paymenttotal').empty().text(0);
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+			return false;
+		}
+		if ($('input[id=radio_button_14]:checked').val() != 14) {
+			$('label[for=radio_button_OFFICE_COUR]').css('display', 'inline-block');
+		}
+	}
+	function sum_delivery_total() {
+		var totals = parseFloat($('#paymenttotal').text())+parseFloat($('#total_delivery').text())+parseFloat($('#pfand').text());
+		var totals_r = totals + parseFloat($('#total').text());	
+		var totals_rf = parseFloat(totals_r).toFixed(2);
+		$('.totals').empty().text(totals_rf);
+	}	
+	$('body').on('click', function(){
+		setTimeout(function(){
+			select_method()
+			sum_delivery_total()
+		}, 500);
+	});
+});
+</script>
+
+<?php
+// print("<pre>");
+// print_r($account);
+
+if (isset($data) && count($data)>0){?>
+	<div class="container">
+		<h1 class="page_title"><?=$translates['front.cart']?> / <a href="<?=HTTP_ROOT?>/cart/"><?=$translates['front.back']?></a></h1>
+
+		<form action="<?=HTTP_ROOT?>/cart/send/" method="POST" class="type_2">
+
+		<section class="section_offset">
+			<div data-wizard-init>
+				<ul class="steps">
+					<li data-step="1"><?=$translates['front.contact.data']?></li>
+					<li data-step="2"><?=$translates['f.billing-adres']?></li>
+					<li data-step="3"><?=$translates['front.delivery.block']?></li>
+					<li data-step="4"><?=$translates['paymentlist']?></li>
+					<li data-step="5"><?=$translates['front.profile.orders']?></li>
+				</ul>
+				<div class="steps-content theme_box">
+					<div data-step="1">
+						<h4><?=$translates['front.contact.data']?></h4>
+						<ul>
+							<?php if (isset($account['is_firm']) && $account['is_firm']==1) { ?>
+							<li class="row">
+								<div class="col-sm-6">
+									<label for="company_name"><?=$translates['front.account.firm']?></label>
+									<input type="text" id="company_name" name="form[firm_name]" value="<?=(isset($error_data)&&!empty($error_data['hausnummer']))?$error_data['hausnummer']:((isset($account['hausnummer'])&&!empty($account['hausnummer']))?$account['hausnummer']:'');?>">
+								</div>
+								<div class="col-sm-6"><label  for="first_name">&nbsp;</label>&nbsp;</div>
+							</li>
+							<br/>
+							<?php } ?>
+							 <li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="first_name"><?=$translates['front.account.name']?></label>
+									<input type="text" id="first_name" name="form[name]" required value="<?=(isset($error_data)&&!empty($error_data['name']))?$error_data['name']:((isset($account['name'])&&!empty($account['name']))?$account['name']:'');?>">
+								</div>
+								<div class="col-sm-6">
+									<label class="required" for="last_name"><?=$translates["f.familiya"];?></label>
+									<input type="text" id="last_name" required name="form[nachname]" value="<?=(isset($error_data)&&!empty($error_data['nachname']))?$error_data['nachname']:((isset($account['nachname'])&&!empty($account['nachname']))?$account['nachname']:'');?>">
+								</div>
+							</li>
+							<br/>
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="telephone"><?=$translates['front.account.phones']?></label>
+									<input type="text" id="telephone" required name="form[phone]" value="<?=(isset($error_data)&&!empty($error_data['phone']))?$error_data['phone']:((isset($account['phones'])&&!empty($account['phones']))?$account['phones']:'');?>">
+								</div>
+								<div class="col-sm-6">
+									<label class="required" for="email_address"><?=$translates['front.account.email']?></label>
+									<input type="text" id="email_address" required name="form[email]" value="<?=(isset($error_data)&&!empty($error_data['email']))?$error_data['email']:((isset($account['email'])&&!empty($account['email']))?$account['email']:'');?>">
+								</div>
+							</li>
+							<br/>
+
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="address">Strasse</label>
+									<input type="text" id="address" required name="form[address]" value="<?=(isset($error_data)&&!empty($error_data['address']))?$error_data['address']:((isset($account['address'])&&!empty($account['address']))?$account['address']:'');?>">
+								</div>
+								<div class="col-sm-6">
+
+									<label class="required" for="hausnummer">Hausnummer</label>
+									<input type="text" id="hausnummer" required name="form[hausnummer]" value="<?=(isset($error_data)&&!empty($error_data['hausnummer']))?$error_data['hausnummer']:((isset($account['hausnummer'])&&!empty($account['hausnummer']))?$account['hausnummer']:'');?>">
+								</div>
+							</li>
+							<br/>
+
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="zip"><?=$translates["f.pochtovyy_kod"];?></label>
+									<input type="text" id="zip" required  name="form[zip]" value="<?=(isset($error_data)&&!empty($error_data['zip']))?$error_data['zip']:((isset($account['zip'])&&!empty($account['zip']))?$account['zip']:'');?>">
+								</div>
+								<div class="col-sm-6">
+										<label class="required" for="city"><?=$translates['front.account.city']?></label>
+										<input type="text" id="city" required required="required" name="form[city]" value="<?=(isset($error_data)&&!empty($error_data['city']))?$error_data['city']:((isset($account['city'])&&!empty($account['city']))?$account['city']:'');?>">
+
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!--<a class="button_red middle_btn" href="<?=HTTP_ROOT?>/cart" style="margin-bottom: -30px">Zurück</a>-->
+					<div data-step="2">
+						<h4><?=$translates['f.billing-adres']?></h4>
+						<ul>
+						<?php if (isset($account['is_firm']) && $account['is_firm']==1) { ?>
+							<li class="row">
+								<div class="col-sm-6">
+									<label for="company_name"><?=$translates['front.account.firm']?></label>
+									<input type="text" id="company_name" name="form[bill_firm_name]" value="<?=(isset($error_data)&&!empty($error_data['hausnummer']))?$error_data['hausnummer']:((isset($account['hausnummer'])&&!empty($account['hausnummer']))?$account['hausnummer']:'');?>">
+								</div>
+
+								<div class="col-sm-6">
+									<label  for="first_name">&nbsp;</label>
+									&nbsp;
+								</div>
+
+							</li>
+							<br/>
+						<?php } ?>
+							 <li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="first_name"><?=$translates['front.account.name']?></label>
+									<input type="text" id="first_name" required name="form[bill_name]" value="<?=(isset($error_data)&&!empty($error_data['name']))?$error_data['name']:((isset($account['name'])&&!empty($account['name']))?$account['name']:'');?>">
+								</div>
+								<div class="col-sm-6">
+									<label class="required" for="last_name"><?=$translates["f.familiya"];?></label>
+									<input type="text" id="last_name" required name="form[bill_nachname]" value="<?=(isset($error_data)&&!empty($error_data['nachname']))?$error_data['nachname']:((isset($account['nachname'])&&!empty($account['nachname']))?$account['nachname']:'');?>">
+								</div>
+							</li>
+							<br/>
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="telephone"><?=$translates['front.account.phones']?></label>
+									<input type="text" id="telephone" required name="form[bill_phone]" value="<?=(isset($error_data)&&!empty($error_data['phone']))?$error_data['phone']:((isset($account['phones'])&&!empty($account['phones']))?$account['phones']:'');?>">
+								</div>
+								<div class="col-sm-6">
+									<label class="required" for="email_address"><?=$translates['front.account.email']?></label>
+									<input type="text" id="email_address" required name="form[bill_email]" value="<?=(isset($error_data)&&!empty($error_data['email']))?$error_data['email']:((isset($account['email'])&&!empty($account['email']))?$account['email']:'');?>">
+								</div>
+							</li>
+							<br/>
+
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="address">Strasse</label>
+									<input type="text" id="address" required name="form[bill_address]" value="<?=(isset($error_data)&&!empty($error_data['address']))?$error_data['address']:((isset($account['address'])&&!empty($account['address']))?$account['address']:'');?>">
+								</div>
+								<div class="col-sm-6">
+
+									<label class="required" for="hausnummer">Hausnummer</label>
+									<input type="text" id="hausnummer" required name="form[bill_hausnummer]" value="<?=(isset($error_data)&&!empty($error_data['hausnummer']))?$error_data['hausnummer']:((isset($account['hausnummer'])&&!empty($account['hausnummer']))?$account['hausnummer']:'');?>">
+								</div>
+							</li>
+							<br/>
+
+							<li class="row">
+								<div class="col-sm-6">
+									<label class="required" for="zip"><?=$translates["f.pochtovyy_kod"];?></label>
+									<input type="text" id="zip" required name="form[bill_zip]" value="<?=(isset($error_data)&&!empty($error_data['zip']))?$error_data['zip']:((isset($account['zip'])&&!empty($account['zip']))?$account['zip']:'');?>">
+								</div>
+								<div class="col-sm-6">
+										<label for="city" class="required"><?=$translates['front.account.city']?></label>
+										<div class="form_el">
+											<input type="text" required="required" name="form[bill_city]" id="city" value="<?=(isset($error_data)&&!empty($error_data['city']))?$error_data['city']:((isset($account['city'])&&!empty($account['city']))?$account['city']:'');?>">
+										</div>
+								</div>
+							</li>
+
+
+						</ul>
+					</div>
+
+					<div data-step="3">
+						<h2 class="align_center"><?=$translates['front.delivery.block']?>: </h2>
+						<ul class="shipping_method">
+							<?php foreach ($deliveries as $dd){ ?>
+							<div class="col-md-25 col-sm-6 payments deliveryblock">
+								<section class="infoblock type_2">
+
+									<img alt="" src="<?=HTTP_ROOT?>/static/images/data/deliveries/<?=$dd['img']?>" class="aligncenter">
+									<h4 class="caption"><b><?=$dd['name']?></b></h4>
+									<p><?=$dd['content']?></p>
+
+									<input type="radio" id="radio_button_<?=$dd["id"];?>" name="form[current_delivery]" value="<?=$dd['id']?>" data-free="<?=$dd["free_from"];?>"  data-price="<?=$dd["price"];?>"
+									<?=($dd["is_default"]=='1')?' checked=""':''?>>
+									<label for="radio_button_<?=$dd["id"];?>"><?=strip_tags($dd['content'])?> <?=$dd["price"];?>&euro;</label>
+								</section>
+							</div>
+							<?php } ?>
+						</ul>
+					</div>
+					<div data-step="4">
+						<h2 class="align_center"><?=$translates['paymentlist']?>: </h2>
+						<br/>
+						<div class="payment1">
+						<?php
+						// var_dump($merchants_list);
+						/*
+						?>
+						<!--<ul class="simple_vertical_list">
+							<?php foreach ($merchants_list as $dd){ ?>
+								<li>
+									<input type="radio" id="radio_button_<?=$dd['mcode']?>" name="merchant_type" value="<?=$dd['mcode']?>">
+									<label for="radio_button_<?=$dd['mcode']?>"><?=$dd['name']?></label>
+								</li>
+							<?php } ?>
+						</ul>-->
+							<?php */ foreach ($merchants_list as $dd){ ?>
+								<div class="col-md-25 col-sm-6 payments plati buy-method">
+								<section class="infoblock type_2">
+
+									<img alt="" src="<?=HTTP_ROOT?>/static/images/data/payments/<?=$dd['img']?>" class="aligncenter">
+									<h4 class="caption"><b><?=$dd['name']?></b></h4>
+									<!--<p><?=$dd['content']?></p>-->
+
+											<input type="radio" id="radio_button_<?=$dd['mcode']?>" name="merchant_type" value="<?=$dd['mcode']?>" data-price="<?=$dd['price']?$dd['price']:0;?>">
+											<label for="radio_button_<?=$dd['mcode']?>"></label>
+
+								</section>
+							</div>
+							<?php } ?>
+
+					</div>
+					</div>
+					<div data-step="5">
+						<h4><?=$translates['front.profile.orders']?></h4>
+						<table class="table_type_1 shopping_cart_table review">
+
+										<thead>
+											<tr>
+												<th class="product_image_col align_center"><?=ucfirst($translates['front.org.img'])?></th>
+												<th class="product_title_col align_center"><?=$translates['f.nazvanie_produkta']?></th>
+												<th class="align_center">Art. Nr.</th>
+												<th class="align_center"><?=$translates['front.price']?></th>
+												<th class="product_qty_col align_center"><?=$translates['front.box']?></th>
+												<th class="align_center"><?=$translates['front.cost']?></th>
+											</tr>
+
+										</thead>
+
+										<tbody>
+											<?php $sum=$sum_blr=$i=0;?>
+											<?php foreach ($data as $element){?>
+											<?php $i++; /*?>
+											<pre>
+											<?php print_r($element);*/?>
+											<tr>
+												<td data-title="<?=ucfirst($translates['front.org.img'])?>" class="product_image_col align_center">
+												<?php
+													if (isset($element['img'])) {
+														echo "<img src='".IMGPATH.$element['img']."' width='70%'/>";
+													} else {
+														echo "<img src='".IMGPATH."images/no-picture.png' width='70%'/>";
+													}
+												?>
+												</td>
+												<td data-title="<?=$translates['f.nazvanie_produkta']?>" class="align_center"><?=(isset($element["supplier_name"])?$element["supplier_name"]:'')." ".(isset($element["name_".$cur_lang])?$element["name_".$cur_lang]:'');?></td>
+												<td data-title="Art. Nr." class="align_center"><?=$element["art_nr"]?></td>
+												<td data-title="<?=$translates['front.price']?>" class="subtotal align_center">&euro;<?=PriceHelper::number($element['price'])?></td>
+												<td data-title="<?=$translates['front.box']?>" class="align_center"><?=$element['cc']?></td>
+												<td data-title="<?=$translates['front.cost']?>" class="total align_center">&euro;<span id="new_pp_<?=$element['id']?>"><?=PriceHelper::number($element['cc']*$element['price'])?></span></td>
+											</tr>
+											<?php
+
+												$sum += ($element['cc']*$element['price']);
+												$delivery_price = $set_delivery['price'];
+											}
+											$total_price = $sum + $delivery_price;
+										//	var_dump($set_delivery);
+											?>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td class="bold" colspan="5"><?=$translates['front.price']?></td>
+												<td class="total"><span id="total"><?=PriceHelper::number($sum)?></span>&euro;</td>
+											</tr>
+											<tr>
+												<td class="bold" colspan="5"><?=$translates['front.delivery.block']?></td>
+												<td class="total test1"><span id="total_delivery"><?=PriceHelper::number($delivery_price)?></span>&euro;</td>
+											</tr>
+											<tr class="nachname_kosten">
+												<td class="bold" colspan="5"><?=$translates['front.paymentplus']?></td>
+												<td class="total test2"><span id="paymenttotal">
+													<?=PriceHelper::number(PriceHelper::rate($merchant_data['price']))?>
+												</span>&euro;</td>
+											</tr>
+											
+											<tr>
+												<td class="bold" colspan="5">Pfand</td>
+												<td class="total test2"><span id="pfand"> <?=$_SESSION["pfand"]?> </span>&euro;</td>
+											</tr>
+
+											<tr>
+												<td class="grandtotal" colspan="5"><?=$translates['front.total']?></td>
+												<td class="grandtotal">
+													<span class="totals"><?=PriceHelper::number($sum)?></span>
+													&euro;
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+									<br/>
+						<ul>
+							<li class="row">
+								<div class="col-sm-12">
+										<label for="form_message">Comment
+										</label>
+										<div class="form_el">
+											<textarea name="form[message]" id="form_message" class="form_elements"><?=(isset($error_data)&&!empty($error_data['message']))?$error_data['message']:''?></textarea>
+										</div>
+								</div>
+							</li>
+							<br/>
+							<li class="row">
+								<div class="col-xs-12">
+									<input type="checkbox" value="1" name="form[agree]" required id="is_agree" style="vertical-align:text-bottom;"/>
+									<label for="is_agree" style="float:right;"><a href="<?=HTTP_ROOT?>/page/agb" target="_blank"><b style="color: red"><?=$translates['agreewithacartrules']?></b></a></label>
+
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</form>
+
+	</div>
+<?php } else { ?>
+	<h3 class="align_center"><?=$translates['front.cart.empty']?></h3>
+<?php } ?>

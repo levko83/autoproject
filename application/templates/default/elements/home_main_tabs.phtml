@@ -1,0 +1,119 @@
+<!-- home main tabs -->
+<div id="home_main_tabs" class="mbottom_30">
+
+	<div class="main_search_tabs">
+		<ul id="menu" class="menu-tabs">
+			<li class="h1 active"><a href="#wheels-tyres">Подбор шин и дисков</a></li>
+			<li class="h1"><a href="#batteries">Подбор аккумулятора</a></li>
+		</ul>
+	</div>
+	
+	
+	<div class="clear"></div>
+	
+	<div id="wheels-tyres" class="content-tabs">
+	
+		<div class="index-wheels-tires">
+		<table width="100%" class="wheels_tyres" style="border:0px;">
+		
+		<tr>
+			<td class="wheels-tires-descr" style="text-align:center; color:#fff; font-size:14px; padding:15px;">
+				Сервис позволяет осуществить подбор дисков по марке авто и одновременно подбор шин по марке автомобиля. Для начала поиска необходимо выбрать Производителя машины, ее марку, год выпуска и соответствующую модификацию.
+			</td>
+		</tr>
+		
+		<tr>
+			
+			<td>
+			
+				<form method="GET" action="<?=HTTP_ROOT?>/wheels-tires/result/" id="wheels-tires-form">
+				<table width="100%">
+				<tr>
+					<td id="wt_marks">
+						<select name="id_auto_brand" id="list_of_auto_brands" class="chosen-select" onchange="get_car_info_tire_index(this, 'get_list_of_auto_models')">
+					        <option value="Select brand">Выберите марку автомобиля</option>
+					        <?php foreach($list_of_auto_brands as $key => $value){?>
+							<option value="<?=$key?>"><?=$value?></option>
+							<?php }?>
+					    </select>
+					</td>
+					
+					<td id="wt_models"><select name="id_auto_model" id="list_of_auto_models" class="chosen-select"><option value="">Модель</option></select></td>
+					
+					<td id="wt_years"><select name="id_auto_year" id="list_of_auto_years" class="chosen-select"><option value="">Год выпуска</option></select></td>
+					
+					<td id="wt_engines"><select name="id_auto_modification" id="list_of_auto_modifications" class="chosen-select"><option value="">Модификация</option></select></td>
+					
+				</tr>
+				
+				</table>
+				</form>
+				
+			</td>
+			
+		</tr>
+		</table>
+		</div>
+	
+	</div>
+	<div id="batteries" class="content-tabs">
+		
+		<table width="100%" >
+		
+		<tr>
+			<td style="text-align:center; color:#fff; font-size:14px; padding:15px;">
+				Специальные форма, благодаря которой можно быстро подобрать к своему автомобилю нужную модель аккумулятора.
+			</td>
+		</tr>
+		
+		<tr>
+			
+			<td>
+
+				<table width="100%" class="wheels_tyres">
+				<tr>
+					<td>
+						<select class="chosen-select" name="auto_type_vehicle" id="list_of_battery_auto_type_vehicles">
+						<option value="" selected>Тип транспорта</option>
+						<option value="passanger">Легковой автомобиль</option>
+						<option value="truck">Грузовая техника</option>
+						<option value="special">Спецтехника</option>
+						<option value="moto">Мототехника</option>
+						</select>
+					</td>
+					
+					<td id="result_battery_step1"><select class="chosen-select" name="auto_brand" id="list_of_battery_auto_brands"><option>Марка</option></select></td>
+					
+					<td id="result_battery_step2"><select class="chosen-select" name="auto_model" id="list_of_battery_auto_models"><option>Модель</option></select></td>
+					
+					<td id="result_battery_step3"><select class="chosen-select" name="auto_year" id="list_of_battery_auto_years"><option>Год выпуска</option></select></td>
+					
+					<td id="result_battery_step4"><select class="chosen-select" name="auto_modification" id="list_of_battery_auto_modifications"><option>Модификация</option></select></td>
+					
+				</tr>
+				
+				
+				</table>
+			
+			</td>
+			
+		</tr>
+		</table>
+		<script>
+		jQuery(document).ready(function(){
+			jQuery('#list_of_battery_auto_type_vehicles').change(function(){
+			    get_list_of_battery_auto_brands(1);
+			});
+		});
+		</script>
+	
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function () {
+		$('#menu').tabify();
+	});
+	</script>
+
+	<div class="clear"></div>
+</div>
+<!-- end home main tabs -->

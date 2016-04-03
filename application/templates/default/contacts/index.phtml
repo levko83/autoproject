@@ -1,0 +1,107 @@
+<style>
+.page_wrapper {background: url('<?=HTTP_ROOT?>/static/images/background-primary.jpg') center no-repeat; background-size: cover;}
+</style><div class="container">
+   <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <h1 class="page_title"><?=$translates['front.contacts']?></h1>
+			<?php if (isset($_GET['success'])) { ?>
+				<section class="section_offset">
+					<div class="alert_box success">
+						<?=$translates["front.contact.accept"];?>
+					</div>
+				</section>
+			<?php } ?>
+            <section class="section_offset">
+                <div class="theme_box">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="proportional_frame">
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.2989524749196!2d13.518347315961787!3d52.50992864472787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a84eb5a8b9e8ad%3A0xad50d63bbc2e1a8b!2zQWx0LUZyaWVkcmljaHNmZWxkZSAxMDMsIDEwMzE1IEJlcmxpbiwg0JPQtdGA0LzQsNC90LjRjw!5e0!3m2!1sru!2s!4v1450786300869" style="border:0"></iframe>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <?php echo SettingsModel::get('contacts'); ?>
+							<br/>
+                            <ul class="c_info_list">
+
+                                <li class="c_info_location">Alt-Friedrichsfelde 103, 10315, Berlin, Deutschland</li>
+                                <li class="c_info_phone">+49 30 856 13 095</li>
+                                <li class="c_info_mail"><a href="mailto:info@autoresurs.de">info@autoresurs.de</a></li>
+                                <li class="c_info_schedule">
+
+                                    <ul>
+
+                                        <li><?=$translates["f.ponedelnik"];?>-<?=$translates["f.pyatnica"];?>: 10.00-16.00</li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section_offset">
+
+                <h3 style="color:#fff;"><?=$translates['front.request.form']?></h3>
+
+                <div class="theme_box">
+
+                    <form id="contact_form" class="type_2" action="<?=HTTP_ROOT?>/contacts/send/" method="post">
+
+                        <ul>
+                            <li class="row">
+                                <div class="col-sm-6">
+                                    <label class="required" for="cf_name"><?=$translates['front.cart.form.name']?></label>
+                                    <input type="text" title="<?=$translates['front.cart.form.name']?>" id="cf_name" name="form[name]" required="" value="<?=(isset($error_data)&&!empty($error_data['name']))?$error_data['name']:''?>">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="required" for="cf_email"><?=$translates['front.account.email']?></label>
+                                    <input type="email" title="Email" id="cf_email" name="form[email]" required="" value="<?=(isset($error_data)&&!empty($error_data['email']))?$error_data['email']:''?>">
+                                </div>
+                            </li>
+
+                            <li class="row">
+                                <div class="col-xs-12">
+                                    <label class="required" for="cf_phone_form"><?=$translates['front.cart.form.phone']?></label>
+                                    <input type="text" title="<?=$translates['front.cart.form.phone']?>" required="" id="cf_phone_form" name="form[phone]" value="<?=(isset($error_data)&&!empty($error_data['phone']))?$error_data['phone']:''?> <?=(isset($error_data)&&!empty($error_data['phones']))?$error_data['phones']:''?>"> 
+                                </div>
+                            </li>
+							
+							<li class="row">
+                                <div class="col-xs-12">
+                                    <label class="required" for="cf_subject"><?=$translates['front.account.subject']?></label>
+                                    <input type="text" title="<?=$translates['front.account.subject']?>" required="" id="cf_subject" name="form[subject]" value="<?=(isset($error_data)&&!empty($error_data['subject']))?$error_data['subject']:''?>">
+                                </div>
+                            </li>
+							
+                            <li class="row">
+                                <div class="col-xs-12">
+                                    <label class="required" for="cf_message"><?=$translates['front.cart.form.message']?></label>
+                                    <textarea rows="6" title="<?=$translates['front.cart.form.message']?>" name="form[message]" required="" id="cf_message"><?=(isset($error_data)&&!empty($error_data['message']))?$error_data['message']:((isset($_REQUEST['CONTACT']))?$translates['front.request.quest'].' '.$_REQUEST['CONTACT']:'')?></textarea>
+                                </div>
+                            </li>
+
+                        </ul>
+					</div>
+					<footer class="bottom_box on_the_sides">
+
+						<div class="left_side">
+
+							<button form="contact_form" type="submit" class="button_blue middle_btn"><?=$translates['front.send']?></button>
+							
+
+						</div>
+
+						<div class="right_side">
+
+							<p class="prompt"><?=$translates["f.obyazatelnoe_pole_dlya_zapolneniya"];?></p>
+
+						</div>
+
+					</footer>
+				 </form>
+            </section>
+        </main>
+    </div>
+</div>

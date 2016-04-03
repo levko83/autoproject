@@ -1,0 +1,38 @@
+<h3><?=$translates['admin.operation2']?></h3>
+<?php if (isset($operations)&&count($operations)>0){?>
+<div style="width:400px;height:300px;overflow:scroll;">
+<table width="100%" cellpadding="5px" cellspacing="0px">
+<thead>
+<tr>
+	<th><b><?=$translates['admin.rasxod']?></b></th>
+	<th><b><?=$translates['admin.prixod']?></b></th>
+	<th><b><?=$translates['admin.main.dt']?></b></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($operations as $dd){?>
+<tr>
+	<td style="color:red;">
+		<?php
+			switch ($dd['operation']){
+				case 'minus': echo '-'.PriceHelper::number($dd['sum']); break;
+			}
+		?>
+	</td>
+	<td style="color:green;">
+		<?php
+			switch ($dd['operation']){
+				case 'plus': echo '+'.PriceHelper::number($dd['sum']); break;
+			}
+		?>
+	</td>
+	<td style="font-size:10px;">
+		<?=date("d.m.Y",$dd['dt'])?><br/>
+		<?=date("H:i:s",$dd['dt'])?>
+	</td>
+</tr>
+<?php }?>
+</tbody>
+</table>
+</div>
+<?php }?>

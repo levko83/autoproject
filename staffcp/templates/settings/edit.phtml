@@ -1,0 +1,55 @@
+<h1 class="h1-header">
+<span><?=$setting['name'];?></span>
+<a href="/staffcp/settings/" class="btn btn-blue"><?=$translates['admin.settings.name']?></a>
+</h1>
+<form action="/staffcp/settings/save/" method="POST" enctype="multipart/form-data">
+<div id="tabs" class="tabs">
+    <ul>
+        <li><a href="#tab-0"><span><?=$setting['name'];?></span></a></li>
+    </ul>
+
+    <div id="tab-0">
+	<table class="form">
+		<tr>
+			<td class="label"><?=$translates['admin.main.name']?></td>
+			<td><?=$setting['name'];?></td>
+		</tr>
+		<tr>
+			<td class="label"><?=$translates['admin.main.value']?></td>
+			<td>
+				<?
+					$typeClass = ucfirst($setting['type']).'Type';
+					if ($setting['type'] == 'file')
+					{
+						$typeSettings = array(
+							'type'	=> 'file',
+							'base_dir'	=> 'settings/'
+						);
+					} elseif ($setting['type'] == 'image') {
+						$typeSettings = array(
+							'type'	=> 'file',
+							'base_dir'	=> 'settings/',
+							'images' => array(	
+								'small'		=> '50x0',		
+								'middle'	=> '100x0',		
+								'big'		=> '200x0',		
+								'full'		=> '500x0',		
+								'full2'		=> '650x0',		
+							),
+						);
+					} else {
+						$typeSettings = array(
+							'type' => $setting['type'],
+						);
+					}
+					$type = new $typeClass('value',$typeSettings,$setting['value']);
+				?>
+				<?=$type->getFormValue();?>
+			</td>
+		</tr>
+	</table>
+	</div>
+</div>
+<input type="hidden" name="form[id]" value="<?=$setting['id'];?>" />
+<input type="submit" value="<?=$translates['admin.main.save']?>" id="submit_action" class="btn btn-blue">
+</form>

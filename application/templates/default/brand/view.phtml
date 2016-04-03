@@ -1,0 +1,11 @@
+<!-- .requere -->
+<div class="main static">
+	<h1 class="uppercase"><?=$data['BRA_BRAND']?></h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	<div class="news-descr">
+		<?php if ($data['BRA_IMG']){?><img src="<?=HTTP_ROOT?>/media/files/brands/<?=$data['BRA_IMG']?>" style="float:left;padding:0px 10px 10px 0px;"/><?php }?>
+		<?=$data['BRA_CONTENT']?>
+		<div class="clear"></div>
+		<p class="top-10"><b><a href="<?=HTTP_ROOT?>/brand/" class="search-button gradient"><span><?=$translates['front.back']?></span></a></b></p>
+	</div>
+</div>

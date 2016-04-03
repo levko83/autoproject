@@ -1,0 +1,183 @@
+<?php
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<h1 class="h1-header">
+	<span><?=$title;?> (<?=$cc?>)</span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue"/>
+		<?php }?>
+	<?php }?>
+</h1>
+
+<div class="clear"></div>
+<div id="upload-crosses">
+	
+	<div class="data-import-crosses">
+	<form action="/staffcp/crosses/parse/" method="POST" enctype="multipart/form-data">
+	<table align="center">
+	<tr>
+		<td><b>Загрузить кроссы в формате <span style="color:red;">Excel 2007 и выше (*.xlsx)</span></b></td>
+		<td><input type="file" name="file" class="i"/></td>
+		<td><input type="submit" value="Выполнить" class="btn btn-blue"></td>
+		<td><a href="" onclick="$('#example-xlsx-crosses').toggle();return false;">Пример файла</a></td>
+	</tr>
+	</table>
+	</form>
+	</div>
+	<div class="data-import-crosses no-display" id="example-xlsx-crosses">
+	<center>
+		<h1>Пример обрабатываемого файла</h1>
+		<table class="cms-list" style="width:450px;">
+		<tr>
+			<td style="text-align:right;">Колонка <b>1</b></td>
+			<td>Артикул</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">Колонка <b>2</b></td>
+			<td>Бренд</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">Колонка <b>3</b></td>
+			<td>Наименование (название)</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">Колонка <b>4</b></td>
+			<td>Кросс Артикул (артикул по которому будет связь)</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">Колонка <b>5</b></td>
+			<td>Кросс Бренд (бренд по которому будет связь)</td>
+		</tr>
+		</table>
+	</center>
+	</div>
+
+	<div class="data-import-crosses">
+	<form action="" method="GET">
+	<table align="center">
+	<tr>
+		<th>Поиск по</th>
+		
+		<th>артикулу</th>
+		<td><input type="text" name="search[article]" value="<?=(isset($_search['article'])&&$_search['article'])?$_search['article']:'';?>" class="i"/></td>
+		
+		<th>бренду</th>
+		<td><input type="text" name="search[brand]" value="<?=(isset($_search['brand'])&&$_search['brand'])?$_search['brand']:'';?>" class="i"/></td>
+		
+		<td><input type="submit" value="Найти" class="btn btn-blue"></td>
+		
+		<td>
+			<a href="/staffcp/crosses/?clear=all" class="btn btn-red">Очистить всю базу кроссов (<?=$cc?>)</a>
+		</td>
+	</tr>
+	</table>
+	</form>
+	</div>
+	
+	<script type="text/javascript" src="/media-templates/ui/jquery.chosen/chosen.jquery.js?version=<?=VERSION?>"></script>
+	<link rel="stylesheet" href="/media-templates/ui/jquery.chosen/chosen.css?version=<?=VERSION?>">
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$(".chosen-select").chosen({no_results_text: "Oops, nothing found!"});
+	});
+	</script>
+	
+	<div class="data-import-crosses">
+		<h1>Список брендов</h1>
+		<select onchange="location='/staffcp/crosses/?search[brand]='+this.value;" style="width:100%;" class="chosen-select">
+		<option>Поиск по бренду</option>
+		<?php if (isset($listBrandsDB) && count($listBrandsDB)>0){?>
+		<?php $i=$j=0; foreach ($listBrandsDB as $dd){ $i++;$j++;?>
+			<option value="<?=$dd['BRAND']?>" <?=(isset($_search['brand']) && $_search['brand'] == $dd['BRAND'])?'selected':'';?>><?=$dd['BRAND']?></option>
+		<?php }?>
+		<?php }?>
+		</select>
+		<center>
+			<?=(isset($_search['brand']) && $_search['brand'])?'<a href="/staffcp/crosses/?delete[brand]='.$_search['brand'].'"><img title="Очистить" src="/staffcp/media/images/trash_16.png" style="vertical-align:middle;"> Удалить бренд '.$_search['brand'].'</a>':'';?>	
+		</center>
+	</div>
+	
+	<div class="data-import-crosses">
+		<h1>Список загрузок по времени</h1>
+		<select onchange="location='/staffcp/crosses/?search[time]='+this.value;" style="width:100%;" class="chosen-select">
+		<option>Поиск по времени загрузки</option>
+		<?php if (isset($listDT_LOAD) && count($listDT_LOAD)>0){?>
+		<?php $i=$j=0; foreach ($listDT_LOAD as $dd){ $i++;$j++;?>
+			<option value="<?=$dd['DT_LOAD']?>" <?=(isset($_search['time']) && $_search['time'] == $dd['DT_LOAD'])?'selected':'';?>><?=date("d.m.Y H:i:s",$dd['DT_LOAD'])?></option>
+		<?php }?>
+		<?php }?>
+		</select>
+		<center>
+			<?=(isset($_search['time']) && $_search['time'])?'<a href="/staffcp/crosses/?delete[time]='.$_search['time'].'"><img title="Очистить" src="/staffcp/media/images/trash_16.png" style="vertical-align:middle;"> Удалить загрузку по времени '.date("d.m.Y H:i:s",$_search['time']).'</a>':'';?>	
+		</center>
+	</div>
+	
+</div>
+
+<?php if (isset($_search)&&count($_search)>0){?>
+	<?=Paging_cssViewHelper::paging('/staffcp/crosses/?search[article]='.((isset($_search['article'])&&$_search['article'])?$_search['article']:'').'&search[brand]='.((isset($_search['brand'])&&$_search['brand'])?$_search['brand']:'').'&search[cross]='.((isset($_search['cross'])&&$_search['cross'])?$_search['cross']:'').'&search[time]='.((isset($_search['time'])&&$_search['time'])?$_search['time']:'').'&page=',$pages_num,$page);?>
+<?php }else{?>
+	<?=Paging_cssViewHelper::paging('/staffcp/crosses/?page=',$pages_num,$page);?>
+<?php }?>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<table class="list">
+	<thead>
+	<tr>
+		<?if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?}?>
+		<?foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?}?>
+		<?if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?}?>
+		<?if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?}?>
+	</tr>
+	</thead>
+	<tbody>
+	<?foreach ($data as $row){?>
+		<? $dataModel->setValues($row);?>
+		<tr id="key[<?=$row[$indexField];?>][]">
+			<?if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?}?>
+			
+			<?foreach ($dataModel->getListFields() as $field){?>
+				<?php if ($field->fieldName == 'MFA_ID' || $field->fieldName == 'BRA_ID' || $field->fieldName == 'id'){?>
+				<td>
+					<?php if (!in_array("edit", $actions)){?>
+					<a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><?=$field->getViewValue();?></a>
+					<?php } else {?>
+					<?=$field->getViewValue();?>
+					<?php }?>
+				</td>
+				<?php }else{?>
+				<td><?=$field->getViewValue();?></td>
+				<?php }?>
+			<?}?>
+			
+			<?if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?}?>
+			
+			<?if (!in_array("delete", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?}?>
+			
+			<?} else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?}?>
+		</tr>
+	<?}?>
+	</tbody>
+</table>
+
+<?php if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="<?=$translates['admin.main.delete']?>" id="submit_action" class="btn btn-red"/>
+<?php }?>
+
+</form>

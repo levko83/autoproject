@@ -1,0 +1,54 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase">Запросы по Vin</h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<?php if (isset($vins)&&count($vins)>0){?>
+	<table class="details-list top-20" cellpadding="5px" cellspacing="0px">
+	<thead>
+	<tr>
+		<th>Дата</th>
+		<th>Автомобиль</th>
+		<th>Запрос</th>
+		<th>Ответ</th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php $i=0;?>
+	<?php foreach ($vins as $dd){?>
+	<?php $i++;?>
+	<tr bgcolor="<?=($i%2)?'#f1f1f1':'';?>">
+		<td><?=date('d.m.Y',$dd['dt']);?></td>
+		<td><?=$dd['mark']?></td>
+		<td>
+			<?php $dList = AccountsModel::vinsList($dd['id']);?>
+			<?php if (isset($dList) && count($dList)>0){?>
+			<table>
+			<tr>
+				<th style="border:solid 1px #dadada;padding:4px;"><b>Артикул</b></th>
+				<th style="border:solid 1px #dadada;padding:4px;"><b>Бренд</b></th>
+				<th style="border:solid 1px #dadada;padding:4px;"><b>Название</b></th>
+				<th style="border:solid 1px #dadada;padding:4px;"><b>Колво</b></th>
+				<th style="border:solid 1px #dadada;padding:4px;"><b>Комментарий</b></th>
+			</tr>
+			<?php foreach ($dList as $DL){?>
+			<tr>
+				<td style="border:solid 1px #dadada;padding:4px;"><a target="_blank" href="/search/preload/?article=<?=$DL['article']?>"><b><?=$DL['article']?></b></a></td>
+				<td style="border:solid 1px #dadada;padding:4px;"><?=$DL['brand']?></td>
+				<td style="border:solid 1px #dadada;padding:4px;"><?=$DL['name']?></td>
+				<td style="border:solid 1px #dadada;padding:4px;"><?=$DL['box']?></td>
+				<td style="border:solid 1px #dadada;padding:4px;"><?=$DL['comment']?></td>
+			</tr>
+			<?php }?>
+			</table>
+			<?php }?>
+		</td>
+		<td><?=$dd['answer']?></td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
+	<?php }else{?>
+		<p>Нет запросов по VIN</p>
+	<?php }?>
+</div>

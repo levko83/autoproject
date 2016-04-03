@@ -1,0 +1,98 @@
+<div id="informer_block">
+
+	<div class="informer_item">
+		<?php if ($pview_news) {?>	
+		<!-- News -->				
+							
+			<?php if (isset($news) && count($news)>0){?>
+				<h3 class="uppercase title_fly">
+					<span><?=$translates['front.news.title']?></span>
+					<a class="all_info" href="<?=HTTP_ROOT?>/news/">все новости</a>
+				</h3> 
+					
+				<div class="informer_item_list">	
+					<?php $i=0; foreach ($news as $dd){ $i++; ?>
+					<div class="informer_item_box">						
+						<div class="informer_item_box_data"><b><?=date("d.m.Y",$dd['dt'])?></b></div>
+						
+						<div class="informer_item_box_name">
+							<?php if (isset($dd['url']) && $dd['url']){?>
+							<a href="<?=$dd['url']?>" target="_blank"><?=$dd['name']?></a>
+							<?php }else{?>
+							<a href="<?=HTTP_ROOT?>/news/view/<?=$dd['code']?>/"><?=$dd['name']?></a>
+							<?php }?>
+						</div>
+					
+						
+							<?php/* if (isset($dd['img']) && !empty($dd['img'])){?>
+							<a href="<?=HTTP_ROOT?>/news/view/<?=$dd['code']?>/"><img class="f-left p5 news-image" src="<?=HTTP_ROOT?>/media/files/load/normal-<?=$dd['img']?>" title="<?=$dd['name']?>" alt="<?=$dd['name']?>"/></a>
+							<?php } */?>
+							
+							<? /* <p><?=Utf8::str_limit(strip_tags($dd['brief']),150)?></p> */?>
+							
+						<div class="clear"></div>
+					</div>
+					<?php }?>
+				</div>	
+						
+			<?php }?>
+		
+		<?php }?>
+		
+		
+		<div class="clear"></div>
+	</div>
+	
+	
+	
+	<div class="informer_item">
+		<?php if($pview_articles){?>		
+		<!-- Articles -->
+				
+			<?php if (isset($articles) && count($articles)>0){?>
+				<h3 class="uppercase title_fly">
+					<span><?=$translates['articles']?></span>
+					<a class="all_info" href="<?=HTTP_ROOT?>/articles/">все статьи</a>
+				</h3> 
+			
+				<div class="informer_item_list">
+			
+					<?php $i=0; foreach ($articles as $dd){ $i++; ?>
+					
+					<div class="informer_item_box">												
+						<div class="informer_item_box_name">
+							<a href="<?=HTTP_ROOT?>/articles/view/<?=$dd['code']?>/"><?=$dd['name']?></a>
+						</div>					
+							
+						<div class="clear"></div>
+					</div>
+					
+					
+					<?php }?>
+				</div>	
+				
+				
+			<?php }?>
+		
+		<?php }?>
+	
+		<div class="clear"></div>
+	</div>
+	
+	
+	<div class="informer_item">
+		<h3 class="uppercase title_fly">
+			<span>Мы в СОЦСЕТЯХ</span>
+		</h3> 
+	
+		<!-- VK Widget -->
+		<div id="vk_groups"></div>
+		<script type="text/javascript">
+		VK.Widgets.Group("vk_groups", {mode: 0, width: "370", height: "210", color1: 'FFFFFF', color2: '3399cc', color3: '3399cc'}, 20003922);
+		</script>
+
+		<div class="clear"></div>
+	</div>
+	
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,132 @@
+<h1 class="h1-header"><span>Импорт товаров в каталог</span></h1>
+<table width="100%">
+<tr>
+	<td valign="top" style="padding:50px 50px;" width="50%">
+		
+		<form action="/staffcp/shopimport/parse/" method="POST" enctype="multipart/form-data">
+		<table>
+		<tr>
+			<td><b>Файл формата *.xlsx</b></td>
+			<td><input type="file" name="file"/></td>
+			<td><input type="submit" value="Выполнить" class="btn btn-blue"></td>
+		</tr>
+		<tr>
+			<td colspan="3" align="center">
+				<a href="/media/shopimport.rar">Пример обрабатываемого файла</a>
+			</td>
+		</tr>
+		</table>
+		</form>
+		
+	</td>
+	<td valign="top">
+		
+		<link type="text/css" href="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/swfupload.css" rel="Stylesheet" />
+		<script type="text/javascript" src="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/swfupload.js"></script>
+		<script type="text/javascript" src="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/swfupload.js"></script>
+		<script type="text/javascript" src="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/swfupload.queue.js"></script>
+		<script type="text/javascript" src="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/fileprogress.js"></script>
+		<script type="text/javascript" src="<?=Application::getHttpRoot()?>media/js/multiple_file_upload/handlers.js"></script>
+		<script type="text/javascript">
+		var swfu;
+		
+		window.onload = function() {
+		    var settings = {
+		        flash_url: "<?=Application::getHttpRoot()?>media/js/multiple_file_upload/swfupload.swf",
+		        upload_url: "<?=Application::getHttpRoot()?>media/js/multiple_file_upload/upload.php",
+		        post_params: {},
+		        file_size_limit : "20 MB",
+		        file_types: "*.*",
+		        file_types_description: "All Files",
+		        file_upload_limit: 50,
+		        file_queue_limit: 50,
+		        file_post_name: 'Filedata',
+		        custom_settings: {
+		                progressTarget : "fsUploadProgress",
+		                cancelButtonId : "btnCancel"
+		        },
+		        debug: false,
+		        button_width: "65",
+		        button_height: "29",
+		        button_placeholder_id: "spanButtonPlaceHolder",
+		        button_text: '<span class="theFont">Обзор</span>',
+		        button_text_style: ".theFont { font-size: 11px; font-family:tahoma; color:#000; }",
+		        button_text_left_padding: 15,
+		        button_text_top_padding: 7,
+		
+		        // The event handler functions are defined in handlers.js
+		        file_queued_handler : fileQueued,
+		        file_queue_error_handler : fileQueueError,
+		        file_dialog_complete_handler : fileDialogComplete,
+		        upload_start_handler : uploadStart,
+		        upload_progress_handler : uploadProgress,
+		        upload_error_handler : uploadError,
+		        upload_success_handler : uploadSuccess,
+		        upload_complete_handler : uploadComplete,
+		        queue_complete_handler : queueComplete	// Queue plugin event
+		    };
+		
+		    swfu = new SWFUpload(settings);
+		};
+		</script>
+	
+		<h1>Загрузка изображений</h1>
+		<form id="form1" action="" method="post" enctype="multipart/form-data">
+		    <div class="fieldset flash" id="fsUploadProgress">
+		    <span class="legend">Очередь</span>
+		    </div>
+		    <div id="divStatus">0 Файлов  загружено</div>
+		    <div>
+		    	<table>
+		    	<tr>
+		    		<td style="padding:0;margin:0;" valign="top"><span id="spanButtonPlaceHolder"></span></td>
+		    		<td style="padding:0;margin:0;" valign="top"><input id="btnCancel" type="button" value="Отменить" onclick="swfu.cancelQueue();" disabled="disabled" style="font-size: 11px; font-family:tahoma; color:#000; background:#FFF; margin-left: 2px; height: 31px; border:0px;" /></td>
+		    	</tr>
+		    	</table>
+		    </div>
+		</form>
+		
+	</td>
+</tr>
+</table>
+		
+<h1>Формат файла для импорта *.xlsx</h1>
+
+<table>
+<tr>
+<td valign="top">
+	<h1>Колонки файла</h1>
+	<p>
+		1 - ID категории магазина<br/>
+		2 - Название товара<br/>
+		3 - Краткое описание<br/>
+		4 - Полное описание<br/>
+		5 - Изображение 1 (название файла)<br/>
+		6 - Изображение 2 (название файла)<br/>
+		7 - Изображение 3 (название файла)<br/>
+		8 - Цена<br/>
+		9 - Валюта (USD,EUR,RUR - код раздала валюта)<br/>
+		10 - Сортировка<br/>
+		11 - Код поставщика: Привязка товара к прайсу цен<br/>
+		12 - Артикул привязки: Привязка товара к прайсу цен<br/>
+		13 - Бренд привязки: Привязка товара к прайсу цен<br/>
+	
+		14 - SEO: Title<br/>
+		15 - SEO: Kwords<br/>
+		16 - SEO: Descr<br/>
+	
+		17 - Артикул для поиска по артикулу<br/>
+		18 - URL адрес перехода<br/>
+		19 - Id фильтра на которого присваиваются характеристики (<b>заполнить индификатором именно эту ячейку в заголовке, индификатор находится в разделе Фильтры: Виды. У каждого фильтра есть Id.</b>)
+	</p>
+</td>
+<td valign="top">
+	<p style="color:red;"><b>После 19 колонки идут характеристики и их значения.</b></p>
+	<p style="color:red;"><b>Заголовок является названием характеристрики.</b></p>
+	<p style="color:red;"><b>Значения идут далее с данными товара.</b></p>
+	<p><img style="vertical-align:middle;" src="/staffcp/media/images/information.png"> Внимание! Обработчик производит как загрузку новых товаров, так и обновление старых всех его полей.</p>
+	<p>После загрузки товаров, необходимо загрузить изображения которые Вы указали в файле через загрузчик изображение справа. Можно грузить сразу несколько изображений. (Максимум 50 штук в один момент).</p>
+</td>
+</tr>
+</table>
+		

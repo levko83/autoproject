@@ -1,0 +1,119 @@
+<div class="container">
+	<ul class="breadcrumbs">
+        <li>
+            <?=$bread?>
+        </li>
+    </ul>
+    <div class="row">
+        <aside class="col-md-3 col-sm-4">
+            <?php $this->block('account/left_menu');?>	
+        </aside>
+        <main class="col-md-9 col-sm-8">
+			<h1><?=$translates['front.account.edit']?></h1>
+            <section class="theme_box">
+				<header class="on_the_sides">
+					<div class="left_side">
+						<?php if (isset($errors) && count($errors)>0){?>
+							<br/>
+							<ul class="simple_vertical_list">
+								<?php foreach ($errors as $dd){?>
+									<li class="error"><?=$dd?></li>
+								<?php }?>
+							</ul>
+							<br/>
+						<?php }?>
+					</div>
+					<div class="right_side"></div>
+				</header>
+				<form action="<?=HTTP_ROOT?>/account/save/" method="POST" >
+					<?php if($data['is_firm']==1){?>
+						<input type="hidden" name="form[is_firm]" value="1"/>
+					<?php }?>
+					<ul>
+						<?php if($data['is_firm']==1){?>
+						<li class="row">
+							<div class="col-xs-12">
+									<label for="firm"><?=$translates['front.account.firm']?></label>
+									<div class="form_el">
+										<input type="text" id="firm" name="form[firm_name]" value="<?=$data['firm_name']?>" required>
+									</div>
+							</div>
+						</li>
+						<?php } ?>
+						<li class="row">
+							<div class="col-sm-6">
+									<label for="input_1"><?=$translates['front.account.email']?></label>
+									<div class="form_el">
+										<input type="text" id="input_1" name="form[email]" value="<?=$data['email']?>" required>
+									</div>
+							</div>
+							<div class="col-sm-6">
+									<label for="input_2"><?=$translates['front.account.phones']?></label>
+									<div class="form_el">
+										<input type="text" id="input_2" name="form[phones]" value="<?=$data['phones']?>" required>
+									</div>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-sm-6">
+									<label for="input_3"><?=$translates['front.account.name']?></label>
+									<div class="form_el">
+										<input type="text" id="input_3" name="form[name]" value="<?=$data['name']?>" required>
+									</div>
+							</div>
+							<div class="col-sm-6">
+									<label for="nachname"><?=$translates["f.familiya"];?></label>
+									<div class="form_el">
+										<input type="text" id="nachname" name="form[nachname]" value="<?=$data['nachname']?>" required>
+									</div>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-sm-6">
+									<label for="strasse">Strasse</label>
+									<div class="form_el">
+										<input type="text" id="strasse" name="form[address]" value="<?=$data['address']?>" required>
+									</div>
+							</div>
+							<div class="col-sm-6">
+									<label for="hausnummer">Hausnummer</label>
+									<div class="form_el">
+										<input type="text" id="hausnummer" name="form[hausnummer]" value="<?=$data['hausnummer']?>" required>
+									</div>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-sm-6">
+									<label for="city"><?=$translates['front.account.city']?></label>
+									<div class="form_el">
+										<input name="form[city]" id="city" value="<?=$data['city']?>" >
+									</div>
+							</div>
+							<div class="col-sm-6">
+									<label for="zip"><?=$translates["f.pochtovyy_kod"];?></label>
+									<div class="form_el">
+										<input type="text" id="zip" name="form[zip]" value="<?=($data['zip'])?$data['zip']:''?>" required>
+									</div>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-sm-6">
+									<label for="input_4"><?=$translates['front.account.country']?></label>
+									<div class="form_el">
+										<input type="text" id="input_4" name="form[country]" value="<?=($data['country'])?$data['country']:'Deutschland'?>" required>
+									</div>
+							</div>
+						</li>
+						<li class="row">
+							<div class="col-xs-12">
+								<div class="form_el">
+									<input class="button_blue" type="submit" value="<?=$translates['front.send']?>">
+								</div>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</section>
+        </main>
+    </div>
+</div>

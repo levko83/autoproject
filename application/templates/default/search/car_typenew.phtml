@@ -1,0 +1,11 @@
+<select id="carob" class="form-control" name="s[type]" onchange="gotocatalog(this.value);">
+<option><?php echo $translates['objname']; ?></option>
+
+							<?php foreach ($data[0] as $dd){?>
+
+							<option value="<?php echo $dd->TYP_ID; ?>"><?php echo $dd->TYP_CDS_TEXT.' ('.$dd->TYP_KW_FROM.'Kw / '.$dd->TYP_HP_FROM.'hp)';?></option>
+					
+							<?php }?>
+					
+				
+</select>

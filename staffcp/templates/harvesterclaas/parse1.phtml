@@ -1,0 +1,72 @@
+<style>
+.td-obj { border: 1px solid #CCCCCC; border-collapse: collapse; padding:10px; }
+.odd { background-color: #F5F5FF; }
+.even { background-color: #FFFFFF; }
+.iput { border:solid 1px #dadada;border-radius:5px;padding:5px;width:50px;vertical-align: middle; }
+</style>
+
+<?php if (isset($file_to_parse) && $file_to_parse){?>
+<center>
+	<h2><span style="color:red;">Внимание!</span> Обработка незавершена! Файл ожидает обработки: <?=$file_to_parse?> / <a class="btn btn-green" href="/xreaders/claas.php">&raquo;Продолжить</a>&nbsp;<a class="btn btn-red" href="/xreaders/claas.php?reset">&raquo;Сбросить</a></h2>
+</center>
+<?php }?>
+
+<form action="/xreaders/claas.php" method="POST" enctype="multipart/form-data">
+<table>
+<tr>
+	<td class="td-obj " colspan="3">
+		<table>
+		<tr>
+			<td>
+				<select name="parse[delprice]" class="iput" style="width:100%;">
+					<option value="0">Добавить прайс к поставщику</option>
+					<option value="1">Удалить предыдущий прайс поставщика и загрузить новый</option>
+				</select>
+			</td>
+			<td>
+				<b>Поставщик</b>
+				<select name="parse[importer]" class="iput" style="width:200px;">
+				<?php if (isset($gai) && count($gai)>0){?>
+				<?php foreach ($gai as $dd){?>
+					<option value="<?=$dd['id']?>"><?=$dd['name']?> [<?=$dd['code']?>]</option>
+				<?php }?>
+				<?php }?>
+				</select>
+			</td>
+			<td>
+				<b>Файл</b>
+			<input type="file" name="file" value=""/> (допустимый формат <b>csv,txt,xlsx</b>)
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td class="td-obj odd" width="33%"><input type="radio" name="parse[type]" value="0" checked style="vertical-align:middle;"/> <b>стандартная обработка</b> (Форматы xlsx, csv, txt. При использовании формата csv и txt используется стандарный разделитель ";", его можно изменить пользуясь обработчиком с разделителем)</td>
+	<td class="td-obj" width="33%">
+		<input type="radio" name="parse[type]" value="1" style="vertical-align:middle;"/> <b>с разделителем</b> 
+		<input type="text" name="parse[delimeter]" value=";" class="iput"/> при использовании обработки с разделителем, в данных не должен использоваться выбираемый символ (возможно смещение колонок). Использовать для форматов *.csv, *.txt
+	</td>
+	<td class="td-obj odd" width="33%">
+		<input type="checkbox" name="parse[clear]" value="1" style="vertical-align:middle;"/> <b>удалять приставки в артикуле</b> 
+		<input type="text" name="parse[clear_symbols]" value="" class="iput" style="width:200px;"/> вводить через <b>","</b>
+	</td>
+</tr>
+<tr>
+	<td class="td-obj odd" colspan="3">
+	
+		<input type="submit" value="Выполнить" class="btn btn-blue">
+		<a href="/staffcp/wbs_correct/" class="btn btn-green">Корректировка брендов</a>
+		
+	</td>
+</tr>
+<tr>
+	<td class="td-obj" colspan="3">
+		<img src="/staffcp/media/images/information.png" style="vertical-align:middle;"/>
+		<b>если в поставщике стоит галка "Использовать только для раздела магазин", то произойдет простой импорт позиций (артикулы будут без фильтра очистки)</b> 
+	</td>
+</tr>
+</table>
+</form>
+
+<?php $this->block('db_parsers/menu');?>

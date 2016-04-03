@@ -1,0 +1,144 @@
+<table width="100%" style="border:solid 1px #dadada;border-radius:5px;padding:5px;margin-top:10px;">
+<tr>
+	<td>
+		<p style="padding:4px 5px;margin:0px;"><b><?=$translates['parser.tasks']?></b></p>
+		
+		<?php if (isset($list_cron) && count($list_cron)>0){?>
+		<table border="1" cellpadding="5px" cellspacing="1px" width="100%">
+		<tr>
+			<td width="20px"><b>#</b></td>
+			<td><b><?=$translates['admin.main.file']?></b></td>
+			<td></td>
+		</tr>
+		<?php $i=0;?>
+		<?php foreach ($list_cron as $dd){?>
+		<?php $i++;?>
+			<tr>
+				<td><b><?=$i?>.</b></td>
+				<td>
+				<p style="margin:0px;padding:0px;"><?=basename($dd['name'])?> (<?=number_format(($dd['size']/1024/1024),2)?> Mb) <a href="#" onclick="$('#adv<?=$i?>').toggle();">[-/+]</a></p>
+				<div id="adv<?=$i?>">
+				<form action="/cgi-bin/parse_advanced.cgi" method="GET">
+				<input type="hidden" name="file" value="<?=basename($dd['name'])?>"/>
+					<table>
+					<tr>
+						<td colspan="7">
+						<select name="erase_plus">
+							<option value="0"><?=$translates['parser.select1']?></option>
+							<option value="1"><?=$translates['parser.select2']?></option>
+						</select>
+						</td>
+					</tr>
+					<tr>
+						<td><?=$translates['admin.details.art']?><br/><input type="text" name="f1" value="" style="width:50px;"/></td>
+						<td><?=$translates['admin.index.brand']?><br/><input type="text" name="f2" value="" style="width:50px;"/></td>
+						<td><?=$translates['admin.details.price']?><br/><input type="text" name="f3" value="" style="width:50px;"/></td>
+						<td><?=$translates['admin.details.boxlim']?><br/><input type="text" name="f4" value="" style="width:50px;"/></td>
+						<td><?=$translates['parse.delivery']?><br/><input type="text" name="f5" value="" style="width:50px;"/></td>
+						<td><?=$translates['admin.details.descr']?><br/><input type="text" name="f6" value="" style="width:50px;"/></td>
+						<td><input type="submit" value="* <?=$translates['proccess']?>" onclick="$('#perl<?=$i?>').show();" class="btn btn-blue"></td>
+					</tr>
+					</table>
+					* <?=$translates['proccessdescr']?>
+				</form>
+				</div>
+				
+				</td>
+				<td><div id="perl<?=$i?>" style="display:none;"><?=$translates['proccessing']?>...</div></td>
+			</tr>
+		<?php }?>
+		</table>
+		<?php } else {?>
+		<p><b><?=$translates['nofiles']?></b></p>
+		<?php }?>
+		
+	</td>
+</tr>
+</table>
+
+<table width="100%" style="border:solid 1px #dadada;border-radius:5px;padding:5px;margin-top:10px;">
+<tr>
+	<td>
+		<p style="padding:4px 5px;margin:0px;"><b><?=$translates['uploaddata']?></b></p>
+		<form action="/staffcp/index/details_loader/" method="POST" enctype="multipart/form-data">
+		<table>
+			<tr>
+				<td><b>CSV</b></td>
+				<td><input type="file" name="csv_file"/></td>
+				<td><input type="submit" value="<?=$translates['admin.details.upload']?>" class="btn btn-blue"></td>
+			</tr>
+		</table>
+		</form>
+	</td>
+</tr>
+</table>
+
+<table width="100%" style="border:solid 1px #dadada;border-radius:5px;padding:5px;margin-top:10px;">
+<tr>
+	<td>
+		<p style="padding:4px 5px;margin:0px;"><b><?=$translates['parser.instr.title']?></b></p>
+		
+		<table border="1" class="simpleList">
+		<tr>
+			<td><b><?=$translates['admin.details.art']?></b></td>
+			<td><b><?=$translates['admin.index.brand']?></b></td>
+			<td><b><?=$translates['admin.details.price']?></b></td>
+			<td><b><?=$translates['admin.details.boxlim']?></b></td>
+			<td><b><?=$translates['admin.imps.delivery']?></b></td>
+			<td><b><?=$translates['admin.details.descr']?></b></td>
+		</tr>
+		<tr>
+			<td>LX700</td>
+			<td>KNECHT</td>
+			<td>15.45</td>
+			<td>10></td>
+			<td>1 day</td>
+			<td>Air filter Volvo S60/80/XC70</td>
+		</tr>
+		<tr>
+			<td>KC104</td>
+			<td>KNECHT</td>
+			<td>50.09</td>
+			<td>5</td>
+			<td>1 day</td>
+			<td>Fuel fiter Volvo S60/80/XC70</td>
+		</tr>
+		<tr>
+			<td>OX370D</td>
+			<td>KNECHT</td>
+			<td>10</td>
+			<td>9</td>
+			<td>1 day</td>
+			<td>Oil filter Volvo S60/80/XC70</td>
+		</tr>
+		<tr>
+			<td>...</td>
+			<td>...</td>
+			<td>...</td>
+			<td>...</td>
+			<td>...</td>
+			<td>...</td>
+		</tr>
+		<tr>
+			<td>N</td>
+			<td>N</td>
+			<td>N</td>
+			<td>N</td>
+			<td>N</td>
+			<td>N</td>
+		</tr>
+		</table>
+		
+		<h1 style="margin:0;padding:0;"><?=$translates['admin.manual.title']?></h1>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row1']?></p>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row2']?></p>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row3']?></p>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row4']?></p>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row5']?></p>
+		<p style="margin:0;padding:0;"><?=$translates['admin.manual.row6']?></p>
+		
+		<p><span style="color:red;"><b><?=$translates['admin.parser.info1']?>:</b></span> <?=$translates['admin.parser.info2']?>. <?=$translates['admin.parser.info3']?>.</p>
+		
+	</td>
+</tr>
+</table>

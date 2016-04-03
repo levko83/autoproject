@@ -1,0 +1,87 @@
+<div class="container">
+<style>
+.page_wrapper { background: url('<?=HTTP_ROOT?>/static/images/background-primary.jpg')  no-repeat center center fixed;  -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;}
+
+.manufacturer {
+    height: 130px;
+    text-align: center;  /* align the inline(-block) elements horizontally */
+    font: 0/0 a;         /* remove the gap between inline(-block) elements */
+}
+
+.manufacturer:before {    /* create a full-height inline block pseudo=element */
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    height: 110px;
+}
+
+#element {
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    font: 16px/1 Arial sans-serif;        /* <-- reset the font property */
+	
+}
+figcaption {
+	 display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+	 font-size: 16px!important;
+	 padding-bottom:10px;
+	 line-height:16px;
+}
+
+.table_cell::after, .main_product::after {
+	background:rgba(255, 255, 255, 0.5)!important;
+	border:none;
+}
+</style>
+    <div class="row">
+	
+        <main class="col-md-12">
+
+            <h1><?=$translates['brands']?></h1>
+
+            <div class="table_layout">
+
+                <div class="table_row">
+				
+					<?php if (isset($data) && count($data)>0){
+						$i = 1;
+						?>
+						<?php foreach ($data as $dd){?>
+							<div class="table_cell">
+								<a href='<?=HTTP_ROOT?>/search/preload/?article=<?=$dd['BRA_BRAND']?>'><figure class="manufacturer">
+									<?php /* if (file_exists(HTTP_ROOT."/media/files/brands/brand-normal-".$dd['BRA_IMG'])) { ?>
+										<img alt="<?=$dd['BRA_BRAND']?>" src="<?=HTTP_ROOT?>/media/files/brands/brand-normal-<?=$dd['BRA_IMG']?>">
+									<?php }*/ 
+										$braimg = HTTP_ROOT."/media/files/brands/".$dd['BRA_IMG'];
+										echo "<img id='element' src='".$braimg."' style='text-align:center;width:110px;margin-top:10px;' />";
+									?>
+									<figcaption class="align_center"><?=trim($dd['BRA_BRAND'])?></figcaption>
+
+								</figure></a>
+							</div>
+						<?php 
+						if(!($i % 8)){
+							?> </div>  <div class="table_row"> <?php
+						} $i++; }
+						?>
+					<?php }?>
+
+                </div>
+                <!--/ .table_row -->
+
+            </div>
+			 <!--<hr>
+			<footer class="bottom_box on_the_sides">
+				<div class="left_side"></div>
+				<div class="right_side"><ul class="pags"><?=PagingViewHelper::paging('/brand/?page=:page:',$pages_num,$page)?></ul></div>
+			</footer>
+           / .table_layout -->
+			
+        </main>
+        <!--/ [col]-->
+
+    </div>
+    <!--/ .row-->
+
+</div>

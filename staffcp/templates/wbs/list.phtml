@@ -1,0 +1,61 @@
+<?php
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<h1 class="h1-header">
+	<span><?=$title;?></span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+		<?php }?>
+	<?php }?>
+	<input type="button" name="" value="Корректировка брендов" onclick="location='/staffcp/wbs_correct/';" class="btn btn-green">
+</h1>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<table class="list">
+	<thead>
+	<tr>
+		<?if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?}?>
+		<?foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?}?>
+		<?if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?}?>
+		<?if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?}?>
+	</tr>
+	</thead>
+	<tbody>
+	<?foreach ($data as $row){?>
+		<? $dataModel->setValues($row);?>
+		<tr id="key[<?=$row[$indexField];?>][]">
+			<?if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?}?>
+			
+			<?foreach ($dataModel->getListFields() as $field){?>
+				<td><?=$field->getViewValue();?></td>
+			<?}?>
+			
+			<?if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?}?>
+			
+			<?if (!in_array("delete", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?}?>
+			
+			<?} else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?}?>
+		</tr>
+	<?}?>
+	</tbody>
+</table>
+<?if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="<?=$translates['admin.main.delete']?>" id="submit_action" class="btn btn-red">
+<?}?>
+</form>

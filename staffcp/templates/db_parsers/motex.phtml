@@ -1,0 +1,63 @@
+<table width="100%">
+
+<tr>
+	<td>
+		<div class="parent-menu">
+			<div class="menu-title" style="width:97%;">
+				<div class="menu-left" style="width:100%;">
+					<div class="menu-right" style="width:100%;">
+						<div class="titles">Обработчик MOTEX с полным описанием и кросс номерами</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+		<form action="" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="switcher" value="full"/>
+		<table>
+			<tr>
+				<td><b>Поставщик(код)</b></td>
+				<td><input type="text" name="IMPCODE" value="motex" style="width:50px;"/></td>
+				<td><b>Файл</b></td>
+				<td><input type="file" name="upload_file"/></td>
+				<td>
+					<input type="submit" value="Загрузить" onclick="$('#ajax').show();" class="btn btn-blue">
+					<div id="ajax" style="display:none;">Загрузка, пожалуйста подождите...</div>
+				</td>
+			</tr>
+		</table>
+		<div style="padding:10px;">
+		<b style="color:red;">Операции для версии 2.9 и более:</b>
+		<table>
+		<tr>
+			<td>
+				<select name="parse[delprice]" class="iput" style="width:100%;">
+					<option value="0">Добавить прайс к поставщику</option>
+					<option value="1">Удалить предыдущий прайс поставщика</option>
+				</select>
+			</td>
+			<td>
+				<input type="text" name="parse[currency]" id="use-currency" value="0" class="iput" style="border:solid 2px #89db1f;"/> <b>курс пересчета (для единой валюты)</b><br/>
+				<b style="font-size:10px;">USD: <a href="#" onclick="$('#use-currency').val('<?=$currency?>');return false;" style="font-size:10px;text-decoration:none;border-bottom:dotted 1px;"><?=$currency?></a>. EUR: <a href="#" onclick="$('#use-currency').val('<?=$currency_eur?>');return false;" style="font-size:10px;text-decoration:none;border-bottom:dotted 1px;"><?=$currency_eur?></a>.</b>
+			</td>
+			<td>
+				<input type="checkbox" name="parse[use_crosses]" value="1" style="vertical-align:middle;" checked/> <b>искать кроссы, описание, изображение в <a href="/staffcp/crosses/">базе кроссов</a></b>
+			</td>
+		</tr>
+		</table>
+		</div>
+		</form>
+		<div style="padding:10px;">
+			<b style="color:red;">Важно:</b> Код поставщика <b>motex</b><br/>
+			<b style="color:red;">Инструкция:</b> Открываем последний прайс-лист: <a target="_blank" href="http://www.motexautoparts.com/price/update/price.zip">Прайс-лист с наличием [обновлено <?=date("d.m.Y")?>]</a> - нажимаем - Сохранить как.<br/>
+			Это обычный zip архив, нужно только переименовать в .zip. Разархивируем архив - <b>пароль</b>: _motex_<br/>
+			Отдаем обработчику файл qnt.csv. Никаких дополнительных действий производить не требуется.
+			<br/>			
+			<p style="font-size:10px;"><b>Примичание:</b> Возможно отображение ошибки сервера 504, 500 во время загрузки данных, данная ошибка не означает, что парсер закончил отработку данных, загрузка продолжается. Сверка данных производится в разделе <a href="/staffcp/details/">список запчастей</a> по поставщику, количеству загруженных позиций в соответствии с исходным прайсом.</p>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p style="text-align:center;"><a href="/staffcp/harvesterclaas/#tab-2">Назад</a></p>

@@ -1,0 +1,92 @@
+	 <style>
+		.grid-pad {
+			padding-left:0;
+		}
+		.col-1-6, .col-2-12 {
+			width: 15%;
+			padding:0 0.83%;
+		}
+	 </style>
+	 <div class="grid grid-pad">
+        <div class="col-1-6">
+           <div class="content">
+               <img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/nachnahme.png" width="100%" />
+           </div>
+        </div>
+		<div class="col-1-6">
+           <div class="content">
+               <img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/paypal.png" width="100%" />
+           </div>
+        </div>
+		<div class="col-1-6">
+           <div class="content">
+               <img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/rechnung.png" width="100%" />
+           </div>
+        </div>
+		<div class="col-1-6">
+           <div class="content">
+				<img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/sofort.png" width="100%" />
+           </div>
+        </div>
+		<div class="col-1-6">
+           <div class="content">
+               <img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/visa.png" width="100%" />
+           </div>
+        </div>
+		<div class="col-1-6">
+           <div class="content">
+               <img src="<?php echo HTTP_ROOT; ?>/media-templates/img/pay/vorkasse.png" width="100%" />
+           </div>
+        </div>
+		
+    </div>
+
+	<div class="clear"></div>
+	<div style="height:30px"></div>
+	<hr width="100%" size="3" color="#3399cc" />
+	<div class="clear"></div>
+	<div style="height:10px"></div>
+	<div id="pkwteile">
+		<?php if (isset($marks_letters) && count($marks_letters)>0){?>
+		
+		<?php $letterMarks = ManufacturersModel::getMarksByLetterLogo($mark_letter['LETTER']);?>
+		<?php if (isset($letterMarks) && count($letterMarks)>0){
+			foreach ($letterMarks as $dd){
+				if (!empty($dd['MY_IMG'])) $bgurl = HTTP_ROOT."/media/files/logos/".$dd['MY_IMG'];
+				else $bgurl = HTTP_ROOT."/media-templates/img/nopic.jpg";
+				?>
+			<a title="<?=ucfirst(($dd['MFA_BRAND']))?>" style="background:url(<?=$bgurl?>)" class="fav_logo carsbuts" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/">
+				<div class="tdmbut-text"><?=ucfirst(($dd['MFA_BRAND']))?></div>
+			</a>
+			<?php }
+			}?>
+		
+		<div class="clear"></div>
+		<hr width="100%" size="3" color="#3399cc" />
+		<div class="clear"></div>
+		<div style="height:20px"></div>
+		<?php $letterMarks = ManufacturersModel::getMarksByLetter($mark_letter['LETTER']);?>
+		<?php if (isset($letterMarks) && count($letterMarks)>0){?>
+			<?php foreach ($letterMarks as $dd){
+				if (!empty($dd['MY_IMG'])) $bgurl = HTTP_ROOT."/media/files/logos/".$dd['MY_IMG'];
+				else $bgurl = HTTP_ROOT."/media-templates/img/nopic.jpg";
+				?>
+					<a class="tdmbut carsbuts" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/">
+						
+						<img src="<?=$bgurl?>" height="36" class="tdmbut-logo"/>
+						<div class="tdmbut-text"><?=ucfirst(($dd['MFA_BRAND']))?></div>
+					</a>
+			<?php }?>
+		<?php }?>
+			
+			
+		<div class="clear"></div>
+		<center class="main_button">
+			<p><a href="<?=HTTP_ROOT?>/catalog/" class="custom-button gradient" style="float:none;"><span>Показать все марки автомобилей</span></a></p>
+		</center>
+		
+		
+		<div class="clear"></div>
+		<?php }?>
+
+</div>

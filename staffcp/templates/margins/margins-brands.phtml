@@ -1,0 +1,68 @@
+<div id="result-margins-brands">
+<table>
+<tr>
+	<td colspan="3">
+		<?php if (isset($margins_brands) && count($margins_brands)>0){?>
+		<?php $i=0;?>
+		<?php foreach ($margins_brands as $dd){?>
+		<?php $i++;?>
+			<div class="<?=($i%2)?'even':'odd';?>" id="pos-mb-<?=$dd['id']?>">
+			
+				<b><?=$dd['brand_name']?></b> = <b><?=$dd['margin']?>%</b> + <b><?=($dd['dynamic'])?'диапазоны накруток':$dd['extra'].'%'?> </b>
+				
+				<a href="#" onclick="$('#pos-mb-<?=$dd['id']?>').remove();margins_brands_delete('<?=$dd['id']?>');return false;"><img src="/staffcp/media/images/trash_16.png"/></a>
+			</div>
+		<?php }?>
+		<br/>
+		<?php }?>
+	</td>
+</tr>
+<tr>
+	<td>
+	
+		<script type="text/javascript">
+		$().ready(function() {
+			<?php $str = '';?>
+			<?php if (isset($brands)&&count($brands)>0){?>				
+			<?php $i=0; foreach ($brands as $dd){ $i++;?>
+				<?php $str .= '"'.addslashes($dd['BRA_BRAND']).'"'.(($i!=count($brands))?',':'');?>
+			<?php }?>
+			<?php }?>
+			var str = [<?=$str?>];
+			$(".auto-searcher").focus().autocomplete(str, {
+				matchContains: true,
+				minChars: 0
+			});
+			function treeviewer(event, data, formatted) {}
+			$(".auto-searcher").result(treeviewer);
+		});
+		</script>
+		бренд <input type="text" id="brand_id" value="" class="i auto-searcher"> = 
+	</td>
+	<td>скидка <input type="text" id="margin_brand" value="" style="border:solid 1px #dadada;border-radius:5px;padding:5px;width:50px;"/> %</td>
+	<td>+ наценка <input type="text" id="margin_brand_extra" value="" style="border:solid 1px #dadada;border-radius:5px;padding:5px;width:50px;"/> %</td>
+	<td> или диапазоны накруток <input type="checkbox" id="margin_brand_dynamic" value="1"/></td>
+	<td><a href="#" onclick="margins_brands();"><img src="/staffcp/media/images/plus.gif"/></a> <img id="ajax2" style="display:none;" src="/staffcp/media/images/2-0.gif"/></td>
+</tr>
+</table>
+<script>
+function margins_brands(){
+	$('#ajax2').show();
+	var brand_id = $('#brand_id').val();
+	var margin_brand = $('#margin_brand').val();
+	var margin_brand_extra = $('#margin_brand_extra').val();
+	var margin_brand_dynamic = 0;
+	if ($('#margin_brand_dynamic').is(":checked")){
+		margin_brand_dynamic = 1;
+	}
+	$.post('/staffcp/margins/margins_brands/?act=add&margin_id=<?=$margs['id']?>&brand_id='+brand_id+'&margin_brand='+margin_brand+'&margin_brand_extra='+margin_brand_extra+'&margin_brand_dynamic='+margin_brand_dynamic, null,
+		function(data) {
+			$("#result-margins-brands").html(data);
+		}
+	);
+}
+function margins_brands_delete(id){
+	$.post('/staffcp/margins/margins_brands_delete/?id='+id, null);
+}
+</script>
+</div>

@@ -1,0 +1,23 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase"><?=$translates['articles']?></h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<?php if (isset($news) && count($news)>0){?>
+	<?php foreach ($news as $dd){?>
+	<div class="newsItemPg">
+		<div class="news-title"><h2><a href="<?=HTTP_ROOT?>/articles/view/<?=$dd['code']?>/"><?=$dd['name']?></a></h2></div>
+		<div class="news-descr">
+			<?php if (!empty($dd['img'])){?>
+				<a href="<?=HTTP_ROOT?>/articles/view/<?=$dd['code']?>/"><img src="<?=HTTP_ROOT?>/media/files/load/normal-<?=$dd['img']?>" title="<?=$dd['name']?>" alt="<?=$dd['name']?>"/></a>
+			<?php }?>
+			<?=$dd['brief']?>
+			<a href="<?=HTTP_ROOT?>/articles/view/<?=$dd['code']?>/"><?=$translates['front.more']?></a>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<?php }?>
+	<?php }?>
+	
+	<div class="paging"><div class="paging-fixed"><?=PagingViewHelper::paging('/articles/page/:page:/',$pages_num,$page)?></div></div>
+</div>

@@ -1,0 +1,30 @@
+<div id="tab-filters">
+<table>
+<tr>
+	<td>
+		<select name="form[filter_id]" id="filter_id" onchange="getlist(this.value);">
+			<option value=""></option>
+			<?php if (isset($filters_views) && count($filters_views)>0){?>
+			<?php foreach ($filters_views as $dd){?>
+			<option value="<?=$dd['id']?>" <?=(isset($filter_view_selected) && $dd['id']==$filter_view_selected)?'selected':'';?>><?=$dd['name']?></option>
+			<?php }?>
+			<?php }?>
+		</select>
+		
+		<div id="ajax_result">
+			<?php $this->block('products/ajax');?>
+		</div>
+	</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">
+function getlist(id) {
+	$('#ajax_result').html('<?=$translates['please.wait']?>...');
+	$.get('/staffcp/products/ajax/?ajax_id='+id, null, 
+	function(data) { 
+		$('#ajax_result').html(data);
+	});
+}
+</script>

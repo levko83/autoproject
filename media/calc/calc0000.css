@@ -1,0 +1,71 @@
+.calcValuesBlock	{float: left; width: 100%; margin: 0 0px 0 0; padding-left: 0px;}
+.calcValuesBlock h1	{margin: 0 0 1em 0; font-size: 1.5em; font-weight: normal;}
+
+.calcForm			{margin-top: 2em;}
+.calcValues			{margin-bottom: 1em;}
+.calcForm label		{width: 11em; float: left; display: block;  line-height: 25px;}
+
+.resultsTable		{clear: both; padding-top: 3em; padding-left: 0px;}
+.speedometer		{width: 305px; height: 200px; float: left;}
+.speedometer img	{margin: 24px 0 0 33px; position: absolute;}
+.speedometer ol, .speedometer li {position: absolute; list-style-type: none; margin: 0; padding: 0;}
+#speed0		{width: 36px; margin-top: 178px; text-align: right;}
+#speed10	{width: 25px; margin-top: 153px; text-align: right;}
+#speed20	{width: 23px; margin-top: 127px; text-align: right;}
+#speed30	{width: 26px; margin-top: 102px; text-align: right;}
+#speed40	{width: 33px; margin-top: 78px; text-align: right;}
+#speed50	{width: 46px; margin-top: 54px; text-align: right;}
+#speed60	{width: 62px; margin-top: 36px; text-align: right;}
+#speed70	{width: 85px; margin-top: 20px; text-align: right;}
+#speed80	{width: 100px; margin-top: 15px; text-align: right;}
+#speed90	{width: 128px; margin-top: 3px; text-align: right;}
+#speed100	{width: 160px; margin-top: -5px; text-align: right;}
+#speed110	{margin: 3px 0 0 163px;}
+#speed120	{margin: 15px 0 0 195px;}
+#speed130	{margin: 30px 0 0 220px;}
+#speed140	{margin: 48px 0 0 237px;}
+#speed150	{margin: 68px 0 0 251px;}
+#speed160	{margin: 89px 0 0 261px;}
+#speed170	{margin: 111px 0 0 265px;}
+#speed180	{margin: 135px 0 0 265px;}
+#speed190	{margin: 157px 0 0 260px;}
+#speed200	{margin: 179px 0 0 253px;}
+
+.resultsTable table	{float: left; width: 50%; margin: 0 2em 0 0; border-collapse: collapse;}
+.resultsTable td	{padding: 0.5em 1em 0.5em 1em; border-bottom: 1px solid #bbbbc1; border-collapse: collapse;}
+.resultsTable .header td	{font-weight: bold;}
+.resultsTable .num	{text-align: right;}
+.resultsTable .clearance	{border-bottom: none; font-size: 0.9em; color: #666666; padding: 0.5em 0 0 0;}
+.resultsTable .clearance div	{position: absolute; margin-left: 2em;}
+.resultsTable .clearance span	{position: absolute; margin-left: -2em; width: 2em; text-align: right; display: block; float: left; font-size: 1.1em;}
+
+.sheme		{width: 132px; height: 251px; float: left;}
+.sheme img	{position: absolute;}
+.shemeLegend img	{display: none;}
+.labelDD #shemeDD,
+.labelD #shemeD,
+.labelW #shemeW,
+.labelH #shemeH	{display: block;}
+
+.minWidth	{min-width: 530px;}
+
+.discCalculator	{clear: both; float: left; width: 100%; margin-top: 2em;}
+.discCalculator h1	{margin: 0 0 1em 0; padding-left: 0px; font-size: 1.5em; font-weight: normal;}
+.discCalculator h2	{font-size: 1em; font-weight: normal;}
+.discCalculator .calc	{float: left; margin-left: 20px; margin-right: 0px;}
+.discCalculator .description	{float: left; width: 40%; padding-left: 0px;}
+.discCalculator .description p	{margin: 0;}
+
+.discCalculator label	{width: 11em; display: block; float: left;}
+
+.discCalculator table	{float: left; margin: 0 0 0 0; border-collapse: collapse;}
+.discCalculator td			{padding: 0.5em 1em 0.5em 1em; border-bottom: 1px solid #bbbbc1; border-collapse: collapse;}
+.discCalculator .header td	{font-weight: bold;}
+.discCalculator .num	{text-align: right;}
+
+.Slash	{font-weight: bold;}
+.Radius	{font-weight: bold;}
+
+#labelShemeW, #labelShemeH, #labelShemeD, #labelShemeDD {
+  cursor:pointer;
+}

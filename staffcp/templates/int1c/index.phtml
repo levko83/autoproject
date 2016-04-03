@@ -1,0 +1,82 @@
+<h1>Настройка 1C</h1>
+
+<table>
+<tr>
+	<td valign="top" style="border:solid 1px #dadada;padding:20px;">
+
+		<form action="" method="POST">
+		<input type="hidden" name="save" value="1">
+		<table>
+		<?php if (isset($data) && count($data)>0){?>
+		<?php foreach ($data as $dd){?>
+		<tr>
+			<td><b><?=$dd['name']?></b></td>
+			<td>
+				<?php if ($dd['type'] == 'radio'){?>
+					<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="1" <?=($dd['value']==1)?'checked':''?>> Да
+					<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="0" <?=($dd['value']==0)?'checked':''?>> Нет
+				<?php }else{?>
+					<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="<?=$dd['value']?>" class="iput">
+				<?php }?>
+			</td>
+		</tr>
+		<?php }?>
+		<?php }?>
+		<tr>
+			<td></td>
+			<td><input type="submit" value="Сохранить" class="btn btn-green"></td>
+		</tr>
+		</table>
+		</form>
+	
+	</td>
+	<td valign="top" style="border:solid 1px #dadada;padding:20px;">
+	
+		<form action="/staffcp/int1c/order/" method="POST">
+		<b>Заказ №</b>
+		<input type="text" name="number" value="" class="iput" style="width:100px;">
+		<input type="submit" value="Выгрузить для 1С" class="btn btn-green">
+		</form>
+		* выгрузить повторно
+	
+		<p><b>Корзина заказов для 1С</b></p>
+		<?php if (isset($files) && count($files)>0){?>
+		<?php foreach ($files as $file){?>
+			<p><?=$file['name']?> [<?=number_format(($file['size']/1024), 2, ".", ".")?>kb]</p>
+		<?php }?>
+		<?php }?>
+	</td>
+</tr>
+</table>
+
+<h1>Возможности</h1>
+<p><b>1. Формирование выгрузки заказа в формате csv для 1С</b></p>
+<p>Для этого вам необходимо активировать настройку вашe "Включить формирование счета в csv для 1С".</p>
+<p>Далее необходимо настроить 1С забирать заказы по ftp (запросить доступ к ftp у администраторов сервера): <b>root/1С/zakaz/{N}</b></p>
+<p>Файл формируется в формате CSV</p>
+<p><b>zakaz-N.csv</b></p>
+<p>c содержанием:</p>
+<p><b>Номер заказа;Вид оплаты;Вид доставки;Id клиента;Дата заказа</b></p>
+<p><b>Артикул;Бренд;Наименование;Поставщик;Закупочная цена;Цена продажи;Количество</b></p>
+
+<p>&nbsp;</p>
+<p><b>2. Получение базы клиентов для 1С</b></p>
+<p>Для получения данных базы клиентов, вам необходимо прописать пароль в настройку выше "Пароль для базы клиентов". Далее настроить 1С парсить информацию по адресу: http://<?=$_SERVER['SERVER_NAME']?>/1C/1C_users.php?login=1C_users&password={pass}</p>
+
+<p>&nbsp;</p>
+<p><b>3. Обновление статусов заказа из 1С на сайт</b></p>
+<p>В папку 1С/status на ftp, 1С формирует статусы заказов в файл: statuses-номер заказа.csv</p>
+<p>>>>statuses-153.csv</p>
+<p>>>>Номер заказа; Статус</p>
+<p>Содержание файла</p>
+<p>153;отправлен</p>
+<p>>>>Названия статусов должны быть одинаковыми как в 1С, так и на сайте</p>
+
+<p>&nbsp;</p>
+<p><b>4. Получение цен и остатков из 1С на сайт</b></p>
+<p>>>>В папку 1С/price на ftp, 1С формирует цены и остатки в файлы:</p>
+<p>>>>Код поставщика.csv</p>
+<p>>>>shatem.csv</p>
+<p>>>>Артикул;Бренд;Срок поставки;Цена;Количество</p>
+<p>Содержание файла</p>
+<p>LX700;KNECHT;в наличии;250;>10</p>

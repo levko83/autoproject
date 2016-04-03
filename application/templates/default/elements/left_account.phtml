@@ -1,0 +1,102 @@
+<!-- .item -->
+<div class="item-menu radius-coner no-left-border">
+	<div class="layout radius-coner inside">
+		
+		<?php if (isset($account) && count($account)>0){?>
+
+			<div class="uppercase">Профиль</div>
+			<? /*<div class="h2"><?=$translates['hello']?>, <?=$account['name']?></div> */ ?>
+			<div class="profile_visit"><?=$translates['hello']?>, <?=$account['name']?></div>
+			
+			<?php if ($account['discountname']){?>
+			<p class="personal-discount"><b>Ваша скидка: <?=$account['discountname']?></b><br/>все цены указаны с учетом вашей скидки</p>
+			<?php }?>
+			
+			<style>
+			.roundalert { display:block; float:right; padding:1px 5px; border-radius:13px; background:#626262; color:#FFF !important; font-size:10px; }
+			</style>
+			<ul class="menu-list top-10">
+				<li <?=($_controller=='account'&&$_action=='index')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/"><?=$translates['front.profile.room']?></a></li>
+				<li <?=($_controller=='account'&&$_action=='autolist')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/autolist/">Мои авто</a></li>
+				<li <?=($_controller=='account'&&$_action=='vins')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/vins/">Мои запросы по Vin <?=(isset($alerts_vins)&&$alerts_vins)?('<span class="roundalert">+'.$alerts_vins.'</span>'):""?></a></li>
+				<li <?=($_controller=='account'&&($_action=='history_orders'||$_action=='history'))?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/history_orders/"><?=$translates['front.profile.orders']?> <sup><?=$totalOrders?></sup> <?=(isset($alerts_statuses)&&$alerts_statuses)?('<span class="roundalert">+'.$alerts_statuses.'</span>'):""?></a></li>
+				
+				<?php if (isset($account['saldo_active']) && $account['saldo_active']){?>
+				<li <?=($_controller=='account'&&$_action=='operation')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/operation/">Состояние счета</a></li>
+				<?php }?>
+				<?php if (isset($activatedWH) && $activatedWH){?>
+				<li <?=($_controller=='account'&&$_action=='warehouse')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/warehouse/"><?=$translates['front.warehouse']?> <sup><?=count($myorderWH)?>/<?=$mydetailsCC?></sup></a></li>
+				<?php }?>
+				
+				<li <?=($_controller=='account'&&$_action=='password')?'class="current"':''?>><a href="<?=HTTP_ROOT?>/account/password/"><?=$translates['front.changepassword']?></a></li>
+				<li><a href="<?=HTTP_ROOT?>/account/logout/" class="current-err"><?=$translates['front.exit']?></a></li>
+			</ul>
+			<div class="clear"></div>
+			
+			<?php if (isset($account['office_id']) && $account['office_id']){?>
+				<div class="account-title-selected top-20">
+					<b>Офис:</b> 
+					<a href="<?=HTTP_ROOT?>/office/office/id/<?=$account['office_id']?>" class="dotted-popup"><?=(isset($account['office_id'])&&$account['office_id'])?$officeIsset['name']:$translates['choose']?></a>
+				</div>
+			<?php } else {?>
+				<div class="account-title-selected top-20">
+					<b>Офис:</b> 
+					<a href="#" onclick="$('#acc-list-offices').show();return false;" class="dotted-popup"><?=(isset($account['office_id'])&&$account['office_id'])?$officeIsset['name']:$translates['choose']?></a>
+				</div>
+				<?php if (isset($offices_account) && count($offices_account)>0){?>
+				<div class="info-notice popup-account no-display" id="acc-list-offices">
+					<div class="arrow-top"></div>
+					<a href="#" onclick="$(this).parent().hide();return false;" class="f-right no-dotted"><img src="<?=HTTP_ROOT?>/media-templates/img/cross.png"/></a>
+					<?php foreach ($offices_account as $dd){?>
+					<p>
+						<input type="radio" name="office_id" value="<?=$dd['id']?>" id="office<?=$dd['id']?>" onclick="location='/account/index/?account-office-id=<?=$dd['id']?>';"/>
+						<label for="office<?=$dd['id']?>"><?=$dd['name']?></label>
+					</p>
+					<?php }?>
+				</div>
+				<?php }?>
+			<?php }?>
+			
+			<?php if (isset($account['manager_name']) && $account['manager_name']){?>
+				<div class="account-title-selected"><b>Ваш менеджер:</b> <a href="#" onclick="$('#acc-info-manager').show();return false;" class="dotted-popup"><?=$account['manager_name']?></a></div>
+				<div class="info-notice popup-account no-display" id="acc-info-manager">
+					<div class="arrow-top"></div>
+					<a href="#" onclick="$(this).parent().hide();return false;" class="f-right no-dotted"><img src="<?=HTTP_ROOT?>/media-templates/img/cross.png"/></a>
+					<?php if (isset($account['manager_photo']) && $account['manager_photo']){?>
+					<p><a href="<?=HTTP_ROOT?>/media/files/users/<?=$account['manager_photo']?>" rel="lightbox"><img src="<?=HTTP_ROOT?>/media/files/users/normal-<?=$account['manager_photo']?>" alt="<?=$account['manager_photo']?>" title="<?=$account['manager_photo']?>"></a></p>
+					<?php }?>
+					<?=$account['manager_contacts']?>
+				</div>
+			<?php }?>
+			
+		<?php }else{?>
+		
+			<div class="h2 uppercase"><?=$translates['myprofile']?></div>
+			<form action="<?=HTTP_ROOT?>/account/login/" method="post" id="user-signin">
+			<input type="hidden" name="action" value="signin">
+			<div class="user-row">
+				<input type="text" name="form[email]" class="index-signin" onclick="if (this.value == '<?=$translates['emailorphone']?>') this.value='';" onblur="if (this.value == '') this.value='<?=$translates['emailorphone']?>';" value="<?=$translates['emailorphone']?>"/>
+			</div>
+			<div class="user-row">
+				<input type="password" name="form[pass]" class="index-signin" onclick="if (this.value == '<?=$translates['front.account.password']?>') this.value='';" onblur="if (this.value == '') this.value='<?=$translates['front.account.password']?>';" value="<?=$translates['front.account.password']?>"/>
+			</div>
+			<div class="user-row">
+				<div style="float:left;">
+				<input type="submit" style="float:left;" value="<?=$translates['front.profile.enter']?> »" class="search-button gradient">
+				</div>
+				<div style="float:left;padding:7px 0px 7px 0px;margin-left:12px;">
+				<input type="checkbox" name="form[rememberme]" value="1" style="vertical-align:middle;"/> <?=$translates['rememderme']?>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="user-row">
+			<center>
+				<a href="<?=HTTP_ROOT?>/account/signup/"><?=$translates['front.act.reg']?></a>
+				<a href="<?=HTTP_ROOT?>/account/remide/"><?=$translates['front.profile.forgot']?></a>
+			</center>
+			</div>
+			</form>
+		<?php }?>
+		
+	</div>
+</div>

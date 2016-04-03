@@ -1,0 +1,193 @@
+<div class="container">
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <section class="section_offset">
+						<h1><?=$translates['front.cart']?></h1>
+						<?php if (isset($data) && count($data)>0){?>
+						<form action="<?=HTTP_ROOT?>/cart/bill/" method="POST" name="ff" >
+							<input type="hidden" name="redirectSwitch" id="redirectSwitch" value="true"/>
+							<input type="hidden" name="temporaryDeliveryId" id="temporaryDeliveryId" value="0"/>
+							<div class="table_wrap">
+					
+								<table class="table_type_1 shopping_cart_table">
+								
+									<thead>
+										<tr>
+											<th class="product_image_col align_center"><?=ucfirst($translates['front.org.img'])?></th>
+											<th class="product_title_col align_center"><?=$translates['f.nazvanie_produkta']?></th>
+											<th class="align_center">Art. Nr.</th>
+											<th class="align_center"><?=$translates['front.price']?></th>
+											<th class="product_qty_col align_center"><?=$translates['front.box']?></th>
+											<th class="align_center"><?=$translates['front.cost']?></th>
+											<th class="product_actions_col align_center"><?=$translates['front.delete']?></th>
+										</tr>
+
+									</thead>
+
+									<tbody>
+										<?php $sum=$sum_blr=$i=0;?>
+										<?php foreach ($data as $element){?>
+										<?php $i++; /*?>
+										<pre>
+										<?php print_r($element);*/?>
+										<tr>
+											<td data-title="<?=ucfirst($translates['front.org.img'])?>" class="product_image_col align_center">
+											<?php 
+												if (isset($element['img'])) {
+													echo "<img src='".IMGPATH.$element['img']."' width='70%'/>";
+												} else {
+													echo "<img src='".IMGPATH."images/no-picture.png' width='70%'/>";
+												}
+											?> 
+											</td>
+											<td data-title="<?=$translates['f.nazvanie_produkta']?>" class="align_center"><?=(isset($element["supplier_name"])?$element["supplier_name"]:'')." ".(isset($element["name_".$cur_lang])?$element["name_".$cur_lang]:'');?></td>
+											<td data-title="Art. Nr." class="align_center"><?=$element["art_nr"]?></td>
+											<td data-title="<?=$translates['front.price']?>" class="subtotal align_center">&euro;<?=PriceHelper::number($element['price'])?></td>
+											<td data-title="<?=$translates['front.box']?>" class="align_center">
+												<div class="qty min clearfix add-count" id="<?= $element['id'] ?>">
+													<span data-direction="minus" class="theme_button">-</span>
+													<input type="text" onkeyup="set_pp(<?=$element['id']?>);" 
+														onkeydown="set_pp(<?=$element['id']?>);" 
+														onchange="set_pp(<?=$element['id']?>);" 
+														id="count_<?=$element['id']?>" 
+														size="2" 
+														type="text" 
+														name="count[<?=$element['id']?>]"
+														value="<?=$element['cc']?>" readonly>
+													<span data-direction="plus" class="theme_button">+</span>
+												</div>
+											</td>
+											
+											<td data-title="<?=$translates['front.cost']?>" class="total align_center">&euro;<span id="new_pp_<?=$element['id']?>"> <?=PriceHelper::number($element['cc']*$element['price'])?> </script> </span></td>
+											<td data-title="<?=$translates['front.delete']?>" class="align_center"><a class="button_dark_grey icon_btn remove_product" href="<?=HTTP_ROOT?>/cart/delete/?id=<?=$element['cart_id']?>"><i class="icon-cancel-2"></i></a></td>
+										</tr>
+										<?php $sum += ($element['cc']*$element['price']);?>
+										<?php }?>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td class="grandtotal" colspan="6">Summe</td>
+											<td class="grandtotal" id="sum" style="padding:16px 4px;">&euro;<?=$sum?></td>
+										</tr>
+									</tfoot>
+								</table>
+
+							</div>
+							<footer class="bottom_box on_the_sides">
+
+								<div class="left_side">
+									<!--<a class="button_grey middle_btn" href="<?=HTTP_ROOT?>/cart/printcart/">Print Cart</a>-->
+								</div>
+
+								<div class="right_side">
+
+									<input class="button_blue middle_btn" type="submit" value="<?=$translates['front.send']?>" />
+
+								</div>
+
+							</footer>
+						</form>
+						
+						<?php }else{?>
+							<h3 class="align_center"><?=$translates['front.cart.empty']?></h3>
+							
+						<?php } ?>
+					</section>
+        </main>
+    </div>
+</div>
+
+<script>
+<?php $pfand=0; ?>
+<?php foreach ($data as $element) { ?>
+	var id, cc, price, purchase, descr, article, brand;
+	id = <?= $element['id'] ?>;
+	cc = $('#count_<?=$element["id"] ?>').val();
+	price = <?= $element['price'] ?>;
+	article = "<?= $element['art_nr'] ?>";
+	brand = "<?= $element['supplier_name'] ?>";
+		
+	$("#<?=$element['id']?>").on('click', function() {
+		setTimeout(function(){
+			set_sum();
+			$('#open_shopping_cart').load('http://autoresurs.de/cart/ #open_shopping_cart');
+			$('#open_shopping_cart').attr('id', 'test');
+		}, 1000);
+		
+		//cart('78619','36','27.98','','37689','MAPCO');
+		//cart(fk, uvp, price, art_nr, supplier, name);
+ $.get("http://comtehno-it.com/update_purchase.php", { count:$('#count_<?=$element["id"] ?>').val(), scSID:'<?php print_r($_SESSION['_scSID']);?>', fk:<?=$element['fk']?>  });
+		setTimeout(function(){
+			$.ajax({
+					type: 'GET',
+					url: 'http://comtehno-it.com/update_purchase.php',
+					data: {
+						count:$('#count_<?=$element["id"] ?>').val(), 
+						scSID:'<?php print_r($_SESSION['_scSID']);?>', 
+						fk:<?=$element['fk']?>
+					},
+					success: function(data)
+					{
+						console.log('updated');
+					}
+			});
+		}, 500); 
+	});
+	<?php $pfand += $element['pfand']; ?>
+<?php } ?>
+<?php
+	$_SESSION['pfand'] = $pfand;
+	echo 'pfand='.$_SESSION['pfand'];
+?>
+
+function set_sum(){
+	var sum=0;
+	var total=0;
+	<?php if (isset($data) && count($data)>0){?>
+	
+		<?php foreach ($data as $element){?>
+		//var cc = $("#count_<?=$element['id']?>").val();
+		//var cc = document.getElementById("count_<?=$element['id']?>").value;
+		//var price = <?=$element['price']?>;
+		//sum += cc*price;
+
+		
+			var pret_<?=$element['id']?> = parseInt( $('#count_<?=$element["id"]?>').val() ) * <?=$element['price']?>;
+			$("#new_pp_<?=$element['id']?>").empty().text( pret_<?=$element['id']?>.toFixed(2) );
+			
+			total = total + pret_<?=$element['id'];?>;
+			$("#sum").empty().text(total.toFixed(2)); 
+
+		
+		<?php }?>
+		
+	<?php }?>
+
+	<?php /*if (isset($set_delivery['price']) && $set_delivery['price']){?>
+	sum += parseInt(<?=PriceHelper::rate($set_delivery['price'])?>);
+	<?php }*/?>
+	
+	// $("#new_sum").html(sum).number( true, 2 );
+	// alert(sum);
+	// alert(html(sum).number( true, 2 ));
+	
+}
+set_sum();
+</script>
+
+<?php //echo $_SESSION['_scSID']; ?>
+<?php 
+
+
+/*
+if (isset($_SESSION['dt']))
+{
+	$scSID = $_SESSION['_scSID'];
+	$dt = $_SESSION['dt'];
+	$cart_sc = $_SESSION['CartScSID'];
+	$db = new mysqli('178.63.86.9', 'admin_autoresurs', 'nI82GlX4mV', 'admin_autoresursde');
+	$db->query(" UPDATE w_accounts SET CartScSID='$scSID' WHERE dt='$dt' ");
+	$cart_sc = $scSID;
+}
+*/
+?>	

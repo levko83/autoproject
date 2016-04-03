@@ -1,0 +1,78 @@
+<?php
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+<h1 class="h1-header">
+	<span><?=$title;?></span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>?parent=<?=$parent?>';" class="btn btn-blue"/>
+		<?php }?>
+	<?php }?>
+</h1>
+
+<?php $this->block('products/csv');?>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<input type="hidden" name="delete_parent" value="<?=$parent?>">
+<table class="list">
+	<thead>
+	<tr>
+		<?php if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?php }?>
+		<?php foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?php }?>
+		<?php if (!in_array("edit", $actions)){?><th><?=$translates['admin.main.prods']?></th><?php }?>
+		<?php if (!in_array("edit", $actions)){?><th><?=$translates['admin.main.subcats']?></th><?php }?>
+		<th>Экспорт</th>
+		<?php if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?php }?>
+		<?php if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?php }?>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($data as $row){?>
+		<?php $dataModel->setValues($row);?>
+		<tr>
+			<?php if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?}?>
+			<?php foreach ($dataModel->getListFields() as $field){?>
+			<td><?=$field->getViewValue();?></td>
+			<?php }?>
+			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?php if (!in_array("edit", $actions)){?>
+			<td align="center"><a title="<?=$translates['admin.main.see']?>" href="/staffcp/products/?parent=<?=$row[$indexField];?>">Товары&nbsp;(<?=CatController::countProducts($row[$indexField])?>)</a>&nbsp;[<a title="<?=$translates['admin.main.addprod']?>" href="/staffcp/products/add/?parent=<?=$row[$indexField];?>">+</a>]</td>
+			<?php }?>
+			
+			<?php if (!in_array("edit", $actions)){?>
+			<td align="center"><a title="<?=$translates['admin.main.inparent']?>" href="/staffcp/<?=$dataModel->getModelName();?>/?parent=<?=$row[$indexField];?>"><?=$translates['admin.main.subcats']?>&nbsp;(<?=CatController::countCats($row[$indexField])?>)</a>&nbsp;[<a title="<?=$translates['admin.main.addcat']?>" href="/staffcp/<?=$dataModel->getModelName();?>/add/?parent=<?=$row[$indexField];?>">+</a>]</td>
+			<?php }?>
+			
+			<td align="center">
+			<?php if(CatController::countProducts($row[$indexField]) >0) {?>
+				<a title="" href="/staffcp/<?=$dataModel->getModelName();?>/export?id=<?=$row[$indexField];?>">Экспорт (<?=CatController::countProducts($row[$indexField])?> шт.)</a>
+			<?php } else echo '--';?>
+			</td>
+				
+			<?php if (!in_array("edit", $actions)){?>
+			<td align="center"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?php }?>
+			
+			<?php if (!in_array("delete", $actions)){?>
+			<td align="center"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>&parent=<?=$parent?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?php }?>
+			
+			<?php } else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?php }?>
+		</tr>
+	<?php }?>
+	</tbody>
+</table>
+<?php if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="<?=$translates['admin.main.delete']?>" class="btn btn-red"/>
+<?php }?>
+</form>

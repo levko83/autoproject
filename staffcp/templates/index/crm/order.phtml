@@ -1,0 +1,379 @@
+<style>
+.shopping-main {margin:20px 0px;}
+.shopping-main td,.shopping-main th { padding:10px; }
+.cart-form {}
+.cart-form th { background:#e8f6ff; padding:10px; border:solid 1px #dadada; }
+</style>
+
+<?php $accountInfo = BillsModel::getAccount($bill['account_id']);?>
+
+<h1>Редактирование заказа №<?=$bill['number']?></h1>
+<form action="/staffcp/index/order_save/" method="POST">
+<input type="hidden" name="order_id" value="<?=$bill['id']?>"/>
+<input type="hidden" name="scSID" value="<?=$bill['scSID']?>"/>
+<input type="hidden" name="cartinfo[account_id]" value="<?=$bill['account_id']?>"/>
+<input type="hidden" name="cartinfo[number]" value="<?=$bill['number']?>"/>
+<table class="cart-form" width="70%">
+<tr>
+	<th width="250px"><?=$translates['admin.main.ordernumber']?></th>
+	<td><?=$bill['number']?></td>
+</tr>
+<tr>
+	<th>Дата/Время</th>
+	<td><?=date("d.m.Y H:i",$bill['dt'])?></td>
+</tr>
+<tr>
+	<th><?=$translates['admin.accounts.fullname']?></th>
+	<td><input type="text" name="cartinfo[f1]" value="<?=$bill['f1']?>" class="iput"></td>
+</tr>
+<tr>
+	<th><?=$translates['admin.accounts.phone']?></th>
+	<td><input type="text" name="cartinfo[f2]" value="<?=$bill['f2']?>" class="iput"></td>
+</tr>
+<tr>
+	<th><?=$translates['admin.accounts.email']?></th>
+	<td><input type="text" name="cartinfo[f3]" value="<?=$bill['f3']?>" class="iput"></td>
+</tr>
+<tr>
+	<th>Оплата</th>
+	<td><input type="text" name="cartinfo[payment_name]" value="<?=$bill['payment_name']?>" class="iput"></td>
+</tr>
+<tr>
+	<th>Дата выдачи товара клиенту</th>
+	<td>
+		<input type="text" id="dt_from" name="cartinfo[time_give_order]" value="<?=(isset($bill['time_give_order'])&&$bill['time_give_order'])?date("d.m.Y",$bill['time_give_order']):''?>" class="iput" style="width:100px;"/>
+		<input type="button" id="dt_from_picker" value="&raquo;" class="btn">
+		<script>
+		Calendar.setup({inputField: 'dt_from',button: 'dt_from_picker',date: '<?=(isset($bill['time_give_order']) && $bill['time_give_order'])?date("d.m.Y",$bill['time_give_order']):date('d.m.Y')?>'});
+		Calendar.setup({inputField: 'dt_from',button: 'dt_from',date: '<?=(isset($bill['time_give_order']) && $bill['time_give_order'])?date("d.m.Y",$bill['time_give_order']):date('d.m.Y')?>',eventName: 'focus'});
+		</script>
+	</td>
+</tr>
+<tr>
+	<th>Время выдачи товара клиенту</th>
+	<td>
+		с <input type="text" name="cartinfo[time_from]" value="<?=$bill['time_from']?>" class="iput" style="width:50px;">
+		по <input type="text" name="cartinfo[time_to]" value="<?=$bill['time_to']?>" class="iput" style="width:50px;">
+	</td>
+</tr>
+<tr>
+	<th>Адрес доставки</th>
+	<td><input type="text" name="cartinfo[delivery_addess]" value="<?=$bill['delivery_addess']?>" class="iput"></td>
+</tr>
+<tr>
+	<th>Доставка</th>
+	<td><input type="text" name="cartinfo[delivery]" value="<?=$bill['delivery']?>" class="iput"></td>
+</tr>
+<tr>
+	<th>Стоимость доставки</th>
+	<td><input type="text" name="cartinfo[delivery_price]" value="<?=$bill['delivery_price']?>" class="iput"></td>
+</tr>
+<tr>
+	<th>Дополнительная информация</th>
+	<td><textarea name="cartinfo[message]" class="iput"><?=strip_tags(str_replace("<br>","\n",$bill['message']))?></textarea></td>
+</tr>
+
+<?php if ($bill['account_id'] && count($accountInfo)>0){?>
+<tr>
+	<th>Заказ привязан к клиенту</th>
+	<td>
+		<b>ID: <?=$accountInfo['id']?>. <?=($accountInfo['name'])?$accountInfo['name'].'.':''?> <?=($accountInfo['phones'])?$accountInfo['phones'].'.':''?></b> <b><input type="checkbox" name="cartinfo[account_id]" value="0">отвязать клиента от заказа.</b>
+	</td>
+</tr>
+<?php if ($bill['delivery_set_balance'] == 0){?>
+<tr>
+	<th></th>
+	<td style="padding:10px 10px;">
+		<input type="checkbox" name="cartinfo[delivery_set_balance]" value="1" style="vertical-align:middle;"> Списать стоимость доставки с баланса<br>
+		<b>Пользователь: <a href="/staffcp/accounts/edit/?id=<?=$accountInfo['id']?>"><?=$accountInfo['name']?></a></b><br>
+		Баланс: <span <?=($accountInfo['balance']<0)?'style="color:red;font-weight:bold;"':''?>><?=($accountInfo['balance'])?PriceHelper::universal($accountInfo['balance']):0?></span><br>
+	</td>
+</tr>
+<?php }?>
+<?php }else{?>
+<tr>
+	<th>Привязать к клиенту (устанавливается id клиента, также работает поиск по Имени, Телефону, E-mail вводя в поле подходящие значения)</th>
+	<td>
+		
+		<script type="text/javascript">
+		$().ready(function() {
+			var akey = new Array();
+			<?php $str = '';?>
+			<?php if (isset($accountsList) && count($accountsList)>0){?>
+			<?php foreach ($accountsList as $account){?>
+				<?php $str .= '"'.addslashes($account['id'].' - '.$account['name'].' '.$account['email'].' '.$account['phones']).'"'.(($i!=count($account))?',':'');?>
+				akey[<?='"'.addslashes($account['id'].' - '.$account['name'].' '.$account['email'].' '.$account['phones']).'"'?>]= <?=$account['id']?>;
+			<?php }?>
+			<?php }?>
+			var str = [<?=$str?>];
+			$(".auto-searcher").focus().autocomplete(str, {
+				matchContains: true,
+				minChars: 0
+			});
+			function treeviewer(event, data, formatted) {
+				$('#set_account_id').val(akey[formatted]);
+			}
+			$(".auto-searcher").result(treeviewer);
+		});
+		</script>
+		<input type="text" name="cartinfo[account_id]" class="iput auto-searcher" id="set_account_id" value=""/>
+		
+	</td>
+</tr>
+<?php }?>
+<tr>
+	<th></th>
+	<td style="padding:10px 10px;"><sup><input type="checkbox" name="send_notice" value="<?=$bill['id']?>" style="vertical-align:middle;width:auto;" class="iput"/> Отправить уведомление</sup></td>
+</tr>
+<tr>
+	<th>Предоплата (сумма)</th>
+	<td><input type="text" name="cartinfo[prepayment]" value="<?=$bill['prepayment']?>" class="iput"></td>
+</tr>
+<tr>
+	<th></th>
+	<td style="padding:10px 10px;"><sup style="font-weight:bold; color:red;"><input <?=(isset($bill['is_paid']) && $bill['is_paid'])?'checked="checked"':'';?> type="checkbox" name="cartinfo[is_paid]" value="<?=$bill['id']?>" style="vertical-align:middle;width:auto;" class="iput"/> Заказ оплачен! (<?=$bill['payment_name']?>)</sup></td>
+</tr>
+</table>
+
+<?php if (isset($auto) && count($auto)>0){?>
+<table class="shopping-main" width="100%">
+<tr><th colspan="10"><b>Автомобиль</b></th></tr>
+<tr>
+	<th class="td-obj odd">Марка / Модель / Тип / Год / Объем / Л.сил</th>
+	<th class="td-obj odd">Год</th>
+	<th class="td-obj odd">АКПП</th>
+	<th class="td-obj odd">Усилитель руля</th>
+	
+	<th class="td-obj odd">Кондиционер</th>
+	<th class="td-obj odd">ABS</th>
+	<th class="td-obj odd">Полный привод</th>
+	<th class="td-obj odd">Универсал</th>
+	
+	<th class="td-obj odd">VIN</th>
+	<th class="td-obj odd">Дополнительно</th>
+</tr>
+<tr>
+	<td class="td-obj"><?=$auto['car_name']?></td>
+	<td class="td-obj"><?=$auto['car_year']?></td>
+	<td class="td-obj"><?=($auto['car_kpp'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($auto['car_rul'])?'Да':'Нет'?></td>
+	
+	<td class="td-obj"><?=($auto['car_cond'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($auto['car_abs'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($auto['car_quattro'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($auto['car_body'])?'Да':'Нет'?></td>
+	
+	<td class="td-obj"><?=$auto['car_vin']?></td>
+	<td class="td-obj"><?=$auto['car_info']?></td>
+</tr>
+</table>
+<?php }?>
+
+<table width="100%" class="cart-form" cellpadding="2px" id="form-details-list">
+	<thead>
+	<tr>
+		<th align="center" style="width:200px;"><b><?=$translates['status.no.yes']?></b></th>
+		<th align="center"><b><?=$translates['admin.index.name']?></b></th>
+		<th align="center"><b><?=$translates['admin.details.importer']?></b></th>
+		<th align="center"><b><?=$translates['admin.details.boxlim']?></b></th>
+		<th align="center"><b>Закупка</b></th>
+		<th align="center"><b>Закупка(сумма)</b></th>
+		<th align="center"><b>Продажа</b></th>
+		<th align="center"><b>Продажа(сумма)</b></th>
+		<th align="center"><b><?=$translates['comments']?></b></th>
+		<th align="center"><b>Заметка</b></th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody><?php 
+
+var_dump($scSID);
+?>
+	<?php $sum=$i=0;?>
+	<?php foreach ($scSID as $element){?>
+	<?php $i++;?>
+	<tr <?=($i%2)?((isset($sel_item)&&$sel_item==$element['id'])?'style="background:#efffb9;"':'style="background:#f1f1f1;"'):((isset($sel_item)&&$sel_item==$element['id'])?'style="background:#efffb9;"':'');?>>
+		<td style="text-align:center;">
+		
+			<select name="item[<?=$element['id']?>]" class="iput-small">
+			<?php if ($element['ds_id']){?>
+			<option value="<?=$element['ds_id']?>" style="background:#<?=$element['ds_color']?>;" selected>- <?=$element['ds_name']?></option>
+			<option value="0"></option>
+			<?php }?>
+		
+			<option value="0">Новый</option>
+			<?php if (isset($statuses)&&count($statuses)>0){?>
+			<?php foreach ($statuses as $st){?>
+				<option value="<?=$st['id']?>" style="background:#<?=$st['color']?>;"><?=$st['name']?></option>
+			<?php }?>
+			<?php }?>
+			</select>
+			
+			<?php if ($element['IS_ACCOUNT_ACCEPT']&&$element['ds_type']==2){?>
+				<br/><img src="/staffcp/media/images/flag.gif"/><b><?=$translates['admin.accept']?></b>
+			<?php }?>
+		
+		</td>
+		<td>
+			<input class="iput-small" type="text" name="ioarticle[<?=$element['id']?>]" value="<?=$element['article']?>">
+			<input class="iput-small" type="text" name="iobrand[<?=$element['id']?>]" value="<?=$element['brand']?>">
+			<input class="iput-small" type="text" name="iodescr[<?=$element['id']?>]" value="<?=strip_tags(($element['descr_tecdoc'])?$element['descr_tecdoc']:$element['descr'])?>">
+		</td>
+		
+		<td align="center">
+			<?php if ($element['IS_ACCOUNT']){?>
+				<a style="color:#000;" href="/staffcp/accounts/edit/?id=<?=$element['IS_ACCOUNT']?>"><b><img src="/staffcp/media/images/flag.gif"/>AID_<?=$element['IS_ACCOUNT']?></b></a>
+			<?php }else{?>
+				<select name="importer[<?=$element['id']?>]" class="iput-small">
+				<?php if (isset($ImportersModel)&&count($ImportersModel)>0){?>
+					<option value="0"></option>
+					<?php foreach ($ImportersModel as $st){?>
+					<option value="<?=$st['id']?>" <?=($st['id']==$element['imp_id'])?'selected':'';?>><?=$st['name']?></option>
+					<?php }?>
+				<?php }?>
+				</select>
+			<?php }?>
+			<div style="margin-top:2px; display:block;">
+				<strong>Ожидаем (срок пост.)</strong><br>
+				<input type="text" id="time_delivery_wait_dt_<?=$element['id']?>" name="time_delivery_wait_dt[<?=$element['id']?>]" value="<?=(isset($element['time_delivery_wait_dt'])&&$element['time_delivery_wait_dt'])?date("d.m.Y",$element['time_delivery_wait_dt']):''?>" class="iput-small" style="width:80px;"/>
+				<input type="button" id="time_delivery_wait_dt_picker_<?=$element['id']?>" value="&raquo;" class="btn">
+				<script>
+				Calendar.setup({inputField: 'time_delivery_wait_dt_<?=$element['id']?>',button: 'time_delivery_wait_dt_picker_<?=$element['id']?>',date: '<?=(isset($element['time_delivery_wait_dt']) && $element['time_delivery_wait_dt'])?date("d.m.Y",$element['time_delivery_wait_dt']):date('d.m.Y')?>'});
+				Calendar.setup({inputField: 'time_delivery_wait_dt_<?=$element['id']?>',button: 'time_delivery_wait_dt_<?=$element['id']?>',date: '<?=(isset($element['time_delivery_wait_dt']) && $element['time_delivery_wait_dt'])?date("d.m.Y",$element['time_delivery_wait_dt']):date('d.m.Y')?>',eventName: 'focus'});
+				</script>
+			</div>
+		</td>
+		
+		<td align="center"><input type="text" name="count[<?=$element['id']?>]" value="<?=$element['cc']?>" class="iput" style="width:40px;"/></td>
+		
+		<td align="center"><input type="text" name="price_purchase[<?=$element['id']?>]" value="<?=$element['price_purchase']?>" class="iput" style="width:80px;"/></td>
+		<?php $ssp = $element['price_purchase']*$element['cc'];?>
+		<td align="center" style="width:70px;"><?=PriceHelper::number($ssp)?></td>
+		
+		<td align="center"><input type="text" name="price[<?=$element['id']?>]" value="<?=$element['price']?>" class="iput" style="width:80px;"/></td>
+		<?php $ss = $element['price']*$element['cc'];?>
+		<td align="center" style="width:70px;"><?=PriceHelper::number($ss)?></td>
+		
+		<td align="center"><textarea name="descr[<?=$element['id']?>]" class="iput"><?=$element['status_descr']?></textarea></td>
+		<td align="center"><textarea name="sold[<?=$element['id']?>]" class="iput"><?=$element['sold']?></textarea></td>
+		<td align="center">
+			<?php if ($element['bill_account_id'] && $element['balance_minus']==0){?>
+				<b>Пользователь: <a href="/staffcp/accounts/edit/?id=<?=$accountInfo['id']?>"><?=$accountInfo['name']?></a></b><br>
+				Баланс: <span <?=($accountInfo['balance']<0)?'style="color:red;font-weight:bold;"':''?>><?=($accountInfo['balance'])?PriceHelper::universal($accountInfo['balance']):0?></span><br>
+				<input type="checkbox" name="minus[<?=$element['id']?>]" value="1" style="vertical-align:middle;"> <?=$translates['admin.main.minus']?>
+			<?php }?>
+		</td>
+	</tr>
+	<?php $sum += $ss;?>
+	<?php }?>
+	</tbody>
+	<tfoot>
+	<tr>
+		<td colspan="5" style="text-align:right;"><b><?=$translates['sum']?>:</b></td>
+		<td align="center"><?=PriceHelper::number($sum)?></td>
+		<td align="center"><input type="submit" value="<?=$translates['admin.main.save']?>" class="btn btn-blue"></td>
+		<td></td>
+		<td></td>
+		<td align="center"><a onclick="add_item_cart_form();return false;" href="" class="btn btn-green" style="width:140px;">добавить позицию</a></td>
+	</tr>
+	<tr>
+		<td colspan="5"></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="center"><a class="iframe btn btn-green" href="/search/preload/?simpleview=true&simple_account_id=<?=isset($bill['account_id'])?$bill['account_id']:0?>&simple_car_id=<?=isset($auto['id'])?$auto['id']:0?>&simple_scsid=<?=$bill['scSID']?>&article=" style="width:140px;">искать по артикулу</a></td>
+	</tr>
+	<?php if (isset($auto) && count($auto)>0){?>
+	<?php if ($auto['car_id'] && $auto['car_model_id'] && $auto['car_type_id']){?>
+	<tr>
+		<td colspan="5"></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="center"><a class="iframe btn btn-green" href="/mark/id_<?=$auto['car_id']?>/mod/id_<?=$auto['car_model_id']?>/type/id_<?=$auto['car_type_id']?>/?simpleview=true&simple_account_id=<?=isset($bill['account_id'])?$bill['account_id']:0?>&simple_car_id=<?=isset($auto['id'])?$auto['id']:0?>&simple_scsid=<?=$bill['scSID']?>" style="width:140px;">искать по авто</a></td>
+	</tr>
+	<?php }?>
+	<?php }?>
+	<tr>
+		<td colspan="5"></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="center"><a class="btn" href="" style="width:140px;">обновить заказ</a></td>
+	</tr>
+	</tfoot>
+</table>
+</form>
+<?php 
+
+var_dump($statuses);
+var_dump($ImportersModel);
+?>
+<script type="text/javascript">
+function add_item_cart_form(){
+	var str = '<tr style="background:#f1f1f1;">';
+	str += '<td align="center"><select name="add_new[status][]" class="iput-small"><?php if (isset($statuses)&&count($statuses)>0){?><option value="0"></option><?php foreach ($statuses as $st){?><option value="<?=$st['id']?>" style="background:#<?=$st['color']?>;"><?=$st['name']?></option><?php }?><?php }?></select></td>';
+	str += '<td>';
+		str += '<table width="100%">';
+		str += '<tr><td><b>Артикул</b></td><td><input type="text" name="add_new[article][]" value="" class="iput"></td></tr>';
+		str += '<tr><td><b>Бренд</b></td><td><input type="text" name="add_new[brand][]" value="" class="iput"></td></tr>';
+		str += '<tr><td><b>Наименование</b></td><td><input type="text" name="add_new[descr][]" value="" class="iput"></td></tr>';
+		str += '</tr></table>';
+	str += '</td>';
+	str += '<td align="center"><select name="add_new[importer][]" class="iput-small"><?php if (isset($ImportersModel)&&count($ImportersModel)>0){?><option value="0"></option><?php foreach ($ImportersModel as $st){?><option value="<?=$st['id']?>"><?=$st['name']?></option><?php }?><?php }?></select></td>';
+	str += '<td align="center"><input type="text" name="add_new[count][]" value="" class="iput" style="width:80px;"></td>';
+	str += '<td align="center"><input type="text" name="add_new[price_purchase][]" value="" class="iput" style="width:80px;"></td>';
+	str += '<td align="center"></td>';
+	str += '<td align="center"><input type="text" name="add_new[price][]" value="" class="iput" style="width:80px;"></td>';
+	str += '<td align="center"></td>';
+	str += '<td align="center"><textarea name="add_new[status_descr][]" class="iput"></textarea></td>';
+	str += '<td align="center"><textarea name="add_new[sold][]" class="iput"></textarea></td>';
+	str += '<td align="center"><input type="button" onclick="$(this).parent().parent().remove();return false;" value="Удалить" class="btn btn-red"></td>';
+	str += '</tr>';
+	$('#form-details-list').append(str);
+}
+</script>
+
+<style>
+.message-item { display:block; padding:14px; margin:2px; border:solid 1px #dadada; }
+.message-client { background:#f7f7f7; }
+.message-item p { margin:0px; padding:0px; }
+.message-item span { color:green; font-weight:bold; }
+.message-client span { color:blue; font-weight:bold; }
+.red-delete { display:inline-block; color:red !important; font-weight:bold; }
+.red-delete:hover { background:red; color:#FFF !important; }
+.message-descr { display:block; padding:1px 20px; }
+</style>
+<a name="messages"></a>
+<h1>Сообщения заказа №<?=$bill['number']?></h1>
+<?php if (isset($bill_messages) && count($bill_messages)>0){?>
+<?php foreach ($bill_messages as $bm){?>
+<div class="message-item <?=($bm['is_client'])?'message-client':''?>">
+	<p>
+		<a href="/staffcp/index/order/?edit_order=<?=$bill['id']?>&act=delete_message&id_message=<?=$bm['id']?>&bill_id=<?=$bill['id']?>" class="red-delete"><img title="Удалить" src="/staffcp/media/images/trash_16.png" style="vertical-align: top;"></a>
+		<b><?=($bm['is_client'])?'<span>Клиент</span> :: ':'<span>Администратор</span> :: '?><?=date("d.m.Y H:i",$bm['dt'])?></b>
+		<?=($bm['is_new'] && $bm['is_client'] == 1)?'<img title="" alt="" src="/media-templates/icons/new.png" style="vertical-align: top;">':''?>
+	</p>
+	<div class="message-descr">
+	<?=nl2br($bm['message'])?>
+	</div>
+</div>
+<?php }?>
+<?php }else{?>
+<p>Нет сообщений</p>
+<?php }?>
+
+<h1>Отправить сообщение</h1>
+<form action="" method="post">
+<input type="hidden" name="act" value="add_message">
+<input type="hidden" name="number" value="<?=$bill['number']?>">
+<input type="hidden" name="bill_id" value="<?=$bill['id']?>">
+<table width="100%">
+<tr><td><textarea name="message" class="iput" style="width:99%;"></textarea></td></tr>
+<tr><td><input type="submit" value="Отправить сообщение" class="btn btn-blue"></td></tr>
+</table>
+</form>
+

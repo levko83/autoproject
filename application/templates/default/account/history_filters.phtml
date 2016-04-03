@@ -1,0 +1,80 @@
+<style>
+.head-filter { background:#484848; color:#FFF; text-align:left !important; font-weight:bold; }
+.table-sorter-filter { background:#f1f1f1; border-radius:4px; }
+.table-sorter-filter td { padding:3px 3px 3px 11px; margin:0px; vertical-align:middle; text-align:right; font-size:11px;  }
+.table-sorter-filter td.ttl { padding:3px 3px 3px 3px; }
+.table-sorter-filter td input { width:100px; }
+.details-list2 td, .details-list2 th { font-size:11px; }
+.detail-descr { width:150px; }
+.search-filter-name { width:90% !important; }
+</style>
+		
+<table class="ah-filters" width="100%">
+<tr>
+	<td>
+		<div class="btn <?=($_action=='history_orders')?'btn-green':'';?>"><a href="/account/history_orders/">Заказы (<?=(int)$ccOrders?>)</a></div>
+		<div class="btn <?=($_action=='history')?'btn-green':'';?>"><a href="/account/history/">Позиции (<?=$bills?>)</a></div>
+	</td>
+</tr>
+<tr>
+	<td>
+	
+		<script type="text/javascript">
+		jQuery(function($){
+	        $.datepicker.regional['ru'] = {
+				closeText: 'Закрыть',
+				prevText: '&#x3c;Пред',
+				nextText: 'След&#x3e;',
+				currentText: 'Сегодня',
+				monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+				monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+				dayNames: ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
+				dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
+				dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+				weekHeader: 'Не',
+				dateFormat: 'dd.mm.yy',
+				firstDay: 1,
+				isRTL: false,
+				showMonthAfterYear: false,
+				yearSuffix: ''};
+	        $.datepicker.setDefaults($.datepicker.regional['ru']);
+		});
+		$(document).ready(function(){
+			$("#datepicker_from,#datepicker_to").datepicker();
+		});
+		</script>
+		
+		<form action="/account/history/" method="GET">
+		<input type="hidden" name="search[status]" value="<?=$_search['status']?>">
+		<table class="table-sorter-filter" width="100%">
+		<tr>
+			<td colspan="7" class="head-filter">Искать / Сортировать</td>
+		</tr>
+		<tr>
+			<td width="25px"><b>С</b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[from]" id="datepicker_from" value="<?=isset($_search['from'])?$_search['from']:''?>"></td>
+			
+			<td width="70px"><b>№ заказа</b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[number]" value="<?=(isset($_search['number'])?$_search['number']:'');?>"></td>
+			
+			<td width="70px"><b><?=$translates['front.article']?></b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[article]" value="<?=(isset($_search['article'])?$_search['article']:'');?>"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><b>По</b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[to]" id="datepicker_to" value="<?=isset($_search['to'])?$_search['to']:''?>"></td>
+			
+			<td><b><?=$translates['front.brand']?></b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[brand]" value="<?=(isset($_search['brand'])?$_search['brand']:'');?>"></td>
+			
+			<td><b><?=$translates['front.descr']?></b></td>
+			<td class="ttl"><input type="text" class="search-filter-name" name="search[descr]" value="<?=(isset($_search['descr'])?$_search['descr']:'');?>"></td>
+			<td><input type="submit" value="показать" class="btn"></td>
+		</tr>
+		</table>
+		</form>
+		
+	</td>
+</tr>
+</table>

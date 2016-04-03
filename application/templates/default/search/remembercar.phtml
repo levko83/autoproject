@@ -1,0 +1,22 @@
+<?php $img_path = HTTP_ROOT.'/media-templates/img/auto/';?>
+<?php $td_url = '/auto/'.AliasViewHelper::doTraslitSearchAuto($rememberCar['mark_txt']).'-'.$rememberCar['mark_id'].'/'.AliasViewHelper::doTraslitSearchAuto($rememberCar['model_txt']).'-'.$rememberCar['model_id'].'/'.AliasViewHelper::doTraslitSearchAuto($rememberCar['engine_txt']).'-'.$rememberCar['engine_id'];?>
+<div class="selected-car">
+	<div class="h1 t-center index-selected-car">
+		<a href="<?=$td_url?>" style="color:#3a87ad !important;"><?=($rememberCar['mark_txt'])?> <?=($rememberCar['model_txt'])?> <?=($rememberCar['engine_txt'])?></a> 
+		<p>
+			<span class="choose-another-car" id="cac">выбрать другой авто?</span>
+			<span class="choose-another-car" id="discac">снять авто</span>
+		</p>
+	</div>
+	<?=build_tdoc_categories($rememberCar['tree'],$td_url,$where='main',$img_path)?>
+	<script type="text/javascript">
+	jQuery(document).ready(function(){
+		$('#cac').on('click',function(){
+			$('#ssdlist').slideToggle();
+		});
+		$('#discac').on('click',function(){
+			location = '/search/unremembercar/';
+		});
+	});
+	</script>
+</div>

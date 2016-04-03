@@ -1,0 +1,71 @@
+<table width="100%">
+<tr>
+	<td>
+		<div class="parent-menu">
+			<div class="menu-title" style="width:97%;">
+				<div class="menu-left" style="width:100%;">
+					<div class="menu-right" style="width:100%;">
+						<div class="titles">Обработчик AsMetal с полным описанием и кросс номерами</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+		<form action="" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="switcher" value="full"/>
+		<table>
+			<tr>
+				<td><b>Поставщик(код)</b></td>
+				<td><input type="text" name="IMPCODE" value="asmetal" style="width:50px;"/></td>
+				<td><b>Файл</b></td>
+				<td><input type="file" name="upload_file"/></td>
+				<td><b>Бренд</b></td>
+				<td>
+					<select name="BRANDNAME">
+						<option value="ASMETAL">ASMETAL</option>
+						<option value="DOGRU">DOGRU</option>
+						<option value="BESA">BESA</option>
+					</select>
+				</td>
+				<td>
+					<input type="submit" value="Загрузить" onclick="$('#ajax').show();" class="btn btn-blue">
+					<div id="ajax" style="display:none;">Загрузка, пожалуйста подождите...</div>
+				</td>
+			</tr>
+		</table>
+		<div style="padding:10px;">
+		<b style="color:red;">Операции для версии 2.9 и более:</b>
+		<table>
+		<tr>
+			<td>
+				<select name="parse[delprice]" class="iput" style="width:100%;">
+					<option value="0">Добавить прайс к поставщику</option>
+					<option value="1">Удалить предыдущий прайс поставщика</option>
+				</select>
+			</td>
+			<td>
+				<input type="text" name="parse[currency]" id="use-currency" value="0" class="iput" style="border:solid 2px #89db1f;"/> <b>курс пересчета (для единой валюты)</b><br/>
+				<b style="font-size:10px;">USD: <a href="#" onclick="$('#use-currency').val('<?=$currency?>');return false;" style="font-size:10px;text-decoration:none;border-bottom:dotted 1px;"><?=$currency?></a>. EUR: <a href="#" onclick="$('#use-currency').val('<?=$currency_eur?>');return false;" style="font-size:10px;text-decoration:none;border-bottom:dotted 1px;"><?=$currency_eur?></a>.</b>
+			</td>
+		</tr>
+		</table>
+		</div>
+		</form>
+		<div style="padding:10px;">
+			<b style="color:red;">Важно:</b> Код поставщика <b>asmetal</b><br/>
+			<b style="color:red;">Инструкция:</b> Скачать прайс-лист:<br/>
+			<a target="_blank" href="http://asmetal.by/show_price_3">Прайс AsMetal (Excel)</a><br/>
+			<a target="_blank" href="http://asmetal.by/show_price_4">Прайс Dogru - Подушки двигателя, опоры амортизатора, пыльники, сайленблоки, крепления глушителя и др.</a><br/>
+			<a target="_blank" href="http://asmetal.by/show_price_5">Прайс BESA - Рычаги</a><br/>
+			Удаляем первые 6 строк и все остальные столбцы после 6 столбца.<br/>
+			Должно получиться: 1. номер 2. Оригинашльные номер и название 3. Кроссы (Коды) 4. Описание авто 5. Кол-во 6. Цена<br/>
+			Сохраняем в формат csv.
+			<br/>			
+			<p style="font-size:10px;"><b>Примичание:</b> Возможно отображение ошибки сервера 504, 500 во время загрузки данных, данная ошибка не означает, что парсер закончил отработку данных, загрузка продолжается. Сверка данных производится в разделе <a href="/staffcp/details/">список запчастей</a> по поставщику, количеству загруженных позиций в соответствии с исходным прайсом.</p>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p style="text-align:center;"><a href="/staffcp/harvesterclaas/#tab-2">Назад</a></p>

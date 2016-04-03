@@ -1,0 +1,228 @@
+<?php if (!isset($ajax)){?>
+<div class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+	<li class="ui-state-default ui-corner-top"><a href="/staffcp/index/crm/#tab-1" class="ui-tabs-anchor"><span>Список позиций</span></a></li>
+	<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active"><a href="" class="ui-tabs-anchor"><span>Список заказов</span></a></li>
+	<li class="ui-state-default ui-corner-top"><a href="/staffcp/index/crm/#tab-2" class="ui-tabs-anchor"><span>Заявки поставщику</span></a></li>
+	<li class="ui-state-default ui-corner-top"><a href="/staffcp/index/crm/#tab-3" class="ui-tabs-anchor"><span>Отправленные заявки</span></a></li>
+</ul>
+<div style="padding: 3px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+<?php }?>
+	
+<?php if (!$not_view_filters){?>
+	<?php $this->block('index/crm/orders_filters_list');?>
+<?php }?>
+
+<h1 class="h1-header">Список заказов</h1>
+<?php
+	$uri = $_SERVER['REQUEST_URI'];
+	$uri = preg_replace("|&?page=[0-9]+&?|", "", $uri);
+	$uri = preg_replace("|&?ajax=[A-z]+&?|", "", $uri);
+	$has_params = (strpos($uri, "?") !== false);
+	if ($has_params) {
+		$uri .= "&";
+	}
+	else {
+		$uri .= "?";
+	}
+?>
+<?php if (isset($totalPages) && $totalPages>1) {?>
+	<div class="simple-paging" style="float:none;text-align:center;padding:7px 0px 2px 0px;">
+		Страницы: <?=PagingViewHelper::paging($uri."page=:page:",$totalPages,$currentPage);?>
+	</div>
+	<div class="clear"></div>
+<?php }?>
+
+<form action="/staffcp/index/crm_list_orders/" method="post">
+<?php if(isset($search['number'])&&$search['number']){?>
+<input type="hidden" name="is_crm_redirect" value="<?=$search['number']?>">
+<?php }?>
+<table class="details-list orders-grid views-pos" cellpadding="0px" cellspacing="0px" width="100%">
+<thead>
+<tr style="background-color:#F0FCD6;">
+	<td style="border-top:1px solid #DADADA;" align="center"><input type="submit" value="сохранить" class="btn btn-blue"></td>
+	<td colspan="21" style="border-top:1px solid #DADADA;"></td>
+</tr>
+<tr>
+	<td style="width:150px;" class="tdcrmlistor">Документы/Менеджер/Офис</td>
+	<td style="width:150px;" class="tdcrmlistor">Статус/Уведомления</td>
+	<td class="tdcrmlistor">Дата/Время</td>
+	<td class="tdcrmlistor">Номер заказа</td>
+	<td class="tdcrmlistor">Позиций</td>
+	<td class="tdcrmlistor">Сумма<br/>Предоплата</td>
+	<td class="tdcrmlistor">Оплачено</td>
+	<td class="tdcrmlistor">Долг</td>
+	<td class="tdcrmlistor">Доставка</td>
+	<td class="tdcrmlistor">Адрес</td>
+	<td class="tdcrmlistor"><img src="/media-templates/icons/car.png"/></td>
+	<td class="tdcrmlistor">Клиент</td>
+	<td class="tdcrmlistor">Телефон</td>
+	<td class="tdcrmlistor">Город</td>
+	<td class="tdcrmlistor">Заметка о клиенте</td>
+	<td style="text-align:center;"><img src="/media-templates/icons/comment.png" title="" /></td>
+	<td style="text-align:center;"><img src="/staffcp/media/images/printer.png" title="" /></td>
+	<td style="text-align:center;"><img src="/staffcp/media/images/pencil_16.png" title="<?=$translates['admin.main.edit']?>" /></td>
+	<td style="text-align:center;"><img src="/staffcp/media/images/trash_16.png" title="<?=$translates['admin.main.delete']?>" /></td>
+</tr>
+</thead>
+<tbody>
+<?php $s1=$s2=$s3=0; if (isset($bills) && count($bills)>0){?>
+<?php foreach ($bills as $dd){?>
+
+<?php 
+/* var_dump($dd);
+if($dd['total_sum']>=$dd['free_from']) {
+	$dd['delivery_price'] =0;
+} */
+$total_sum = ($dd['total_sum'] + $dd['delivery_price']); $s1 += $total_sum;?>
+<?php $payed_total_sum = ($dd['delivery_set_balance'])?($dd['payed_total_sum'] + $dd['delivery_price']):($dd['payed_total_sum']); $s2 += $payed_total_sum;?>
+<?php $dolg = ($total_sum-$payed_total_sum); $s3 += $dolg;?>
+
+<tr bgcolor="<?=($dd['color'])?'#'.$dd['color']:'';?>">
+	<td align="center">
+		
+		<?php if (!$isManager){?>
+		<select name="office[<?=$dd['id']?>]" style="width:100px;min-width:150px;" class="iput">
+			<option value="">Офис (выбрать)</option>
+			<option value=""></option>
+			<?php if (isset($offices) && count($offices)>0){?>
+			<?php reset($offices); foreach ($offices as $office){?>
+			<option value="<?=$office['office_id']?>" <?=($office['office_id'] == $dd['office_id'])?'selected':'';?>><?=$office['city_name']?> &raquo; <?=$office['office_name']?></option>
+			<?php }?>
+			<?php }?>
+		</select>
+		<?php }?>
+		
+		<select name="managers[<?=$dd['id']?>]" style="width:100px;min-width:150px;" class="iput">
+			<option value="">Менеджер (выбрать)</option>
+			<option value=""></option>
+			<?php if (isset($managers) && count($managers)>0){?>
+			<?php reset($managers); foreach ($managers as $manager){?>
+			<option value="<?=$manager['id']?>" <?=($manager['id'] == $dd['manager_id'])?'selected':'';?>><?=$manager['name']?> (<?=$manager['city']?> / <?=$manager['office']?>)</option>
+			<?php }?>
+			<?php }?>
+		</select>
+		
+		<div class="cdocumentpick"><a href="#" onclick="$('#docs-<?=$dd['id']?>').toggle();return false;"><img src="/media-templates/icons/lightbulb.png" alt="" title="">&nbsp;Документы</a></div>
+		<div class="class-documents" id="docs-<?=$dd['id']?>">
+			<p><a href="#" onclick="$(this).parent().parent().hide();return false;"><img src="/media-templates/img/cross.png"></a></p>
+			<p><a href="/staffcp/documents/index/f/OrderBill/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_word.png" alt="" title="">&nbsp;Товарный&nbsp;чек</a></p>
+			<p><a href="/staffcp/documents/index/f/AcceptanceCertificateBill/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_word.png" alt="" title="">&nbsp;Акт-приема&nbsp;передачи</a></p>
+			<p><a href="/staffcp/documents/index/f/AnnexBill/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_word.png" alt="" title="">&nbsp;Бланк&nbsp;заказа</a></p>
+			<p><a href="/staffcp/documents/index/f/AnnouncementBill/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_word.png" alt="" title="">&nbsp;Квитанция&nbsp;банка</a></p>
+			<p><a href="/staffcp/documents/index/f/bill/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_word.png" alt="" title="">&nbsp;Счет&nbsp;на&nbsp;оплату</a></p>
+			<p><a href="/staffcp/documents/index/f/BillFacture/?billId=<?=$dd['id']?>"><img src="/media-templates/icons/page_white_excel.png" alt="" title="">&nbsp;Счет-фактура</a></p>
+		</div>
+		
+	</td>
+	<td style="text-align: center;">
+		<?php if (isset($statuses)&&count($statuses)>0){?>
+		<select name="items_save_statuses[<?=$dd['id']?>]" style="padding:2px;width:100px;font-size:11px;" class="iput">
+			<?php if ($dd['status']){?>
+			<option value="<?=$dd['status']?>" style="background:#<?=$dd['color']?>;" selected>- <?=$dd['statusName']?></option>
+			<option value="0"></option>
+			<?php }?>
+			
+			<option value="0">Новый</option>
+			<?php foreach ($statuses as $st){?>
+			<option value="<?=$st['id']?>" style="background:#<?=$st['color']?>;"><?=$st['name']?></option>
+			<?php }?>
+		</select>
+		<?php }?>
+		<a href="/staffcp/index/crm_list_orders/?email_order_id=<?=$dd['id']?><?=(isset($search['number'])&&$search['number'])?'&is_crm_redirect='.$search['number']:'';?>"><img alt="Отправить E-mail уведомление" title="Отправить E-mail уведомление" src="/media-templates/icons/email_go.png"></a>
+		<a href="/staffcp/index/crm_list_orders/?sms_order_id=<?=$dd['id']?><?=(isset($search['number'])&&$search['number'])?'&is_crm_redirect='.$search['number']:'';?>"><img alt="Отправить SMS уведомление" title="Отправить SMS уведомление" src="/media-templates/icons/email_open.png"></a>
+		
+		<?=(isset($_REQUEST['email'])&&$_REQUEST['email']==$dd['id'])?'<b style="font-size:10px;display:block;text-align:center;">email отправлено</b>':'';?>
+		<?=(isset($_REQUEST['sms'])&&$_REQUEST['sms']==$dd['id'])?'<b style="font-size:10px;display:block;text-align:center;">sms отправлено</b>':'';?>
+		<input type="checkbox" name="set_items_status_order[]" value="<?=$dd['id']?>"> обновить статус позиций
+	</td>
+	<td class="tdcrmlistor">
+		<?=date("d.m.Y H:i:s",$dd['dt'])?>
+		<?=($dd['bill_dt_closed'])?'<div style="display:block; font-size:10px; font-weight:bold; color:blue;"><img src="/media-templates/icons/accept.png" alt="Заказ выполнен! Ура!">'.date("d.m.Y H:i:s",$dd['bill_dt_closed']).'</div>':''?>
+	</td>
+	<td class="tdcrmlistor" style="width:100px;">
+	
+		<?php /* * * * * * */?>
+		<a href="/staffcp/index/crm/?search[number]=<?=$dd['number']?><?php if ($dd['account_id']){?>&search[account_id]=<?=$dd['account_id']?><?php }?>"><b>№-<?=$dd['number']?></b></a>
+		
+		<?php if ($dd['is_paid']){?>
+			<img src="/media-templates/icons/accept.png" alt="Заказ оплачен! (<?=($dd['payment_name'])?addslashes($dd['payment_name']):'-'?>)" title=""Заказ оплачен! (<?=($dd['payment_name'])?addslashes($dd['payment_name']):'-'?>)/>
+		<?php } else {?>
+			<a style="color:red;" href="/staffcp/index/order/?edit_order=<?=$dd['id']?>"><img src="/media-templates/icons/coins.png" alt="Заказ НЕ оплачен! (<?=($dd['payment_name'])?addslashes($dd['payment_name']):'-'?>)" title="Заказ НЕ оплачен! (<?=($dd['payment_name'])?addslashes($dd['payment_name']):'-'?>)"/></a>
+		<?php }?>
+		
+		<?php if (!$dd['is_bill_byfrontend']){?>
+		<img src="/media-templates/icons/status_online.png" alt="Заказ оформлен через систему заказов (менеджером)" title="Заказ оформлен через систему заказов (менеджером)"/>
+		<?php }?>
+		
+		<a href="/cart/md5/key/<?=$dd['md5_hash']?>/" target="_blank" style="font-size:11px;"><img src="/media-templates/icons/resultset_next.png" alt="страница заказа клиента" title="страница заказа клиента"></a>
+		
+		<?php if ($dd['ispayback']){?>
+		<a href="/staffcp/index/crm/?search[number]=<?=$dd['number']?><?php if ($dd['account_id']){?>&search[account_id]=<?=$dd['account_id']?><?php }?>"><img src="/media-templates/icons/flag_red.png" alt="Внимание! Обнаружен отказ от позиции!" title="Внимание! Обнаружен отказ от позиции!"/></a>
+		<?php }?>
+		<?php /* * * * * * */?>
+		
+	</td>
+	<td class="tdcrmlistor"><a href="/staffcp/index/crm/?search[number]=<?=$dd['number']?><?php if ($dd['account_id']){?>&search[account_id]=<?=$dd['account_id']?><?php }?>"><b><?=$dd['total_items']?></b></a></td>
+	<td class="tdcrmlistor">
+		<?=PriceHelper::number($total_sum)?><br/>
+		Предоплата: <?=PriceHelper::number($dd['prepayment'])?>
+	</td>
+	<td class="tdcrmlistor"><?=PriceHelper::number($payed_total_sum)?></td>
+	<td class="tdcrmlistor"><?=PriceHelper::number($dolg)?></td>
+	<td class="tdcrmlistor"><?=$dd['delivery']?></td>
+	<td class="tdcrmlistor">
+		<?=$dd['delivery_addess']?>
+		<?php if($dd['time_from'] || $dd['time_to']){?>
+		<img src="/media-templates/icons/clock.png" alt="Время доставки c <?=$dd['time_from']?> по <?=$dd['time_to']?>" title="Время доставки c <?=$dd['time_from']?> по <?=$dd['time_to']?>">
+		<?php }?>
+	</td>
+	<td style="text-align:center;">
+	<?php if ($dd['carname'] || $dd['caryear']){?>
+		<img src="/media-templates/icons/car.png" alt="<?=$dd['carname']?> <?=$dd['caryear']?>" title="<?=$dd['carname']?> <?=$dd['caryear']?>">
+	<?php }?>
+	</td>
+	<td align="center"><?=($dd['account_name'])?'<a href="/staffcp/accounts/edit/?id='.$dd['account_id'].'">'.$dd['account_name'].'</a>':$dd['f1']?></td>
+	<td align="center"><?=($dd['account_name'])?'<a href="/staffcp/accounts/edit/?id='.$dd['account_id'].'">'.$dd['account_phones'].'</a>':$dd['f2']?></td>
+	<td><?=$dd['account_cityname']?></td>
+	<td><?=$dd['account_descr']?></td>
+	<td style="font-weight:bold; margin:0px 0px 3px 0px; text-align:center;">
+		<?php $CCMESSAGES = BillsModel::getNewMessages($dd['number']);?>
+		<?php if ($CCMESSAGES){?>
+			<a style="font-size:11px; font-weight:bold; color:red;" href="/staffcp/index/order/?edit_order=<?=$dd['id']?>&unset_new=true#messages"><img title="" alt="" src="/media-templates/icons/comment.png" style="vertical-align: top;">(<?=$CCMESSAGES?>)</a>
+		<?php }else{?>
+			<a href="/staffcp/index/order/?edit_order=<?=$dd['id']?>&unset_new=true#messages"><img title="" alt="" src="/media-templates/icons/comment.png" style="vertical-align: top;"></a>
+		<?php }?>
+	</td>
+	<td align="center"><a href="/staffcp/index/printbill/?id=<?=$dd['number']?>"><img src="/staffcp/media/images/printer.png"/></a></td>
+	<td align="center"><a href="/staffcp/index/order/?edit_order=<?=$dd['id']?>"><img border="0" src="/staffcp/media/images/pencil_16.png" title="<?=$translates['admin.main.edit']?>"></a></td>
+	<td align="center"><?php if (!$isManager){?><a onclick="return confirm('<?=$translates['admin.main.confirm']?>');" href="/staffcp/index/crm_list_orders/?del=<?=$dd['id']?>"><img src="/staffcp/media/images/trash_16.png" title="<?=$translates['admin.main.delete']?>" /></a><?php }else{?>x<?php }?></td>
+</tr>
+<?php }?>
+<?php }?>
+</tbody>
+<tr style="background-color:#F0FCD6;">
+	<td style="border-top:1px solid #DADADA;" align="center"><input type="submit" value="сохранить" class="btn btn-blue"></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td class="tdcrmlistor"><?=PriceHelper::number($s1)?></td>
+	<td class="tdcrmlistor"><?=PriceHelper::number($s2)?></td>
+	<td class="tdcrmlistor"><?=PriceHelper::number($s3)?></td>
+	<td colspan="20" style="border-top:1px solid #DADADA;"></td>
+</tr>
+</table>
+</form>
+
+<div class="clear"></div>
+<?php if (isset($totalPages) && $totalPages>1) {?>
+<div class="simple-paging" style="float:none;text-align:center;padding:7px 0px 2px 0px;">
+	Страницы: <?=PagingViewHelper::paging($uri."page=:page:",$totalPages,$currentPage);?>
+</div>
+<div class="clear"></div>
+<?php }?>
+
+<?php if (!isset($ajax)){?>
+</div>
+<?php }?>

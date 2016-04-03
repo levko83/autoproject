@@ -1,0 +1,80 @@
+<!-- .requere -->
+<div class="main">
+
+<h1 class="uppercase"><?=$translates['listofcars']?></h1>
+<div class="breadcrumbs bottom-20"><?=$bread?></div>
+
+<table width="100%">
+<tr>
+	<td width="50%" style="vertical-align:top;padding:10px;background:#F8F8F8;border-radius:5px 5px 5px 5px;">
+	
+		<div class="h2">Автомобили каталога Tecdoc</div>
+		<?php if (isset($all_cars)&&count($all_cars)>0){?>
+			<table class="autolist">
+			<?php foreach ($all_cars as $dd){?>
+			<tr>
+				<td style="border-bottom:dotted 1px #dadada;">
+				<?php if ($dd['car_id'] && $dd['car_model_id'] && $dd['car_type_id']){?><a href="<?=HTTP_ROOT?>/auto/mark-<?=$dd['car_id']?>/model-<?=$dd['car_model_id']?>/type-<?=$dd['car_type_id']?>"><?php }?>
+					<?php if($dd['car_photo']){?>
+					<img class="photo-class-img" src="<?=HTTP_ROOT?>/media/files/data/normal-<?=$dd['car_photo']?>">
+					<?php }else{?>
+					<img class="photo-class-img" src="<?=HTTP_ROOT?>/media-templates/img/car.png">
+					<?php }?>
+					<p><b><?=$dd['car_name']?></b></p>
+				<?php if ($dd['car_id'] && $dd['car_model_id'] && $dd['car_type_id']){?></a><?php }?>
+					<p class="top-10"><?=$dd['car_vin']?></p>
+					<p class="top-10"><?=($dd['car_year'])?> <?=($dd['car_kpp'])?'АКПП':''?> <?=($dd['car_rul'])?'Усилитель руля':''?> <?=($dd['car_cond'])?'Кондиционер':''?> <?=($dd['car_abs'])?'ABS':''?> <?=($dd['car_quattro'])?'Полный привод':''?> <?=($dd['car_body'])?'Универсал':''?></p>
+					
+					<p>
+						<?php if ($dd['url_to']){?>
+						<a class="custom-button gradient f-none top-10" href="<?=HTTP_ROOT?><?=$dd['url_to']?>"><span><img title="" alt="" src="<?=HTTP_ROOT?>/media-templates/icons/note.png"> <b>Запчасти для ТО</b></span></a> 
+						<?php }?>
+						
+						<a class="custom-button gradient f-none top-10" href="<?=HTTP_ROOT?>/vin/?mark_id=<?=$dd['id']?>"><span><img title="" alt="" src="<?=HTTP_ROOT?>/media-templates/icons/note.png"> Запрос по Vin</span></a> 
+						
+						<a class="custom-button gradient f-none top-10" href="?action=delete_car&car_id=<?=$dd['id']?>" title="<?=$translates['front.delete']?>"><span><img border="0" src="<?=HTTP_ROOT?>/media-templates/img/delete.png" title="<?=$translates['front.delete']?>" alt="<?=$translates['front.delete']?>"/> удалить</span></a>
+						
+					</p>
+					
+					<div class="clear"></div>
+				</td>
+			</tr>
+			<?php }?>
+			</table>
+			
+		<?php } else {?>
+			<table class="table-info">
+			<tr>
+				<td><?=$translates['notautos']?></td>
+			</tr>
+			</table>
+		<?php }?>
+		
+		<?php $this->block('account/add_car');?>
+	
+	</td>
+	<?php if (INSTALL_TO){?>
+	<td width="50%" style="vertical-align:top;padding:10px;">
+	
+		<div class="h2">Автомобили каталога ТО</div>
+		<?php if (isset($all_cars_to) && count($all_cars_to)>0){?>
+		<table class="autolist">
+		<?php foreach ($all_cars_to as $act){?>
+		<tr>
+			<td style="border-bottom:dotted 1px #dadada;">
+			<a href="<?=HTTP_ROOT?>/to/index/car_id/<?=$act['car_id']?>/model_id/<?=$act['model_id']?>/type_id/<?=$act['type_id']?>/"><?=$act['name']?></a><br/>
+			<a class="custom-button gradient f-none top-10" href="?action=delete_car_to&car_id=<?=$act['id']?>" title="<?=$translates['front.delete']?>"><span><img border="0" src="<?=HTTP_ROOT?>/media-templates/img/delete.png" title="<?=$translates['front.delete']?>" alt="<?=$translates['front.delete']?>"/> удалить</span></a>
+			</td>
+		</tr>
+		<?php }?>
+		</table>
+		<?php } else {?>
+			<p><a class="custom-button gradient f-none top-10" href="<?=HTTP_ROOT?>/to/"><span><?=$translates['front.add.car.todo']?></span></a></p>
+		<?php }?>
+	
+	</td>
+	<?php }?>
+</tr>
+</table>
+
+</div>

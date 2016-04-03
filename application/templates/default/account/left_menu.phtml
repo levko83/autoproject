@@ -1,0 +1,10 @@
+<section class="section_offset">
+                <h3><?=$translates['profilename']?></h3>
+                <ul class="theme_menu">
+                    <li <?php if ($_SERVER['REQUEST_URI']=="/account/"){?>class="active"<?php }?>><a href="<?=HTTP_ROOT?>/account/"><?=$translates['front.profile.room']?></a></li>
+                    <li <?php if ($_SERVER['REQUEST_URI']=="/account/history_orders/"){?>class="active"<?php }?>><a href="<?=HTTP_ROOT?>/account/history_orders/"><?=$translates['front.profile.orders']?></a></li>
+                    <li <?php if ($_SERVER['REQUEST_URI']=="/account/password/"){?>class="active"<?php }?>><a href="<?=HTTP_ROOT?>/account/password/"><?=$translates['front.changepassword']?></a></li>
+                    <li><a href="<?=HTTP_ROOT?>/account/logout/"><?=$translates['front.exit']?></a></li>
+                    <li><a href="http://autoresurs.de/cart/" style="background: #FF4557; color: #fff;">Zur Kasse</a></li>
+                </ul>
+            </section>

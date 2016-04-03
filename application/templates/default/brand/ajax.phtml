@@ -1,0 +1,17 @@
+<div style="overflow:scroll;width:600px;height:400px;">
+
+	<h1><?=$data['BRA_BRAND']?></h1>
+	
+	<?php if ($data['BRA_IMG']){?><img src="<?=HTTP_ROOT?>/media/files/brands/<?=$data['BRA_IMG']?>" style="float:left;padding:0px 10px 10px 0px;"/><?php }?>
+	
+	<div style="text-align:justify;padding:10px;">
+	
+		<?php if ($data['BRA_CONTENT']){?>
+			<?=$data['BRA_CONTENT']?>
+		<?php }else{?>
+			<?=$translates['brandinfotodoinfo']?>
+		<?php }?>
+	
+	</div>
+	
+</div>

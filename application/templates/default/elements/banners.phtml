@@ -1,0 +1,33 @@
+<?php
+function viewBanners($data='') {
+	$ret = '';
+	if (isset($data) && count($data)>0){
+		switch ($data['file_type']) {
+			case 'img': 
+			$ret .= '<center class="bottom-20">';
+				$ret .= '<a target="_blank" href="'.HTTP_ROOT.'/click/'.$data['id'].'/" title="'.addslashes($data['name']).'">';
+//					$ret .= '<div class="h2 uppercase">'.addslashes($data['name']).'</div>';
+					$ret .= '<img class="bannerViewZoneClass" title="'.addslashes($data['name']).'" src="'.HTTP_ROOT.'/media/files/banners/'.$data['file'].'" width="'.$data['width'].'px" />';
+				$ret .= '</a>';
+			$ret .= '</center>';
+				break;
+			case 'swf': 
+				$ret .= '<div class="bottom-20" style="width:'.$data['width'].'px;height:'.$data['height'].'px;" onclick="location=\'http://'.$_SERVER['SERVER_NAME'].'/click/'.$data['id'].'/\';">';
+					$ret .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="'.$data['width'].'" height="'.$data['height'].'" title="'.addslashes($data['name']).'">';
+						$ret .= '<param name="movie" value="'.HTTP_ROOT.'/media/files/banners/'.$data['file'].'">';
+						$ret .= '<param name="quality" value="high">';
+						$ret .= '<param name="wmode" value="opaque">';
+						$ret .= '<param name="BGCOLOR" value="#FFFFFF">';
+						$ret .= '<embed src="'.HTTP_ROOT.'/media/files/banners/'.$data['file'].'" width="'.$data['width'].'" height="'.$data['height'].'" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" bgcolor="#FFFFFF" wmode="opaque"></embed>';
+					$ret .= '</object>';
+				$ret .= '</div>';
+				break;
+			case 'txt': 
+					$ret .= '<a target="_blank" href="'.HTTP_ROOT.'/click/'.$data['id'].'/" title="'.addslashes($data['name']).'">'.$data['name'].'<br/>'.strip_tags($data['comment']).'</a>';
+				break;
+			default: break;
+		}
+	}
+	return $ret;
+}
+?>

@@ -1,0 +1,125 @@
+<script type="text/javascript">
+function gonewurl(id){
+	location = '/staffcp/details/?select_imports='+id;
+}
+</script>
+<?php 
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<h1 class="h1-header">
+	<span><?=$translates['admin.main.basedetails']?> (<?=$cc?>)</span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+		<a href="/staffcp/wbs_correct/" class="btn btn-green">Корректировка брендов</a>
+		<a href="/staffcp/brands_self/" class="btn btn-green">Обучение брендов</a>
+		<?php }?>
+	<?php }?>
+</h1>
+
+<div class="h1-header border-blk">
+<center>
+<form action="" method="GET">
+<table>
+	<tr>
+		<td><b>Поставщик</b></td>
+		<td align="center" style="padding:0px 5px;">
+			<select class="iput" onchange="gonewurl(this.value);" style="width:212px;">
+			<?php if (isset($imports) && count($imports)>0){?>
+				<option></option>
+			<?php foreach ($imports as $dd){?>
+				<option value="<?=$dd['id']?>" <?=(isset($select_imports) && $select_imports==$dd['id'])?'selected':'';?>><?=$dd['name']?> (<?=$dd['code']?>)</option>
+			<?php }?>
+			<?php }?>
+			</select>
+		</td>
+		<?php if ($select_imports){?>
+		<td>
+			<a href="/staffcp/details/?clear_imports=<?=$select_imports?>" class="btn btn-red">Очистить поставщика <img src="/staffcp/media/images/trash_16.png" title="<?=$translates['admin.main.cleardetails']?>"></a>
+		</td>
+		<?php }?>
+		<td><a href="/staffcp/index/clear_prices/" class="btn btn-red">Очистить всю базу цен</a></td>
+	</tr>
+	<tr>
+		<td><b><?=$translates['admin.main.searchart']?></b></td>
+		<td align="center" style="padding:0px 5px;"><input type="text" name="ARTID" value="<?=isset($_REQUEST['ARTID'])?$_REQUEST['ARTID']:''?>" class="iput" style="width:200px;"></td>
+		<td>
+			<input type="submit" value="<?=$translates['admin.main.search']?>" class="btn btn-blue">
+			<a href="/staffcp/details/" class="btn btn-red"><?=$translates['admin.main.reset']?></a>
+		</td>
+	</tr>
+</table>
+</form>
+</center>
+</div>
+
+<?php if (isset($select_imports)){?>
+	<?=Paging_cssViewHelper::paging('/staffcp/details/?select_imports='.$select_imports.'&page=',$pages_num,$page);?>
+<?php }elseif ($paginations){?>
+	<?=Paging_cssViewHelper::paging('/staffcp/details/?page='.$select_imports.'&page=',$pages_num,$page);?>
+<?php }?>
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<table class="cms-list" style="width:98%;">
+	<thead>
+	<tr>
+		<?php if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?php }?>
+		<?php foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?php }?>
+		<th>Диагностика цены</th>
+		<?php if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?php }?>
+		<?php if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?}?>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($data as $row){?>
+	
+		<?php $dataModel->setValues($row);?>
+		
+		<tr id="key[<?=$row[$indexField];?>][]">
+			<?php if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?}?>
+			<?php foreach ($dataModel->getListFields() as $field){?>
+			<td><?=$field->getViewValue($row);?></td>
+			<?php }?>
+			<td><a href="/staffcp/details/diagnostic/?id=<?=$row[$indexField]?>">Диагностика</a></td>
+			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?php if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?php }?>
+			
+			<?php if (!in_array("delete", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+			<?php }?>
+			
+			<?php } else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?php }?>
+		</tr>
+		
+	<?php }?>
+	</tbody>
+</table>
+
+<?php if (isset($select_imports)){?>
+<div class="paging-ajax">
+	<?=PagingViewHelper::paging('/staffcp/details/?select_imports='.$select_imports.'&page=:page:',$pages_num,$page)?>
+</div>
+<?php }elseif ($paginations){?>
+<div class="paging-ajax">
+	<?=PagingViewHelper::paging('/staffcp/details/?page=:page:',$pages_num,$page)?>
+</div>
+<?php }?>
+
+<?php if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<div class="h1-header top-10">
+	<input type="submit" value="<?=$translates['admin.main.delete']?>" id="submit_action" class="btn btn-red">
+</div>
+<?php }?>
+</form>

@@ -1,0 +1,418 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+
+<?php
+	$fields_importer = Register::get('mode_view_fields_importer');
+	$curExchange = Register::get('curExchange');
+?>
+<!-- .requere -->
+<div class="main w75percent static">
+
+	<div itemscope itemtype="http://schema.org/Product">
+	<h1 class="uppercase"><span itemprop="name"><?=$data['name']?></span></h1>
+	</div>
+	
+	<div class="breadcrumbs">
+		<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/" itemprop="url"><span itemprop="title">Главная</span></a> &rarr;</span>
+		<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/category/" itemprop="url"><span itemprop="title">Каталог</span></a> &rarr;</span>
+		<?php if(isset($bread_crumbs)&&count($bread_crumbs)>0){?>
+			<?php foreach ($bread_crumbs as $crumb){?>
+				<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($crumb['name'])?>-<?=$crumb['id']?>" itemprop="url"><span itemprop="title"><?=$crumb['name']?></span></a> &rarr;</span>
+			<?php }?>
+		<?php }?>
+		<?=$data['name']?>
+	</div>
+	
+	<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name" class="no-display"><?=$data['name']?></span>
+	<table cellpadding="0" cellspacing="0" class="td-center top-20" width="100%">
+	<tr>
+		<td valign="top" width="300px">
+		<?php if ($data['is_image_noresize']){?>
+			<?php if (!empty($data['img1'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=StaticimgViewHelper::chk('autotovar',''.$data['img1'])?>"><img itemprop="image" class="product-img-inside2" src="<?=StaticimgViewHelper::chk('autotovar',$data['img1'])?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		<?php }else{?>
+			<?php if (!empty($data['img1'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=StaticimgViewHelper::chk('products',''.$data['img1'])?>"><img itemprop="image" class="product-img-inside2" src="<?=StaticimgViewHelper::chk('products',$data['img1'])?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		<?php }?>
+		<?php if (!empty($data['img2'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=HTTP_ROOT?>/media/files/products/<?=$data['img2']?>"><img class="product-img-inside2" src="<?=HTTP_ROOT?>/media/files/products/normal-<?=$data['img2']?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		<?php if (!empty($data['img3'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=HTTP_ROOT?>/media/files/products/<?=$data['img3']?>"><img class="product-img-inside2" src="<?=HTTP_ROOT?>/media/files/products/normal-<?=$data['img3']?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		<?php if (!empty($data['img4'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=HTTP_ROOT?>/media/files/products/<?=$data['img4']?>"><img class="product-img-inside2" src="<?=HTTP_ROOT?>/media/files/products/normal-<?=$data['img4']?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		<?php if (!empty($data['img5'])){?><a rel="lightbox" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>" href="<?=HTTP_ROOT?>/media/files/products/<?=$data['img5']?>"><img class="product-img-inside2" src="<?=HTTP_ROOT?>/media/files/products/normal-<?=$data['img5']?>" title="<?=stripslashes($data['name'])?>" alt="<?=stripslashes($data['name'])?>"/></a><?php }?>
+		</td>
+		<td valign="top">
+		
+			<style>
+			.wprice { margin:0px !important; text-align:left; }
+			</style>
+			<?php $mode_view_articles = Register::get('mode_view_articles');?>
+			<table class="table-info td-center prodcut-prices" width="100%">
+			<?php if (isset($prices) && count($prices)>0){?>
+			<thead>
+			<tr>
+				<?php if ($fields_importer){?>
+				<th class="thbg" align="center">Направление</th>
+				<?php }?>
+				<th class="thbg" align="center">Наличие</th>
+				<th class="thbg" align="center">Ожид.срок (дней)</th>
+				<th class="thbg t-center" width="150px">Цена</th>
+				<th class="thbg" align="center"></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php $i=$inID=0; foreach ($prices as $price){ $i++;$inID++;?>
+			<?php $outPrices = isset($price['fullData'])?$price['fullData']:false;?>
+			<?php $importer = isset($price['importerData'])?$price['importerData']:false;?>
+			<tr>
+				<?php if ($fields_importer){?>
+				<td><?=($price['importer'])?$price['importer']:''?></td>
+				<?php }?>
+				<td><?=($price['box'])?$price['box']:'+'?></td>
+				<td><?=($price['time'])?$price['time']:'+'?></td>
+				<td class="h2">
+					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+						<span itemprop="price"><?=PriceHelper::number($price['price']/$curExchange,($curExchange>1?true:false))?></span> 
+						<?php $currenciesNames = Register::get('currenciesNames');?>
+						<?=$currenciesNames[$curExchangeType]?>
+						<meta itemprop="priceCurrency" content="<?=$curExchangeType?>" />
+						<link itemprop="availability" href="http://schema.org/InStock"/>
+					</div>
+				</td>
+				<td>
+					<?php if ($mode_view_articles){?>
+						<div style="font-size:11px;">
+							<a href="<?=HTTP_ROOT?>/account/signin/"><?=$translates['front.profile.enter']?></a> / <a href="<?=HTTP_ROOT?>/account/signup/"><?=$translates['front.act.reg']?></a>
+						</div>
+					<?php }else{?>
+						<?php $randID = rand(rand(),rand());?>
+						<a href="#" onclick="cart('0','<?=$price['importer_id']?>','product','<?=PriceHelper::myceil($price['price'])?>','<?=CryptViewHelper::xencode(PriceHelper::myceil($price['purches']))?>','<?=CryptViewHelper::xencode($data['cat'].' '.$data['name'])?>','<?=(($data['article'])?CryptViewHelper::xencode($data['article']):CryptViewHelper::xencode('(ID:'.$data['id'].')'))?>','','1','');noticecart('<?=$randID?>');return false;" class="custom-button gradient"><span><?=$translates['front.buy']?></span></a>
+				
+						<div class="cart-alert" id="cart-ajax-<?=$randID?>">
+							<img src="<?=HTTP_ROOT?>/media-templates/img/6-0.gif"/> <?=$translates['additemtocart']?>
+						</div>
+					<?php }?>
+				</td>
+				
+				<?php if (isset($acl) && $acl && count($outPrices)>0){?>
+				<?php
+					$importer_discount		=	$outPrices['importer_discount'];
+					$margin_name			=	$outPrices['margin_name'];
+					$extra					=	$outPrices['extra'];
+					$extraBrand_brand_name	=	$outPrices['extraBrand_brand_name'];
+					$extraBrand_margin		=	$outPrices['extraBrand_margin'];
+					$extraBrandVal			=	$outPrices['extraBrandVal'];
+					$extraBrandValExtra		=	$outPrices['extraBrandValExtra'];
+					$dynamicExtra_margin	=	$outPrices['dynamicExtra_margin'];
+					$account_extra			=	$outPrices['account_extra'];
+					$resultPRICE_whithout_account = $outPrices['resultPRICE_whithout_account'];
+					
+					$inPrice = $outPrices['inPrice'];
+					$startPrice = $outPrices['startPrice'];
+					$resultPRICE = $outPrices['resultPRICE'];
+					
+					if ($importer){
+				?>
+				<td>
+				
+					<a href="#" onclick="$('.margin-history').hide();$('#<?=$inID?>-finance-div-<?=$i?>').toggle();return false;"><img src="<?=HTTP_ROOT?>/media-templates/img/tag_green.png"/></a>
+					<div id="<?=$inID?>-finance-div-<?=$i?>" class="margins-alert no-display margin-history">					
+						<a class="f-right no-dotted" onclick="$('#<?=$inID?>-finance-div-<?=$i?>').hide();return false;" href="#"><img src="<?=HTTP_ROOT?>/media-templates/img/cross.png" title="admin" alt="admin"></a>
+						<p class="wprice"><?=$translates['front.provider.code']?>: <b><?=$importer['name']?></b></p>
+						<p class="wprice"><?=$translates['nacgroup']?>: <b><?=(isset($margin_name)&&$margin_name)?$margin_name:'нет'?></b></p>
+						<p class="wprice">
+							<?=$translates['front.price']?>: <?=$importer['name']?><br/>
+							<b><?=$inPrice?> = <?=PriceHelper::number($inPrice*$importer['currency'],false,true)?></b>.
+						</p>
+						
+						<?php if ($extraBrandVal){?>
+							<?#brand?>
+							<p class="wprice">
+								<?=$translates['skidkabrand']?>: <?=($extraBrand_margin)?($extraBrand_brand_name.' '.$extraBrand_margin):0?>%.<br/>
+								<b><?=$startPrice?> = <?=PriceHelper::number($startPrice*$importer['currency'],false,true)?></b>.
+							</p>
+						<?php }elseif ($importer_discount){?>
+							<?#importer?>
+							<p class="wprice">
+								<?=$translates['skidkapostav']?>: <?=($importer_discount)?$importer_discount:0?>%.<br/>
+								<b><?=$startPrice?> = <?=PriceHelper::number($startPrice*$importer['currency'],false,true)?></b>.
+							</p>
+						<?php }?>
+						
+						<?php if ($extraBrandValExtra){?>
+						<p class="wprice">
+							<?=$translates['front.margin.brand']?>: <?=($extraBrandValExtra)?$extraBrandValExtra:0?>%.<br/>
+							<b><?=$resultPRICE_whithout_account?> = <?=PriceHelper::number($resultPRICE_whithout_account*$importer['currency'],false,true)?></b>.
+						</p>
+						<?php }elseif ($dynamicExtra_margin){?>
+						<p class="wprice">
+							<?=$translates['front.margin.period']?>: <?=($dynamicExtra_margin)?$dynamicExtra_margin:0?>%.<br/>
+							<b><?=$resultPRICE_whithout_account?> = <?=PriceHelper::number($resultPRICE_whithout_account*$importer['currency'],false,true)?></b>.
+						</p>
+						<?php }elseif ($extra){?>
+						<p class="wprice">
+							<?=$translates['generalnac']?>: <?=($extra)?$extra:0?>%.<br/>
+							<b><?=$resultPRICE_whithout_account?> = <?=PriceHelper::number($resultPRICE_whithout_account*$importer['currency'],false,true)?></b>.
+						</p>
+						<?php }?>
+						
+						<?php if ($account_extra){?>
+						<p class="wprice">
+							<?=$translates['skidkanacuser']?>: <?=($account_extra)?$account_extra:0?>%.<br/>
+							<b><?=$resultPRICE?> = <?=PriceHelper::number($resultPRICE*$importer['currency'],false,true)?></b>.
+						</p>
+						<?php }?>
+						
+						<p class="wprice"><b><?=$translates['front.curr.name']?> <?=$importer['currecyName']?></b>: <?=$importer['currency']?></p>
+					</div>
+					
+				</td>
+				<?php }?>
+				<?php }?>
+				
+			</tr>
+			<?php }?>
+			<?php }?>
+			<?php if (isset($data['url']) && $data['url']){?>
+			<tr>
+				<td><a href="<?=$data['url']?>"  title="<?=$translates['front.more']?>" class="custom-button gradient"><span><?=$translates['front.more']?></span></a></td>
+			</tr>
+			<?php }?>
+			<?php if (isset($data['article']) && $data['article']){?>
+			<tr>
+				<td><a href="<?=HTTP_ROOT?>/search/preload/?article=<?=$data['article']?>" title="<?=$translates['front.more']?>" class="custom-button gradient"><span>Узнать цену и наличие <?=$data['article']?></span></a></td>
+			</tr>
+			<?php }?>
+			</tbody>
+			</table>
+		
+		</td>
+	</tr>
+	</table>
+	
+	<div class="clear"></div>
+	
+	<div id="tabs" class="product-info-fixed">
+		<ul>
+			<li><a href="#tabs-content">Описание</a></li>
+			<li><a href="#tabs-params">Характеристики</a></li>
+			<li><a href="#tabs-raiting">Отзывы <b>(<?=(count($testimonials) + count($yatestimonials))?>)</b></a></li>
+		</ul>
+		<div id="tabs-content">
+		
+			<div class="top-20 bottom-20" id="content_1">
+				<span itemprop="description">
+				<?=stripslashes($data['content'])?>
+				</span>
+			</div>
+			
+		</div>
+		<div id="tabs-params">
+			<div class="top-20 bottom-20">
+			<?php if (isset($params) && count($params)>0){?>
+				<?php $outparams = array();?>
+				<?php foreach ($params as $param){?>
+				<?php $outparams [$param['name']][]= $param['value'];?>
+				<?php }?>
+				
+				<table class="table-grid" width="100%">
+				<?php foreach ($outparams as $name=>$paramval){?>
+				<tr>
+					<td width="200px"><b><?=$name?></b></td>
+					<td><?=join(", ", $paramval)?></td>
+				</tr>
+				<?php }?>
+				</table>
+				
+			<?php }?>
+			</div>
+		</div>
+		<div id="tabs-raiting">
+			<div class="top-20 bottom-20">
+			
+			
+			<?php if (isset($testimonials) && count($testimonials)>0){?>
+			<?php $i=$all=0; foreach ($testimonials as $onemessage){ $i++; $all++; ?>
+			<div class="testimonials-message" style="background:<?=(($i%2)?'#f7f7f7':'');?>;">
+				<div class="date-raiting"><?=date("d.m.Y",$onemessage['dt'])?> <span><?=$onemessage['raiting']?></span></div>
+				<p><b><?=$i?>. <?=$onemessage['name']?></b></p>
+				<p><?=$onemessage['message']?></p>
+			</div>
+			<?php }?>
+			<?php }?>
+			
+			<?php if (isset($yatestimonials) && count($yatestimonials)>0){?>
+			<?php $i=0; foreach ($yatestimonials as $onemessage){ $i++; $all++; ?>
+			<div class="testimonials-message" style="background:<?=(($all%2)?'#f7f7f7':'');?>;">
+				<div class="date-raiting"><?=date("d.m.y", $onemessage['dt'])?> <span><?=$onemessage['rate']?></span></div>
+				<p><b><?=$i?>. <?=$onemessage['name']?></b></p>
+				<p><?=$onemessage['text']?></p>
+				<fieldset>
+					<legend><b>Достоинства</b></legend>
+					<?=$onemessage['plus']?>
+				</fieldset>
+				<fieldset>
+					<legend><b>Недостатки</b></legend>
+					<?=$onemessage['minus']?>
+				</fieldset>
+			</div>
+			<?php }?>
+			<?php }?>
+			
+			<?php if(isset($_REQUEST['deny']) && isset($_REQUEST['captcha'])){?>
+			<div class="h1" style="color:red;"><center>Неверный код каптчи</center></div>
+			<?php }?>
+			
+			<?php if(isset($_REQUEST['accept'])){?>
+			<div class="h1" style="color:green;"><center>Спасибо за отзыв. Сообщение проходит проверку.</center></div>
+			<?php }?>
+			
+			<style>
+			.smallform {}
+			.smallform td { padding:2px !important; border-right:0px; vertical-align: top; }
+			.smallform td input { width:250px; }
+			.save-btn { cursor: pointer; display: block; float: none; font-size: 12px; font-weight: normal; margin: 0; padding: 5px; width: 100px !important; }
+			fieldset { border-top:solid 1px #dadada; }
+			legend { display:block; margin:0px 10px; background:#FFF; padding:1px 3px; }
+			</style>
+			<div class="h2 top-20 t-center">Добавить отзыв и оценку товару</div>
+			<form action="" method="POST" onsubmit="return chktestim();">
+			<table class="table-grid td-right smallform" width="100%">
+			<tr>
+				<td valign="top">
+					<fieldset>
+						<legend><b>Имя *</b></legend>
+						<input type="text" name="testim[name]" id="form_name" value="<?=(isset($_err['name'])&&$_err['name'])?$_err['name']:((isset($account['name'])&&!empty($account['name']))?$account['name']:'');?>" class="form_elements">
+						<p class="msg-error" id="form_name_err"></p>
+					</fieldset>
+				</td>
+				<td valign="top">
+					<fieldset>
+						<legend><b>Телефон</b></legend>
+						<input type="text" name="testim[phone]" value="<?=(isset($_err['phone'])&&$_err['phone'])?$_err['phone']:((isset($account['phones'])&&!empty($account['phones']))?$account['phones']:'');?>" class="form_elements">
+					</fieldset>
+				</td>
+				<td valign="top">
+					<fieldset>
+						<legend><b>E-mail</b></legend>
+						<input type="text" name="testim[email]" value="<?=(isset($_err['email'])&&$_err['email'])?$_err['email']:((isset($account['email'])&&!empty($account['email']))?$account['email']:'');?>" class="form_elements">
+					</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" valign="top">
+				<fieldset>
+					<legend><b>Сообщение *</b></legend>
+					<textarea name="testim[message]" id="form_message" class="form_elements"><?=(isset($_err['message'])&&$_err['message'])?$_err['message']:'';?></textarea>
+					<p class="msg-error" id="form_message_err"></p>
+				</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" valign="top">
+				<fieldset>
+					<legend><b>Оценка * / Общий рейтинг: <?=number_format($total['total'],2,'.','.')?></b></legend>
+					<div id="reviewStars-input">
+						<input id="star-4" type="radio" name="testim[raiting]" value="5"/>
+						<label title="gorgeous" for="star-4"></label>
+
+						<input id="star-3" type="radio" name="testim[raiting]" value="4"/>
+						<label title="good" for="star-3"></label>
+
+						<input id="star-2" type="radio" name="testim[raiting]" value="3"/>
+						<label title="regular" for="star-2"></label>
+
+						<input id="star-1" type="radio" name="testim[raiting]" value="2"/>
+						<label title="poor" for="star-1"></label>
+
+						<input id="star-0" type="radio" name="testim[raiting]" value="1"/>
+						<label title="bad" for="star-0"></label>
+					</div>
+				</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:left;" colspan="3" valign="top">
+					<fieldset>
+						<legend><b>Капча *</b></legend>
+						<p><img src="/extensions/captcha/index.php" /></p>
+						<input type="text" name="testim[code]" id="form_code" value="" class="form_elements"/>
+						<p class="msg-error" id="form_code_err"></p>
+					</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:left;" colspan="3"><input type="submit" value="Отправить" class="crt-nxt save-btn"></td>
+			</tr>
+			</table>
+			</form>
+			
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	jQuery(document).ready(function(){
+		 $("#tabs").tabs();
+		 $("#content_1").mCustomScrollbar({
+			scrollButtons:{
+				enable:true
+			},
+			theme:"dark-thin"
+		});
+	});
+	</script>
+	<script type="text/javascript">
+	function chktestim() {
+		var err = "";
+		$('.form_elements_err').removeClass('form_elements_err').addClass('form_elements');
+		$('.msg-error').html('');
+		if ($('#form_name').val()=="") {
+			err += 'err';
+			$('#form_name_err').html('<?=$translates['front.fields.err']?> - <?=$translates['front.cart.form.name']?>');
+			$('#form_name').removeClass('form_elements').addClass('form_elements_err');
+		}
+		if ($('#form_message').val()=="") {
+			err += 'err';
+			$('#form_message_err').html('<?=$translates['front.fields.err']?> - <?=$translates['front.cart.form.message']?>');
+			$('#form_message').removeClass('form_elements').addClass('form_elements_err');
+		}
+		if ($('#form_code').val()=="") {
+			err += 'err';
+			$('#form_code_err').html('<?=$translates['front.fields.err2']?>');
+			$('#form_code').removeClass('form_elements').addClass('form_elements_err');
+		}
+		if (err == "") {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	</script>
+	
+	<div class="clear"></div>
+	
+	<? /*
+	<div style="margin:0px 8px;">
+		<a href="<?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($catalogue['name'])?>-<?=$catalogue['id']?>/" class="custom-button gradient top-10"><span><?=$translates['front.back']?></span></a>
+	</div>
+	*/ ?>
+	
+	<div class="clear"><br /></div>
+	
+	<?php if (isset($pnodes) && count($pnodes)>0){?>
+	<?php $this->block('cat/product-table')?>
+	<div>
+		<h2 class="uppercase top-20"><?=$translates['soputstvuutovary']?></h2>
+	</div>
+	<div class="top-20 bottom-20">
+		<?php foreach ($pnodes as $dd){?>
+		<?=product($dd,$label,$mode_view_articles);?>
+		<?php }?>
+	</div>
+	<?php }?>
+
+	</div>
+</div>

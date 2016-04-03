@@ -1,0 +1,81 @@
+<div class="container">
+	<ul class="breadcrumbs">
+        <li>
+            <?=$bread?>
+        </li>
+    </ul>
+    <div class="row">
+        <aside class="col-md-3 col-sm-4">
+            <?php $this->block('account/left_menu');?>	
+        </aside>
+        <main class="col-md-9 col-sm-8">
+			<h1><?=$translates['front.history']?></h1>
+            <?php if (isset($ordersList) && count($ordersList)>0) {?>
+				<?php
+					$uri = $_SERVER['REQUEST_URI'];
+					$uri = preg_replace("|&?page=[0-9]+&?|", "", $uri);
+					$uri = preg_replace("|\?$|", "", $uri);
+					$has_params = (strpos($uri, "?") !== false);
+					if ($has_params) {
+						$uri .= "&";
+					}
+					else {
+						$uri .= "?";
+					}
+				?>
+				<?php /*if (isset($totalPages) && $totalPages>1){?>
+				<div class="clear"></div>
+				<div class="padding-catalog top-10 t-left">
+				Страницы: <?=PagingViewHelper::paging($uri.'page=:page:',$totalPages,$currentPage)?>
+				</div>
+				<div class="clear top-10"></div>
+				<?php } */?>
+				
+				<style>
+				.history_orders {}
+				.history_orders td { text-align:center; }
+				</style>
+				<table class="details-list2 pad-lft-rgt history_orders top-10" width="100%">
+				<thead>
+				<tr>
+					<th><?=$translates['front.order.number']?></th>
+					<th>Date</th>
+					<th><?=$translates['front.summ']?></th>
+					
+					<th>Print</th>
+					
+					<th><?=$translates['front.name.payment']?></th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($ordersList as $dd){?>
+				<tr bgcolor="<?=(isset($dd['color']))?'#'.$dd['color']:''?>">
+					<td><b><a href="/cart/md5/key/<?=$dd['md5_hash']?>/">№<?=$dd['number']?></a></b></td>
+					<td><?=date("d.m.Y H:i",$dd['dt'])?></td>
+					<td><?=PriceHelper::number($dd['sumOrder'])?> <?=(Register::get('accountRate')?$currenciesNames[$curExchangeType]:$translates['front.money'])?></td>
+					
+					<td><a href="/account/printbill/?number=<?=$dd['number']?>"><img src="/media-templates/icons/printer.png"> print</a></td>
+					
+					<td><b><a href="/cart/md5/key/<?=$dd['md5_hash']?>/"><img src="/media-templates/icons/money.png"> <?=$translates['front.name.payment']?></a></b></td>
+				</tr>
+				<?php }?>
+				</tbody>
+				</table>
+				
+				<?php
+				/* if (isset($totalPages) && $totalPages>1){?>
+				<div class="clear"></div>
+				<div class="padding-catalog top-10 t-left">
+				Страницы: <?=PagingViewHelper::paging($uri.'page=:page:',$totalPages,$currentPage)?>
+				</div>
+				<div class="clear top-10"></div>
+				<?php }*/
+				?>
+			<?php }else{?>
+				<div class="theme_box clearfix">
+					<?=$translates['noorders']?>
+				</div>
+			<?php }?>
+        </main>
+    </div>
+</div>

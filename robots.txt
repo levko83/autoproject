@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://autoresurs.de/sitemap.xml
+Sitemap: http://autoresurs.de/sitemap.xml.gz

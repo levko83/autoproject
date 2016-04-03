@@ -1,0 +1,73 @@
+<div id="tabs" class="tabs">
+    <ul>
+        <li><a href="#tab-1"><span><?=$translates['admin.control.scribe.name']?></span></a></li>
+        <li><a href="#tab-4"><span>Клиенты подтвердившие подписку</span></a></li>
+        <li><a href="#tab-2"><span>Дополнительные <?=$translates['admin.mailingemail.name']?></span></a></li>
+        <li><a href="#tab-3"><span>Импорт</span></a></li>
+    </ul>
+	<div id="tab-1">
+		<?$this->block('mailing/list_mailing');?>
+		<div class="clear"></div>
+	</div>
+	<div id="tab-2">
+		<?$this->block('mailing/list_mailing_emails');?>
+		<div class="clear"></div>
+	</div>
+	
+	<div id="tab-3">
+	
+		<h1 class="h1-header">Импорт подписчиков</h1>
+		
+		<form action="/staffcp/mailing/import/" method="POST" enctype="multipart/form-data">
+		<table>
+		<tr>
+			<td><b>Файл формата *.xlsx</b></td>
+			<td><input type="file" name="xlsx" value=""></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" value="Выполнить импорт" class="btn btn-blue"></td>
+		</tr>
+		</table>
+		</form>
+		
+		<p><b>Пример колонок:</b></p>
+		<p>1. Е-mail</p>
+		<p>2. Имя (необязательно)</p>
+		
+		<div class="clear"></div>
+		
+	</div>
+	
+	<div id="tab-4">
+	
+		<h1 class="h1-header">Клиенты подтвердившие подписку</h1>
+		
+		<?php if (isset($mailing_accounts) && count($mailing_accounts)>0){?>
+		<table class="list">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Клиент</th>
+			<th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($mailing_accounts as $dd){?>
+		<tr>
+			<td><?=$dd['id']?></td>
+			<td><?=$dd['name']?></td>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/accounts/edit/?id=<?=$dd['id']?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+		</tr>
+		<?php }?>
+		</tbody>
+		</table>
+		<?php }else{?>
+		<p>нет клиентов</p>
+		<?php }?>
+		
+		<div class="clear"></div>
+		
+	</div>
+	
+</div>

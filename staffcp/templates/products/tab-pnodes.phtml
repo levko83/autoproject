@@ -1,0 +1,48 @@
+<div id="tab-pnodes">
+
+<table>
+<tr>
+	<td valign="top" style="padding:20px;">
+		<p><b>Категории</b></p>
+		
+		<div id="html_catalog">
+		<?=$p2p_catalog?>
+		</div>
+		
+	</td>
+	<td valign="top" style="padding:20px;">
+		<p><b>Сопутствующие товары</b></p>
+		<ul id="pnodes">
+		<?php if (isset($pnodes) && count($pnodes)>0){?>
+			<?php foreach ($pnodes as $node){?>
+			<li id="r<?=$node['id']?>"><input type="hidden" name="pnodes[]" value="<?=$node['id']?>"/>ID: <?=$node['id']?> | <?=$node['name']?> | <a href="#" onclick="$('#r<?=$node['id']?>').remove();return false;" style="color:red;">удалить</a></li>
+			<?php }?>
+		<?php }?>
+		</ul>
+	
+		<p><b>Продукция</b></p>
+		<div id="html_products"></div>
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+function get_next_catalog(id){
+	$.get('/staffcp/products/ajax_nodes/?id='+id, null,
+	function(data) {
+		get_html_products(id);
+		$("#html_catalog").html(data);
+	});
+}
+function get_html_products(id){
+	$.get('/staffcp/products/ajax_nodes_products/?id='+id, null,
+	function(data) {
+		$("#html_products").html(data);
+	});
+}
+function appendnode(id,name){
+	$('#pnodes').append('<li id="r'+id+'"><input type="hidden" name="pnodes[]" value="'+id+'"/>ID: '+id+' | '+name+' | <a href="#" onclick="$(\'#r'+id+'\').remove();return false;" style="color:red;">удалить</a></li>');
+}
+</script>
+
+</div>

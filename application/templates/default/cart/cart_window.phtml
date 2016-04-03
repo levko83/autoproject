@@ -1,0 +1,27 @@
+	<?php if (isset($data) && count($data)>0){?>
+	<p class="title" style="color:#666666;"><?=$translates["f.nedavno_dobavlennye_produkty_"];?></p>
+	<?php foreach ($data as $element)
+	{
+		
+		$title = (isset($element["supplier_name"])?$element["supplier_name"]:'')." ".(isset($element["name_".$cur_lang])?$element["name_".$cur_lang]:'');
+		
+		$title = (strlen($title) > 40) ? substr($title, 0, 40) . '...' : $title;
+		?>
+		<div class="clearfix sc_product">
+			<span class="product_thumb">
+			<?php 
+				if (!empty($element['img'])) {
+					echo "<img src='".IMGPATH.$element['img']."' width='60'/>";
+				} else {
+					echo "<img src='".IMGPATH."images/no-picture.png' width='60'/>";
+				} 
+			?> 
+			</span>
+			<span class="product_name"><strong><?=$title?></strong></span>
+			<p><?=$element['cc']?> x &euro;<?=PriceHelper::number($element['price'])?></p>
+			<button class="close" onclick="del_prod(<?=$element['cart_id']?>);"></button>
+		</div>
+	<?php } ?>
+	<?php } else { ?>
+		<p class="title" style="color:#666666;text-align:center;"><?=$translates["f.netu_produktov"];?></p>
+	<?php } ?>

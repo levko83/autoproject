@@ -1,0 +1,50 @@
+<form action="https://www.<?php echo $path; ?>.com/cgi-bin/webscr" method="post" name="cf7pp">
+  <input type="hidden" name="cmd" value="_cart" />
+  <input type="hidden" name="upload" value="1" />
+  <input type="hidden" name="business" value="<?php echo $laccount; ?>" />
+  <?php 
+  // var_dump($prod);
+  $i = 1; ?>
+  <?php foreach ($prod as $product) { 
+  $price = explode(" ",$product['price']);
+  //var_dump($product);
+   // var_dump($price);
+	if(!is_numeric($price[0])||$price[0]==null){ } else {
+  ?>
+  <input type="hidden" name="item_name_<?php echo $i; ?>" value="<?php echo $product['name']; ?>" />
+  <input type="hidden" name="item_number_<?php echo $i; ?>" value="<?php echo $product['model']; ?>" />
+  <input type="hidden" name="amount_<?php echo $i; ?>" value="<?php echo  number_format($price[0],2); ?>" />
+  <?if($price[1]!=null){?>
+  <input type="hidden" name="currency_code" value="<?echo $price[1];?>">
+  <? } ?>
+  <input type="hidden" name="quantity_<?php echo $i; ?>" value="<?php echo $product['quantity']; ?>" />
+  <?php $i++; ?>
+  <?php } } ?>
+  <input type="hidden" name="item_name" value="AutoParts"/>
+  <input type="hidden" name="item_number" value="<?php echo $invoice; ?>"/>
+  <input type='hidden' name='amount' value='<?php echo $total; ?>' />
+  <input type="hidden" name="currency_code" value="<?php echo $currency; ?>" />
+  <input type="hidden" name="first_name" value="<?php echo $name; ?>" />
+  <input type="hidden" name="last_name" value="<?php echo $nachname; ?>" />
+  <input type="hidden" name="address1" value="<?php echo $address; ?>" />
+  <input type="hidden" name="city" value="<?php echo $city; ?>" />
+  <input type="hidden" name="zip" value="<?php echo $zip; ?>" />
+  <input type="hidden" name="address_override" value="0" />
+  <input type="hidden" name="email" value="<?php echo $email; ?>" />
+  <input type="hidden" name="invoice" value="<?php echo $invoice; ?>" />
+  <input type="hidden" name="lc" value="<?php echo $language; ?>" />
+  <input type="hidden" name="rm" value="2" />
+  <input type="hidden" name="no_note" value="1" />
+  <input type="hidden" name="no_shipping" value="1" />
+  <input type="hidden" name="shipping" value="<?php echo $shipping; ?>" /> 
+  <input type="hidden" name="charset" value="utf-8" />
+  <input type="hidden" name="return" value="<?php echo $returnl; ?>" />
+  <input type="hidden" name="notify_url" value="<?php echo $notify_url; ?>" />
+  <input type="hidden" name="cancel_return" value="<?php echo $cancel_return; ?>" />
+  <input type="hidden" name="custom" value="<?php echo $custom; ?>" />
+  <input type="hidden" name="bn" value="AutoResurs_2.0.6_WPS" />
+  
+</form>
+<script type="text/javascript">
+    document.cf7pp.submit();
+</script>

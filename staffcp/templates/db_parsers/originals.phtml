@@ -1,0 +1,167 @@
+<table width="100%">
+<tr>
+	<td>
+		<div class="parent-menu">
+			<div class="menu-title" style="width:97%;">
+				<div class="menu-left" style="width:100%;">
+					<div class="menu-right" style="width:100%;">
+						<div class="titles">Обработчик Originals</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+		<form action="" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="switcher" value="full"/>
+		<table>
+			<tr>
+				<td><b>Поставщик(код)</b></td>
+				<td><input type="text" name="IMPCODE" value="" style="width:50px;"/></td>
+			</tr>
+			<tr>
+				<td><b>Файл</b></td>
+				<td><input type="file" name="upload_file"/></td>
+			</tr>
+			<tr>
+				<td><b>Бренд</b></td>
+				<td>
+					<select name="BRANDNAME" onchange="org_ajax(this.value);">
+						<option value=""></option>
+						<?php if (isset($BRANDS) && count($BRANDS)>0){?>
+						<?php foreach ($BRANDS as $dd){?>
+						<option value="<?=$dd['BRAND']?>"><?=$dd['BRAND']?></option>
+						<?php }?>
+						<?php }?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Обновление</b></td>
+				<td>
+					<select name="TYPESAVE">
+						<option value="1">Удалить старый, добавить новый</option>
+						<option value="0">Дополнить существующий</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Цена веса</b></td>
+				<td><input type="text" name="WEIGHT" value="2"/></td>
+			</tr>
+			<tr>
+				<td>
+				<input type="radio" name="TYPEPRICE" value="0" checked/> <b>Коэфф. розницы</b><br/>
+				<input type="radio" name="TYPEPRICE" value="1"/> <b>Коэфф. опт</b>
+				</td>
+				<td>
+					<input type="submit" value="Загрузить" onclick="$('#ajax').show();" class="btn btn-blue">
+					<div id="ajax" style="display:none;">Загрузка, пожалуйста подождите...</div>
+				</td>
+			</tr>
+		</table>
+		<div id="ajax_result"></div>
+		</form>
+		
+		<hr/>
+		<?php if (isset($BRANDS) && count($BRANDS)>0){?>
+		<?php foreach ($BRANDS as $dd){?>
+		<div class="index_lnks"><a href="?action=view_brand&brand=<?=$dd['BRAND']?>"><span><?=$dd['BRAND']?></span></a></div>
+		<?php }?>
+		<?php }?>
+		<div style="clear:both;"></div>
+		<table width="100%">
+		<tr>
+			<td valign="top">
+			
+				<h1>Добавить коэффициент</h1>
+				<form action="" method="POST">
+				<input type="hidden" name="action" value="add_koff"/>
+				<table>
+				<tr>
+					<td><b>BRAND</b></td>
+					<td><input type="text" name="add[BRAND]"/></td>
+				</tr>
+				<tr>
+					<td><b>GROUP</b></td>
+					<td><input type="text" name="add[GROUP]"/></td>
+				</tr>
+				<tr>
+					<td><b>Цена опт</b></td>
+					<td><input type="text" name="add[OPT]"/></td>
+				</tr>
+				<tr>
+					<td><b>Цена розница</b></td>
+					<td><input type="text" name="add[ROZ]"/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Сохранить" class="btn btn-blue"></td>
+				</tr>
+				</table>
+				</form>		
+				<div style="clear:both;"></div>
+			
+			</td>
+			<td valign="top">
+			
+				<?php if (isset($edit_brand) && count($edit_brand)>0){?>
+				<h1>Редактирование</h1>
+				<form action="" method="POST">
+				<input type="hidden" name="action" value="editing"/>
+				<table>
+				<tr>
+					<th></th>
+					<th>Группа</th>
+					<th>Опт</th>
+					<th>Розница</th>
+					<th>Удалить</th>
+				</tr>
+				<?php foreach ($edit_brand as $dd){?>
+				<tr>
+					<td><input type="text" name="BRAND[<?=$dd['id']?>]" value="<?=$dd['BRAND']?>"/></td>
+					<td><input type="text" name="GROUP[<?=$dd['id']?>]" value="<?=$dd['GROUP']?>"/></td>
+					<td><input type="text" name="OPT[<?=$dd['id']?>]" value="<?=$dd['OPT']?>"/></td>
+					<td><input type="text" name="ROZ[<?=$dd['id']?>]" value="<?=$dd['ROZ']?>"/></td>
+					<td><input type="checkbox" name="DEL[<?=$dd['id']?>]" value="1"/></td>
+				</tr>
+				<?php }?>
+				</table>
+				<input type="submit" value="Сохранить" class="btn btn-blue">
+				</form>
+				<?php }?>
+			
+			</td>
+		</tr>
+		</table>
+		<hr/>
+		
+		<div style="padding:10px;">
+			<b style="color:red;">Инструкция:</b>
+			Формат файла (csv/txt)<br/>
+			1. номер детали<br/>
+			2. название (описание)<br/>
+			3. цена<br/>
+			4. группа<br/>
+			5. вес<br/>
+			<s>6. пустая колонка (необязательно)</s>
+			<br/>
+			<p style="font-size:10px;"><b>Примичание:</b> Возможно отображение ошибки сервера 504, 500 во время загрузки данных, данная ошибка не означает, что парсер закончил отработку данных, загрузка продолжается. Сверка данных производится в разделе <a href="/staffcp/details/">список запчастей</a> по поставщику, количеству загруженных позиций в соответствии с исходным прайсом.</p>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p style="text-align:center;"><a href="/staffcp/harvesterclaas/#tab-2">Назад</a></p>
+
+<script>
+function org_ajax(brand){
+	$("#ajax_result").html('');
+	$('#ajax').show();
+	$.post('/staffcp/db_parsers/ajax_originals_groups/?brand='+brand, null,
+	function(data) {
+		$("#ajax_result").html(data);
+		$('#ajax').hide();
+	});
+}
+</script>

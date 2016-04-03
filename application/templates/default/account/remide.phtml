@@ -1,0 +1,54 @@
+<div class="container">
+    <ul class="breadcrumbs">
+        <li>
+            <?=$bread?>
+        </li>
+    </ul>
+    <div class="row">
+        <main class="col-md-12 col-sm-12">			
+            <div class="theme_box clearfix col-md-6 col-md-offset-3">
+				
+					<header class="on_the_sides">
+						<div class="left_side">
+							<h2><?=$translates['front.pass.restore.name']?></h2>
+							<?php if (isset($errors) && count($errors)>0){?>
+								<br/>
+								<ul class="simple_vertical_list">
+									<?php foreach ($errors as $dd){?>
+										<li class="error"><?=$dd?></li>
+									<?php }?>
+								</ul>
+								<br/>
+							<?php }?>
+							<?php if (isset($_REQUEST['accept'])){?>
+								<br/><div class="alert_box success"><?=$translates['front.pass.restore']?></div><br/>
+							<?php }?>
+							<?php if (isset($_REQUEST['deny'])){?>
+								<br/><div class="alert_box error"><?=$translates['front.pass.restore.err']?></div><br/>
+							<?php }?>
+						</div>
+						<div class="right_side">
+							<a href="<?=HTTP_ROOT?>/account/signup/" class="button_grey middle_btn"><?=$translates['front.act.reg']?></a>
+						</div>
+					</header>
+
+					<form class="type_2" action="<?=HTTP_ROOT?>/account/restore/" method="POST">
+
+						<ul>
+
+							<li>
+								<label for="login_email"><?=$translates['front.account.email']?></label>
+								<input type="email" name="form[email]" id="login_email" required>
+							</li>
+
+							<li class="v_centered">
+								<button class="button_blue middle_btn" type="submit"><?=$translates['front.send']?></button>
+							</li>
+
+						</ul>
+
+					</form>
+            </div>
+        </main>
+    </div>
+</div>

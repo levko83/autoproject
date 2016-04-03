@@ -1,0 +1,46 @@
+<?php if ($_controller=='faq'){?>
+<?php $this->block('elements/left_faq');?>
+<?php }?>
+
+<!-- .item -->
+<div class="item-menu radius no-left-border">
+	<div class="layout radius inside">
+		<div class="h2 uppercase"><?=$translates['buyers']?></div>
+		<ul class="menu-list">
+			<?php if (isset($informations) && count($informations)>0){?>			
+			<?php foreach ($informations as $dd){?>
+			<li <?=($_controller == 'page' && $dd['code']==$page['code'])?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/page/<?=$dd['code']?>/"><?=$dd['name']?></a></li>
+			<?php }?>
+			<?php }?>
+			
+			<?php if ($pview_calc) {?>
+			<li <?=($_controller=='calc')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/calc/"><?=$translates['shincalc']?></a></li>
+			<?php }?>
+			
+			<?php if ($pview_news) {?>
+			<li <?=($_controller=='news')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/news/"><?=$translates['front.news.title']?></a></li>
+			<?php }?>
+			
+			<?php if($pview_articles){?>
+			<li <?=($_controller=='articles')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/articles/"><?=$translates['articles']?></a></li>
+			<?php }?>
+			
+			<?php if($pview_faq){?>
+			<li <?=($_controller=='faq')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/faq/"><?=$translates['front.qa.title']?></a></li>
+			<?php }?>
+			
+			<?php if($pview_pricelist){?>
+			<li <?=($_controller=='pricelist')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/pricelist/"><?=$translates['front.price.title']?></a></li>
+			<?php }?>
+			
+			<?php if ($pview_brands) {?>
+			<li <?=($_controller=='brand')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/brand/"><?=$translates['brands']?></a></li>
+			<?php }?>
+			
+			<?php if ($pview_maps) {?>
+			<li <?=($_controller=='index'&&$_action=='sitemap')?'class="current"':'';?>><a href="<?=HTTP_ROOT?>/sitemap/"><?=$translates['sitemap']?></a></li>
+			<?php }?>
+		</ul>
+	</div>
+</div>
+<!-- .item -->

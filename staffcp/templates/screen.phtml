@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php if (!empty($breadCrumbs)){?><title><?=join('  &raquo;  ',array_reverse(array_keys($breadCrumbs)));?>  &raquo; Control Panel</title><?}else{?><title>Control Panel</title><?}?>
+<?=$this->block('blocks/head');?>
+</head>
+<!--[if IE]><body class="isIE"><![endif]-->
+<!--[if !IE]>--><body><!--<![endif]-->
+<div class="content">
+
+<table border="0" width="100%" cellspacing="5px;">
+<tr>
+<td align="left" valign="top">
+
+	<div class="cms_adm_header">
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td><?$this->block('blocks/header');?></td>
+		</tr>
+	</table>
+	</div>
+	
+	<?php $this->block('blocks/fast_client_search');?>
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>
+	<div class="bread block">
+		<a href="/staffcp/" class="first"><?=$translates['admin.home']?></a>
+		<?if (!empty($breadCrumbs)){?>
+			<?foreach ($breadCrumbs as $breadItemTitle=>$breadItemUrl){?>
+				<a href="<?=$breadItemUrl;?>"><?=$breadItemTitle;?></a>
+			<?}?>
+		<?}?>
+	</div>
+	</td></tr></table>
+	
+	<div class="clear"></div>
+	
+	<div style="display:block;">
+		<?php $this->content() ;?>
+		<div class="clear"></div>
+ 	</div>
+ 	<div class="clear"></div>
+</td>
+</tr>
+</table>
+
+</div>
+<?=$this->block('blocks/footer');?>
+</body>
+</html>

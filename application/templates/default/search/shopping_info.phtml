@@ -1,0 +1,58 @@
+<?php if (isset($account_info)&&count($account_info)>0){?>
+<!-- .requere -->
+<div class="main">
+<h1>Информация о клиенте</h1>
+<table cellpadding="2px" cellspacing="3px" class="shopping-main">
+<tr>
+	<td class="td-obj odd"><b>№ клиента</b></td>
+	<td class="td-obj odd"><b>Имя клиента</b></td>
+	<td class="td-obj odd"><b>Телефон</b></td>
+	<td class="td-obj odd"><b>Адрес доставки</b></td>
+	<td class="td-obj odd"><b>Баланс</b></td>
+	<td class="td-obj odd"><b>Скидка(Наценка) клиента</b></td>
+</tr>
+<tr>
+	<td><?=$account_info['id']?></td>
+	<td><?=$account_info['name']?></td>
+	<td><?=$account_info['phones']?></td>
+	<td><?=$account_info['address']?></td>
+	<td><?=$account_info['balance']?></td>
+	<td><?=$account_info['extra']?></td>
+</tr>
+</table>
+<?php }?>
+<?php if (isset($selectedCar) && count($selectedCar)>0){?>
+<h1 class="top-10">Информация об автомобиле</h1>
+<table cellpadding="2px" cellspacing="3px" class="shopping-main">
+<tr>
+	<th class="td-obj odd"><b>Марка / Модель / Тип / Год / Объем / Л.сил</b></th>
+	<th class="td-obj odd"><b>Год</b></th>
+	<th class="td-obj odd"><b>АКПП</b></th>
+	<th class="td-obj odd"><b>Усилитель руля</b></th>
+	
+	<th class="td-obj odd"><b>Кондиционер</b></th>
+	<th class="td-obj odd"><b>ABS</b></th>
+	<th class="td-obj odd"><b>Полный привод</b></th>
+	<th class="td-obj odd"><b>Универсал</b></th>
+	
+	<th class="td-obj odd"><b>VIN</b></th>
+	<th class="td-obj odd"><b>Дополнительно</b></th>
+</tr>
+<tr>
+	<td class="td-obj"><b><?=$selectedCar['car_name']?></b></td>
+	<td class="td-obj"><?=$selectedCar['car_year']?></td>
+	<td class="td-obj"><?=($selectedCar['car_kpp'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($selectedCar['car_rul'])?'Да':'Нет'?></td>
+	
+	<td class="td-obj"><?=($selectedCar['car_cond'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($selectedCar['car_abs'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($selectedCar['car_quattro'])?'Да':'Нет'?></td>
+	<td class="td-obj"><?=($selectedCar['car_body'])?'Да':'Нет'?></td>
+	
+	<td class="td-obj"><?=$selectedCar['car_vin']?></td>
+	<td class="td-obj"><?=$selectedCar['car_info']?></td>
+</tr>
+</table>
+</div>
+<!-- .requere end -->
+<?php }?>

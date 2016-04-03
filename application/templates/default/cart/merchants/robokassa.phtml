@@ -1,0 +1,20 @@
+<!-- .requere -->
+<div class="main static">
+<center>
+<h1>Оплата с помощью платежной системы ROBOKASSA</h1>
+<div class="breadcrumbs bottom-20"><?=$bread?></div>
+
+<p>&nbsp;</p>
+<p><b>Оплата счета:</b> <?=$bill['orderid_bill']?></p>
+<p><?=$bill['name']?></p>
+<p><?=$bill['comment']?></p>
+<p><b>Сумма:</b> <?=$bill['osum']?> р.</p>
+<p>&nbsp;</p>
+
+<?php
+
+print "<html><script language=JavaScript src='https://auth.robokassa.ru/Merchant/PaymentForm/FormMS.js?MerchantLogin=$mrh_login&OutSum=$out_summ&InvoiceID=$inv_id&Description=$inv_desc&SignatureValue=$crc&shpItem=$shp_item&Culture=$culture&Encoding=$encoding'></script></html>";
+
+?>
+</center>
+</div>

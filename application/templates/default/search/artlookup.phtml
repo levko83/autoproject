@@ -1,0 +1,46 @@
+<div itemprop="description">
+						<section class="section_offset">
+								<header class="top_box on_the_sides">
+									<div class="left_side clearfix v_centered">
+										<div class="v_centered">
+											<h3><?=$translates['front.search.count.found'].': '.count($data_without_cost)?></h3>
+										</div>
+									</div>
+									<div class="right_side">
+										<!--<div class="layout_type buttons_row" data-table-container="#products_container">
+											<a href="#" data-table-layout="grid_view" class="button_grey middle_btn icon_btn tooltip_container"><i class="icon-th"></i><span class="tooltip top">Grid View</span></a>
+											<a href="#" data-table-layout="list_view list_view_products" class="button_grey middle_btn icon_btn active tooltip_container"><i class="icon-th-list"></i><span class="tooltip top">List View</span></a>
+										</div>-->
+									</div>
+								</header>
+								<div class="table_layout list_view list_view_products" id="products_container">
+									<div class="table_row">
+									<?php 
+									$i=0; 
+									if (count($data_without_cost) > 0) {
+									foreach ($data_without_cost as $fetchData)
+									{ 
+										include("product.phtml");	
+										$i++;
+									}
+									} else {
+										?>
+										<div class="table_cell">
+											<div class="product_item">
+												<div class="full_description">
+													<h1 class="align_center"><?=$translates["f.netu_produktov"];?>!</h1>
+												</div>
+												<div class="description">
+													<h1 class="align_center"><?=$translates["f.netu_produktov"];?>!</h1>
+												</div>
+												
+											</div>
+										</div>
+										<?php
+									}
+									?>
+									</div>
+								</div>
+								
+						</section>
+				

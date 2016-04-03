@@ -1,0 +1,74 @@
+<style>
+.page-table { width:100%; padding:0px; margin:0px; }
+.page-table td { padding:2px; margin:0px; }
+.page-table td .iput { width:90%; }
+.page-table tr:nth-child(2n) { background:#f1f1f1; }
+</style>
+<h1>Сформировать мета данные для товаров магазина</h1>
+
+<p>Данный модуль генерирует мета заголовок, ключи и описание для товаров указанной категории каталога, пример шаблона для заполнения:</p>
+<p><b>{name}</b> - это переменная названия товара, её нужно указывать в шаблоне с текстом для продвижения.</p>
+<p><b>Пример:</b></p>
+
+<table class="page-table">
+<tr>
+	<td>Заголовок</td>
+	<td>Купить <b>{name}</b> запчасти в Минске цена шины аккумулятор масло автозапчасти детали каталог</td>
+</tr>
+<tr>
+	<td>Ключевые слова</td>
+	<td>Интернет-магазин, запчасти, автозапчасти, <b>{name}</b>, цена, купить, куплю, Минск, шины, аккумуляторы, каталог, бампер, авто, фары, капот, фонарь, зеркало, крыло, резина, масло, арки, глушитель, пороги, продажа</td>
+</tr>
+<tr>
+	<td>Описание</td>
+	<td>Купить <b>{name}</b> в Минске цена запчасти в интернет-магазине, шины, диски, масло, аккумулятор, резина, автозапчасти для иномарок, каталог, радиатор, фонарь, пороги, арки</td>
+</tr>
+</table>
+
+<br/><br/>
+
+<h1>Генератор</h1>
+<form method="post" action="<?=("/staffcp/".$this->_controller."/generate/")?>">
+<table class="page-table">
+<tr>
+	<td width="200px"><b>Заголовок (Title)</b></td>
+	<td><input type="text" name="title" class="iput" value="{name}"/></td>
+</tr>
+<tr>
+	<td><b>Ключевые слова (Keywords)</b></td>
+	<td><input type="text" name="kwords" class="iput" value="{name}"/></td>
+</tr>
+<tr>
+	<td><b>Описание (Description)</b></td>
+	<td><input type="text" name="descr" class="iput" value="{name}"/></td>
+</tr>
+<tr>
+	<td><b>Категория</b></td>
+	<td>
+		<select class="iput" name="category_id" style="width:300px;">
+		<?php if (isset($firstlevel) && count($firstlevel)>0){?>
+		<?php foreach ($firstlevel as $fl){?>
+		<optgroup label="<?=$fl['name']?>" style="font-weight:bold;">
+			<option value="<?=$fl['id']?>" style="background:#606060; color:#fff; font-weight:bold;"><?=$fl['name']?></option>
+			<?php $secondlevel = CatModel::getSecondLevel($fl['id']);?>
+			<?php if (isset($secondlevel) && count($secondlevel)>0){?>
+			<?php foreach ($secondlevel as $sl){?>
+			<option value="<?=$sl['id']?>"><?=$sl['name']?></option>
+			<?php }?>
+			<?php }?>
+		</optgroup>
+		<?php }?>
+		<?php }?>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td><input type="checkbox" name="use_category_names" value="1"> - использовать названия категорий в заголовке товара</td>
+</tr>
+<tr>
+	<td></td>
+	<td><input type="submit" value="Сформировать" class="btn btn-blue"/></td>
+</tr>
+</table>
+</form>

@@ -1,0 +1,102 @@
+<style>
+.page_wrapper {background: url('<?=HTTP_ROOT?>/static/images/background-primary.jpg') center no-repeat; background-size: cover;}
+</style>
+<div class="container">
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <div class="section_offset animated transparent col-md-4 col-sm-5" data-animation="fadeInDown">
+				<?php $this->block('elements/home_quick_search');?>	
+            </div>
+            <div class="section_offset animated transparent col-md-8 col-sm-7" data-animation="fadeInDown">
+				<h3 class="widget_title"><?=$translates["f.dobro_pozhalovat"];?>!</h3>
+				<!-- Start SLIDE -->
+				<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+				<!-- Indicators -->
+					<ol class="carousel-indicators">
+						<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+						<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+						<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+					</ol>
+
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner" role="listbox">
+					<div class="item active">
+					  <img src="<?=HTTP_ROOT?>/static/images/slider/slide03.jpg" alt="slide1">
+					  <div class="carousel-caption">
+					    ...
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=HTTP_ROOT?>/static/images/slider/slide02.png" alt="slide2">
+					  <div class="carousel-caption">
+					    ...
+					  </div>
+					</div></div>
+
+					<!-- Controls -->
+					<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+					</a>
+				</div>
+                <!-- End SLIDE -->
+            </div>
+            <div class="section_offset animated transparent col-md-12 col-sm-12 hidden-xs" data-animation="fadeInDown">
+                <div class="infoblocks_container">
+                    <ul class="infoblocks_wrap six_items">
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/nachnahme.png"></li>
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/paypal.png"></li>
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/rechnung.png"></li>
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/sofort.png"></li>
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/visa.png"></li>
+                        <li class="six_itemsinli"><img width="98%" src="<?=HTTP_ROOT?>/static/images/payment/vorkasse.png"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section_offset animated transparent col-md-12 col-sm-12 align_center" data-animation="fadeInDown">
+				
+				
+				<?php if (isset($marks_letters) && count($marks_letters)>0){?>
+				
+				<?php $letterMarks = ManufacturersModel::getMarksByLetterLogo();?>
+				<?php if (isset($letterMarks) && count($letterMarks)>0){
+					foreach ($letterMarks as $dd){
+						if (!empty($dd['MY_IMG'])) $bgurl = HTTP_ROOT."/media/files/logos/".$dd['MY_IMG'];
+						else $bgurl = HTTP_ROOT."/media-templates/img/nopic.jpg";
+						?>
+					<a title="<?=ucfirst(($dd['MFA_BRAND']))?>" style="background:url(<?=$bgurl?>)" class="fav_logo carsbuts" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/">
+						<div class="tdmbut-text"><?=ucfirst(($dd['MFA_BRAND']))?></div>
+					</a>
+					<?php }
+					}?>
+				
+				<hr width="100%" size="3" color="#3399cc" />
+				<br/>
+				<?php $letterMarks = ManufacturersModel::getMarksByLetter();?>
+				<?php if (isset($letterMarks) && count($letterMarks)>0){?>
+					<?php foreach ($letterMarks as $dd){
+						if (!empty($dd['MY_IMG'])) $bgurl = HTTP_ROOT."/media/files/logos/".$dd['MY_IMG'];
+						else $bgurl = HTTP_ROOT."/media-templates/img/nopic.jpg";
+						?>
+							<a class="tdmbut carsbuts" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($dd['MFA_BRAND'])?>-<?=$dd['MFA_ID']?>/">
+								
+								<img src="<?=$bgurl?>" height="36" class="tdmbut-logo"/>
+								<div class="tdmbut-text"><?=ucfirst(($dd['MFA_BRAND']))?></div>
+							</a>
+					<?php }?>
+				<?php }?>
+					<br/>
+					<br/>
+					<br/>
+					<div style="margin:0 auto; width:100%;"><a class="button_blue middle_btn align_center" href="<?=HTTP_ROOT?>/catalog/"><?=$translates['front.car.show.all']?></a></div>
+				<?php }?>
+
+            </div>
+        </main>
+    </div>
+</div>

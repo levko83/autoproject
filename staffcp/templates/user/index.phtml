@@ -1,0 +1,28 @@
+<h1 class="h1-header">
+	<span><?=$title;?></span>
+	<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+</h1>
+
+<table class="list">
+<thead>
+<tr>
+	<?php foreach ($fieldTitles as $fieldTitle){?>
+	<th><?=$fieldTitle;?></th>
+	<?php }?>
+	<th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png" border="0"/></th>
+	<th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png" border="0"/></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($data as $row){?>
+	<?php $dataModel->setValues($row);?>
+	<tr>
+		<?php foreach ($dataModel->getListFields() as $field){?>
+		<td><?=$field->getViewValue();?></td>
+		<?php }?>
+		<td align="center"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png" border="0"/></a></td>
+		<td align="center"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png" border="0"/></a></td>
+	</tr>
+<?php }?>
+</tbody>
+</table>

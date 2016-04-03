@@ -1,0 +1,34 @@
+<h1><span>Статистика</span></h1>
+
+<?if (count($stats)>0){?>
+<table class="list">
+	<thead>
+	<tr>
+		<th><b>ID</b></th>
+		<th><b><?=$translates['admin.main.name']?></b></th>
+		<th><b><?=$translates['admin.main.zone']?></b></th>
+		<th><b><?=$translates['admin.main.sizes']?></b></th>
+		<th><b><?=$translates['admin.slider.url']?></b></th>
+		<th><b><?=$translates['admin.banners.fdatecreate']?></b></th>
+		<th><b><?=$translates['admin.banners.boxdirect']?></b></th>
+		<th><b><?=$translates['admin.banners.boxviews']?></b></th>
+		<th><b>CTR</b></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?foreach ($stats as $dd){?>
+	<tr>
+		<td><?=$dd['id']?></td>
+		<td><?=$dd['name']?></td>
+		<td><?=$dd['place']?></td>
+		<td><?=$dd['width']?>x<?=$dd['height']?></td>
+		<td><?=$dd['url']?></td>
+		<td><?=date("d.m.Y",$dd['dt'])?></td>
+		<td><?=$dd['click']?></td>
+		<td><?=$dd['showed']?></td>
+		<td><?=($dd['click'] && $dd['showed'])?ceil($dd['click']*100/$dd['showed']):0?>%</td>
+	</tr>
+	<?}?>
+	</tbody>
+</table>
+<?}?>

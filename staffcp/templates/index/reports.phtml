@@ -1,0 +1,102 @@
+<h1 class="h1-header"><span>Отчеты</span></h1>
+
+<table width="100%">
+<tr>
+	<td>
+	
+		<form method="GET" action="/staffcp/index/exportorders/">
+		<table width="100%" style="border-radius:5px 5px 5px 5px;background-color:#f1f1f1;" class="ss">
+		<tr>
+			<td><b>Сформировать отчет по статусам всех позиций</b></td>
+			<td style="font-size:10px !important;">
+				<input type="checkbox" name="export[status_new]" value="true" style="vertical-align:middle;" checked>Новые<br/>
+				<?php if (isset($statuses)&&count($statuses)>0){?>
+				<?php foreach ($statuses as $st){?>
+				<input type="checkbox" name="export[status][]" value="<?=$st['id']?>" style="vertical-align:middle;" checked><?=$st['name']?><br/>
+				<?php }?>
+				<?php }?>
+			</td>
+			<td><b>за период</b></td>
+			<td style="width:355px;">
+				<b>c</b>&nbsp;<input type="text" name="export[dt_from]" id="report_dt_from" value="1.<?=date("m.Y")?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_from_picker" value="&raquo;" class="btn">
+				<b>по</b>&nbsp;<input type="text" name="export[dt_to]" id="report_dt_to" value="<?=date("d.m.Y",mktime(0, 0, 0, date("m"), 31, date("Y")))?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_to_picker" value="&raquo;" class="btn">
+				<script>
+				Calendar.setup({inputField: 'report_dt_from',button: 'report_dt_from_picker',date: ''});
+				Calendar.setup({inputField: 'report_dt_from',button: 'report_dt_from',date: '',eventName: 'focus'});
+				Calendar.setup({inputField: 'report_dt_to',button: 'report_dt_to_picker',date: ''});
+				Calendar.setup({inputField: 'report_dt_to',button: 'report_dt_to',date: '',eventName: 'focus'});
+				</script>
+			</td>
+			<td><input type="submit" value="Сформировать" class="btn btn-blue"></td>
+		</tr>
+		</table>
+		</form>
+
+	</td>
+</tr>
+<tr>
+	<td>
+	
+		<form method="GET" action="/staffcp/index/exportorderssimplelist/">
+		<table width="100%" style="border-radius:5px 5px 5px 5px;background-color:#f1f1f1;" class="ss">
+		<tr>
+			<td><b>Сформировать отчет за период "ОБЩИЙ" выполненных заказов</b></td>
+			<td width="200px">
+				<b>c</b>&nbsp;<input type="text" name="export[dt_from]" id="report_dt_from1" value="1.<?=date("m.Y")?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_from_picker1" value="&raquo;" class="btn">
+			</td>
+			<td width="200px">
+				<b>по</b>&nbsp;<input type="text" name="export[dt_to]" id="report_dt_to1" value="<?=date("d.m.Y",mktime(0, 0, 0, date("m"), 31, date("Y")))?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_to_picker1" value="&raquo;" class="btn">
+			</td>
+			<td width="200px">
+				<script>
+				Calendar.setup({inputField: 'report_dt_from1',button: 'report_dt_from_picker1',date: ''});
+				Calendar.setup({inputField: 'report_dt_from1',button: 'report_dt_from1',date: '',eventName: 'focus'});
+				Calendar.setup({inputField: 'report_dt_to1',button: 'report_dt_to_picker1',date: ''});
+				Calendar.setup({inputField: 'report_dt_to1',button: 'report_dt_to1',date: '',eventName: 'focus'});
+				</script>
+				<input type="submit" value="Сформировать" class="btn btn-blue">
+			</td>
+		</tr>
+		</table>
+		</form>
+	</td>
+</tr>
+<tr>
+	<td>
+	
+		<form method="GET" action="/staffcp/index/exportorderssimplelistpreorder/">
+		<table width="100%" style="border-radius:5px 5px 5px 5px;background-color:#f1f1f1;" class="ss">
+		<tr>
+			<td>
+				<b>Сформировать отчет за период "ПО ЗАКАЗАМ" выполненных заказов</b>
+			</td>
+			<td width="200px">
+				<b>c</b>&nbsp;<input type="text" name="export[dt_from]" id="report_dt_from2" value="1.<?=date("m.Y")?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_from_picker2" value="&raquo;" class="btn">
+			</td>
+			<td width="200px">
+				<b>по</b>&nbsp;<input type="text" name="export[dt_to]" id="report_dt_to2" value="<?=date("d.m.Y",mktime(0, 0, 0, date("m"), 31, date("Y")))?>" class="iput" style="width:100px;"/>
+				<input type="button" id="report_dt_to_picker2" value="&raquo;" class="btn">
+			</td>
+			<td width="200px">
+				<script>
+				Calendar.setup({inputField: 'report_dt_from2',button: 'report_dt_from_picker2',date: ''});
+				Calendar.setup({inputField: 'report_dt_from2',button: 'report_dt_from2',date: '',eventName: 'focus'});
+				Calendar.setup({inputField: 'report_dt_to2',button: 'report_dt_to_picker2',date: ''});
+				Calendar.setup({inputField: 'report_dt_to2',button: 'report_dt_to2',date: '',eventName: 'focus'});
+				</script>
+				<input type="submit" value="Сформировать" class="btn btn-blue">
+			</td>
+		</tr>
+		</table>
+		</form>
+	
+	</td>
+</tr>
+</table>
+
+<p>&nbsp;</p>

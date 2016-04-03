@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?if (!empty($breadCrumbs)){?><title><?=join('  &raquo;  ',array_reverse(array_keys($breadCrumbs)));?>  &raquo; Control Panel</title><?}else{?><title>Control Panel</title><?}?>
+<?=$this->block('blocks/head');?>
+</head>
+<!--[if IE]><body class="isIE"><![endif]-->
+<!--[if !IE]>--><body><!--<![endif]-->
+<div class="content">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="width:274px; padding:2px;">
+			<div id="left_fixed" style="width:274px; overflow:scroll; position:fixed;">
+				<div style="width:250px;">
+					<?php $this->block('blocks/menu_left');?>
+				</div>
+			</div>
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('#left_fixed').css("height",($(window).height()-4));
+				$(window).bind('resize',function(){ 
+					$('#left_fixed').css("height",($(window).height()-4));
+				});
+			});
+			</script>
+		</td>
+		<td align="left" valign="top" style="padding:2px;">
+			<?php $this->block('blocks/header');?>
+			<div class="clear"></div>
+			
+			<?php $this->block('blocks/fast_client_search');?>
+			
+			<div class="clear"></div>
+			<div class="bread block">
+				<a href="/staffcp/" class="first"><?=$translates['admin.home']?></a>
+				<?php if (!empty($breadCrumbs)){?>
+					<?php foreach ($breadCrumbs as $breadItemTitle=>$breadItemUrl){?>
+						<a href="<?=$breadItemUrl;?>"><?=$breadItemTitle;?></a>
+					<?php }?>
+				<?php }?>
+			</div>
+			
+			<div class="clear"></div>
+			<div style="display:block;">
+				<?php $this->content();?>
+				<div class="clear"></div>
+				<?=$this->block('blocks/footer');?>
+		 	</div>
+		 	<div class="clear"></div>
+		</td>
+	</tr>
+	</table>
+</div>
+</body>
+</html>

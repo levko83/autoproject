@@ -1,0 +1,134 @@
+<?php 
+	$cur_lang = $_SESSION["setLang"];
+	$itemInfo = array(
+		'DB_ID' => $fetchData["tecdoc_id"],
+		'ART_NR' => $fetchData["art_nr"],
+		'DELIVERY' => $fetchData["delivery"],
+		'SUP_BRAND' => $fetchData["supplier_name"],
+		'TITLE' => (isset($fetchData["supplier_name"])?$fetchData["supplier_name"]:'')." ".(isset($fetchData["name_".$cur_lang])?$fetchData["name_".$cur_lang]:''),
+		'BRAND' => (isset($fetchData["supplier_name"])?$fetchData["supplier_name"]:''),
+		'DESCR' => trim((isset($fetchData["descr_".$cur_lang])?$fetchData["descr_".$cur_lang]:'')),
+		'IMG' => (isset($fetchData["img"])?$fetchData["img"]:''),
+		'PRICE' => PriceHelper::number($fetchData["price"]),
+		'UVP' => PriceHelper::number($fetchData["price_uvp"]),
+		'PFAND' => PriceHelper::number($fetchData["pfand"]),
+	);
+	
+	if (!empty($itemInfo["DESCR"])) {
+		$descr_items = "<li>Art. Nr.: ". $itemInfo['ART_NR']."</li>";
+		if ($itemInfo['UVP'] > 0) { $descr_items .= "<li>".$translates['f.uvp'].": &euro;". $itemInfo['UVP']."</li>"; }
+		$descr_items .= "<li>".$translates['f.nasha_cena'].": ". $itemInfo['PRICE']." &euro;</li>";
+		$descr_items .= "<li>".$translates['brands'].": <a href='".HTTP_ROOT."/search/preload/?article=".$itemInfo['BRAND']."'>". $itemInfo['BRAND']."</a></li>";
+		$descr_items .= "</ul>";
+		$itemInfo["DESCR"] = str_replace ('</ul>', $descr_items, $itemInfo["DESCR"]);
+	} else {
+		$descr_items = "<ul>";
+		$descr_items .= "<li>Art. Nr.: ". $itemInfo['ART_NR']."</li>";
+		if ($itemInfo['UVP'] > 0) {  $descr_items .= "<li>".$translates['f.uvp'].": &euro;". $itemInfo['UVP']." </li>"; }
+		$descr_items .= "<li>".$translates['f.nasha_cena'].": &euro;". $itemInfo['PRICE']." </li>";
+		$descr_items .= "<li>".$translates['brands'].": <a href='".HTTP_ROOT."/search/preload/?article=".$itemInfo['BRAND']."'>". $itemInfo['BRAND']."</a></li>";
+		$descr_items .= "</ul>";
+		$itemInfo["DESCR"] = $descr_items;
+		/*?>
+    <ul>
+        <li>Art. Nr.:
+            <?=$itemInfo['ART_NR']?>
+        </li>
+        <li>UVP:
+            <?=$itemInfo['UVP']?>
+        </li>
+        <li>Unser Preis:
+            <?=$itemInfo['PRICE']?>
+        </li>
+        <li>Brand:
+            <?=$itemInfo['BRAND']?>
+        </li>
+    </ul>
+    <?php*/
+	}
+?>
+		<div class="table_cell">
+            <div class="product_item">
+				
+                <div class="image_wrap"><ul class="seller_stats align_center" style="background-color: #ff8400; color:#fff; margin-bottom: 14px;  padding: 5px 0;">
+                    <li>Art. Nr.: <?=$itemInfo['ART_NR']?> </li>
+               </ul>
+				<br/><br/>
+                    <?php 
+			if (!empty($itemInfo['IMG'])) {
+				echo "<img src='".IMGPATH.$itemInfo['IMG']."' width='100%'/>";
+			} else {
+				echo "<img src='".IMGPATH."images/no-picture.png' width='100%'/>";
+			}
+			$braimg = BrandsModel::getById($fetchData['brand']);
+			if (!empty($braimg)) {
+				$braimg = HTTP_ROOT."/media/files/brands/".$braimg['BRA_IMG'];
+				echo "<img src='".$braimg."' style='text-align:center;width:110px;margin-top:10px;' />";
+			}
+			
+			/*?>
+			
+                        <div class="actions_wrap">
+                            <div class="centered_buttons">
+                                <!--<a href="#" onclick="cart('<?=$itemInfo['DB_ID']?>');noticecart();return false;" title="<?=$translates['front.buy']?>" class="button_blue middle_btn add_to_cart"><?=$translates['front.buy']?></a>-->,
+                                <a href="#" onclick="cart('<?=$itemInfo['DB_ID']?>', '<?=$itemInfo['PRICE'];?>', '<?=$itemInfo['BRAND']?>', '<?=$itemInfo['ART_NR']?>');noticecart();return false;" title="<?=$translates['front.buy']?>" class="button_blue middle_btn add_to_cart">
+                                    <?=$translates['front.buy']?>
+                                </a>
+                            </div>
+                        </div>
+						<? */ ?>
+                    
+                </div>
+                <div class="description">
+                    <h3><?php echo $itemInfo['TITLE']; ?></h3>
+                    <div class="clearfix product_info">
+                        <h2 class="product_price alignleft align_center"><b>&euro;<?=PriceHelper::number($itemInfo['PRICE'])?></b></h2>
+                         <?php if ($itemInfo['UVP'] > 0) { ?> <h4><?=$translates["f.uvp_hersteller"];?>: &euro;<?=PriceHelper::number($itemInfo['UVP'])?></h4>  <?php } ?>
+                    </div>
+
+                </div>
+                <div class="full_description" style="font-family: 'Titillium Web', sans-serif;">
+                    <h3 style="font-weight:bold;color:#45359F;"><?php echo $itemInfo['TITLE']; ?></h3>
+                    <?php echo $itemInfo['DESCR']; ?>
+                </div>
+                <div class="actions">
+                    
+                    <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+				<h2 class="product_price bold align_center section_offset">&euro;<span itemprop="price"><?=$itemInfo['PRICE']?></span></h2>
+                    <meta itemprop="priceCurrency" content="EUR" />
+                    <link itemprop="availability" href="http://schema.org/InStock" />
+                    </span>
+                   <?php if ($itemInfo['UVP'] > 0) { ?> <h5 class="align_center"><?=$translates["f.uvp_hersteller"];?>: &euro;<?=PriceHelper::number($itemInfo['UVP'])?></h5> <?php } ?>
+				   <h3 style="color:#45359F;text-align:center;">LIFERUNG IN  <br/><?php  if (!empty($itemInfo['DELIVERY'])) { echo $itemInfo['DELIVERY']; } else { echo "1-2"; }?> TAGEN </h3>
+				   <img src="http://autoresurs.de/static/images/garantie.png" style="width:100%;"/>
+                    <?php if ($itemInfo['UVP'] > 0) { ?>
+						<h3 class="align_center" style="color:#EB6605;padding-top:12px;margin-bottom: 4px;"><?=$translates["f.rabatt"];?>: <?=PriceHelper::inverse_percent($itemInfo['PRICE'], $itemInfo['UVP'])?>%</h3>
+                    <?php } ?>
+					<div class="align_center">
+                        <?=$translates["f.inkl_19_mwst_zzgl"];?>
+                    </div>
+                    <div class="qty min clearfix" style="margin:5px auto 0 auto;width:100%;">
+                        <button data-direction="minus" class="theme_button" style="margin:0 auto;width:33%;">-</button>
+                        <input type="text" value="1" name="item[]" id="cart_item_<?=$itemInfo['DB_ID']?>" style="margin:0 auto;width:33%;">
+                        <button data-direction="plus" class="theme_button" style="margin:0 auto;width:33%;">+</button>
+                    </div>
+
+                    <ul class="buttons_col align_center" style="margin-top:8px;">
+
+                        <li>
+                            <a href="javascript:void(0);" onclick="cart('<?=$itemInfo['DB_ID']?>','<?=$itemInfo['UVP'];?>','<?=$itemInfo['PRICE'];?>','','<?=$itemInfo['ART_NR']?>','<?=$itemInfo['BRAND']?>');noticecart();return false;" title="<?=$translates['front.buy']?>" class="button_blue middle_btn add_to_cart align_center" style="width:100%!important;">
+                                <?=$translates['front.buy']?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+				
+            </div>
+			<?php 
+			if ($itemInfo["PFAND"]>'0') {
+			?>
+			<div style="text-align:center;">Austauschartikel  sind mit einem Pfandwert von <?=$itemInfo["PFAND"]?> € ink. 19% MwSt belegt.</br>
+											Nach Rücksendung Ihres Altteils überweisen wir Ihnen den entsprechenden Pfandwert zurück.</div>
+											
+			<? } ?>
+        </div>

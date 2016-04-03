@@ -1,0 +1,20 @@
+<!-- .requere -->
+<div class="main">
+	<h1 class="uppercase"><?=$page['name']?></h1>
+	<div class="breadcrumbs bottom-20"><?=$bread?></div>
+	
+	<div class="static">
+	
+	<?php if (!empty($page['img'])){?>
+	<img src="<?=HTTP_ROOT?>/media/files/load/normal-<?=$page['img']?>" title="<?=$page['name']?>" alt="<?=$page['name']?>"/>
+	<?php }?>
+	
+	<?=$page['brief']?>
+	
+	<?=$page['content']?>
+	
+	<div class="clear"></div>
+	<p><a href="<?=HTTP_ROOT?>/articles/" class="search-button gradient"><span><?=$translates['front.back']?></span></a></p>
+	
+	</div>
+</div>

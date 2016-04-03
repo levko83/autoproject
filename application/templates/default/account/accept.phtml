@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <h1><?=$translates['front.registred']?></h1>
+            <div class="theme_box clearfix">
+                <p><?=$translates['front.registred.thanks']?></p>
+				<?php if (isset($_REQUEST['err']) && $_REQUEST['err'] == 'smscode'){?>
+					<p style="color:red;"><?=$translates['f.error_confirm_sms']?></p>
+				<?php }?>
+				<?php if (isset($_REQUEST['err']) && $_REQUEST['err'] == 'emailcode'){?>
+					<p style="color:red;"><?=$translates['f.error_confirm_email']?></p>
+				<?php }?>
+				
+            </div>
+        </main>
+    </div>
+</div>

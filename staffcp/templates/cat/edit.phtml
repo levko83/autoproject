@@ -1,0 +1,43 @@
+<?$req=$this->dataModel->getRequiredFields();?>
+<?if (!empty($req)) {?>
+<?foreach ($req as $field){?>
+	<?if ($field['type']==CmsGeneratorConfig::$VALIDATE_FIELD_FILE) {
+			unset($_SESSION[$field['name']]);
+	}?>
+<?}?>
+<?}?>
+<h1 class="h1-header">
+<span><?=$title;?></span>
+<a href="<?=$listUrl;?>" class="btn btn-blue"><?=$listTitle;?></a>
+</h1>
+<form action="/staffcp/<?=$this->dataModel->getModelName();?>/save/" method="POST" enctype="multipart/form-data" onsubmit="return validateThisForm()">
+<div id="tabs" class="tabs">
+    <ul>
+    	<?foreach ($tabs as $tabId=>$tabName){?>
+        <li><a href="#tab-<?=$tabId;?>"><span><?=$tabName;?></span></a></li>
+        <?}?>
+    </ul>
+    <?foreach ($tabs as $tabId=>$tabName){?>
+    <div id="tab-<?=$tabId;?>">
+	<table class="form">
+	<?foreach ($tabFields[$tabName] as $fieldName=>$field){?>
+		<?if ($field->hasLayout){?>
+		<tr>
+			<td class="label"><?=$this->dataModel->getFieldLabel($fieldName);?></td>
+			<td><?=$field->getFormValue();?></td>
+		</tr>
+		<?}?>
+	<?}?>
+	</table>
+	</div>
+    <?}?>
+</div>
+<input type="hidden" name="form[<?=$indexField;?>]" value="<?=$indexValue;?>" />
+<input type="submit" value="<?=$translates['admin.main.save']?>" class="btn btn-blue">
+</form>
+<script>
+function validateThisForm(){
+	return true;	
+}
+$('#tabs').tabs();
+</script>

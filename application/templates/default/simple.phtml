@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php $this->block('elements/header');?>
+</head>
+<body>
+<div class="wrapper">
+	<div class="content">
+	
+		<?php if ($_action != 'printbill' && $_action != 'printcart'){?>
+		<div class="search-item">		
+		<div class="article gradient" id="search-article">
+			<div class="inside-padding">
+			
+			<div class="head-cat-search">
+				<span class="<?=($_controller=='catalog' || $_controller=='search')?'current':'';?>"><a href="/catalog/">Автомобиль</a></span>
+				<span class="<?=($_controller=='index' || $_controller=='search')?'current':'';?>"><a href="/">Артикул</a></span>
+				<?php if (isset($catalog_homeview) && count($catalog_homeview)>0){?>
+				<?php foreach ($catalog_homeview as $cm){?>
+					<span class="<?=(isset($home_select) && ($home_select && in_array($cm['id'],$home_select)))?'current':''?>"><a href="<?php if($cm['url']){?><?=$cm['url']?><?php }else{?><?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($cm['name'])?>-<?=$cm['id']?>/<?php }?>"><?=$cm['home_catname']?></a></span>
+				<?php }?>
+				<?php }?>
+				<div class="clear"></div>
+			</div>
+			
+			<?php $search_title = 'Введите искомые данные';?>
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.ss-1').click(function() {
+					if ($("#article-field").val() == '<?=$search_title?>'){
+						$("#article-field").focus().val('');
+					}
+				});
+			});
+			</script>
+			<?php if ($_controller == 'cat'){?>
+			<div class="form-search">
+				<?php $search_title = 'Введите искомые данные';?>
+				<form action="<?=HTTP_ROOT?>/search/simple/" method="get" id="query-field-form">
+				<div class="search-item-content">
+					<div class="clear"></div>
+					<table class="ss-search">
+					<tr>
+						<td class="ss-colum-1">
+						<div class="ss-1">
+							<div class="searchicon"></div>
+							<input id="article-field" class="" type="text" name="query" value="<?=(isset($_REQUEST['query']))?$_REQUEST['query']:$search_title?>" onclick="if (this.value == '<?=$search_title?>') this.value='';" onblur="if (this.value == '') this.value='<?=$search_title?>';"/>
+						</div>
+						</td>
+		        		<td class="ss-colum-3">
+		        		<div class="ss-3">
+							<input type="submit" class="search-article-class" value="Найти">
+						</div>
+						</td>
+					</tr>
+					</table>
+					<div class="clear"></div>
+				</div>
+				</form>
+				<div class="clear"></div>
+			</div>
+			<?php }else{?>
+			<div class="form-search">
+				<form action="<?=HTTP_ROOT?>/search/preload/" method="get" id="search-articles">
+					
+					<?php if (isset($getTempListArticles) && count($getTempListArticles)>0){?>
+					<script type="text/javascript">
+					$(document).ready(function() {
+						var listarticles = new Array();
+						<?php $trees = '';?>
+						<?php $i=0; foreach ($getTempListArticles as $tArticle){ $i++;?>
+							<?php $trees .= '"'.$tArticle.'"'.(($i!=count($getTempListArticles))?',':'');?>
+						<?php }?>
+						var listarticles = [<?=$trees?>];
+						$("#article-field").focus().autocomplete(listarticles, {
+							matchContains: true,
+							minChars: 0
+						});
+						$('#tartslist').click(function() {
+							$("#article-field").autocomplete("enable");
+							$('.ac_results').show();
+						});
+					});
+					</script>
+					<?php }?>
+					
+					<?php $search_title = 'Введите искомые данные';?>
+					<div class="search-item-content">
+						<div class="clear"></div>
+						<table class="ss-search">
+						<tr>
+							<td class="ss-colum-1">
+							<div class="ss-1">
+								<div class="searchicon"></div>
+								<input id="article-field" class="" type="text" name="article" value="<?=(isset($_REQUEST['article']))?$_REQUEST['article']:$search_title?>" onclick="if (this.value == '<?=$search_title?>') this.value='';" onblur="if (this.value == '') this.value='<?=$search_title?>';"/>
+							</div>
+							</td>
+							<td class="ss-colum-2">
+							<div class="ss-2">
+				        		<select name="time" class="chosen-select">
+				        		<option value="false" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == false)?'selected':'';?>>Срок поставки</option>
+				        		<option value="10" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == 10)?'selected':'';?>>До 10 дней</option>
+				        		<option value="8" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == 8)?'selected':'';?>>До 8-ми дней</option>
+				        		<option value="5" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == 5)?'selected':'';?>>До 5 дней</option>
+				        		<option value="3" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == 3)?'selected':'';?>>До 3-х дней</option>
+				        		<option value="1" <?=(isset($sSortDeliveryView) && $sSortDeliveryView == 1)?'selected':'';?>>1 день</option>
+				        		</select>
+			        		</div>
+			        		</td>
+			        		<td class="ss-colum-3">
+			        		<div class="ss-3">
+								<input type="submit" class="search-article-class" value="Найти">
+							</div>
+							</td>
+							<td class="ss-colum-4">
+								<img src="<?=HTTP_ROOT?>/media-templates/icons/note.png" alt="" title=""/>
+								<a href="<?=HTTP_ROOT?>/search-notepad/">Блокнот</a>
+							</td>
+						</tr>
+						</table>
+						<div class="clear"></div>
+					</div>
+					
+				</form>
+				<div class="clear"></div>
+			</div>
+			<?php }?>
+			
+			</div>
+		</div>
+		<!-- .article -->
+		</div>
+		<!-- .search-item -->
+		<?php }?>
+		
+		<?php if (isset($acl_isset) && $acl_isset){?>
+		<?php $this->block('search/shopping_info');?>
+		<?php }?>
+		
+		<?php $this->content();?>
+		
+	</div>
+	<!-- .content -->
+</div>
+</div>
+<!-- .wrapper, .resize-rapper -->
+<div class="clear"></div>
+
+</body>
+</html>

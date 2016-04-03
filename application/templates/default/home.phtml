@@ -1,0 +1,588 @@
+﻿<!doctype html>
+<html lang="<?php echo $_SESSION["setLang"]; ?>">
+	<head> <!--<meta name= "keywords" lang="de" content="autoteile, ersatzteile, pkwteile, reparaturteile, kfzteile, pkwlkwteile, teile für auto, billige autoteile">-->
+		<?php 
+		if (!empty($_seo['title'])) $site_title = $_seo['title'];
+		else $site_title = "AutoResurs";
+		?>
+		<title><?=$site_title?></title>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="author" content="">
+		<meta name="description" content="<?=$_seo['descr']?>" />
+		<meta name="keywords" content="<?=$_seo['kwords']?>" />
+		<meta name="robots" content="index,follow" />
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<?php echo $header; ?>
+		<? /* <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'> */ ?>
+		<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/animate.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/fontello.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/bootstrap.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/js/rs-plugin/css/settings.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/js/owlcarousel/owl.carousel.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/js/arcticmodal/jquery.arcticmodal.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/js/dtree/dtree.css?v=1">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/js/jquery-autocomplete/jquery.autocomplete.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/jquery.wizard.css">
+		<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/style.css?v=<?php echo VERSION; ?>">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		
+		<!--<link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/non-responsive.css?v=<?php echo VERSION; ?>">-->
+		<link rel="apple-touch-icon" sizes="57x57" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="<?=HTTP_ROOT?>/static/images/newfavicon/apple-touch-icon-180x180.png">
+		<link rel="icon" type="image/png" href="<?=HTTP_ROOT?>/static/images/newfavicon/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="<?=HTTP_ROOT?>/static/images/newfavicon/android-chrome-192x192.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="<?=HTTP_ROOT?>/static/images/newfavicon/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="<?=HTTP_ROOT?>/static/images/newfavicon/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="<?=HTTP_ROOT?>/static/images/newfavicon/manifest.json">
+		<link rel="mask-icon" href="<?=HTTP_ROOT?>/static/images/newfavicon/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="<?=HTTP_ROOT?>/static/images/newfavicon/favicon.ico">
+		<meta name="apple-mobile-web-app-title" content="AutoResurs">
+		<meta name="application-name" content="AutoResurs">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="msapplication-TileImage" content="<?=HTTP_ROOT?>/static/images/newfavicon/mstile-144x144.png">
+		<meta name="msapplication-config" content="<?=HTTP_ROOT?>/static/images/newfavicon/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+		<script src="<?=HTTP_ROOT?>/static/js/modernizr.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery-2.1.1.min.js"></script>
+		<script>
+			var delete_info = "<?=$translates['front.delete.confirm']?>";
+			var text_complete = "<?=$translates['front.cart.form.send.order']?>";
+			var text_next = "<?=$translates["f.prodolzhat"];?>";
+			var text_prev = "<?=$translates["f.nazad"];?>";
+			$(document).ready(function() 
+{ 
+  $( ".finished-text" ).click(function() {
+ alert("merge");
+});
+});
+		</script>
+		<?php echo $analytics; ?>
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" type="text/css" href="<?=HTTP_ROOT?>/static/css/oldie.css">
+		<![endif]-->
+		<!-- Start Bootstrap -->
+		
+		
+		<!-- End Bootstrap -->
+	</head>
+	<body class="front_page promo_popup">
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=998147656929059";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+		
+		<!-- - - - - - - - - - - - - - Cookie Message - - - - - - - - - - - - - - - - 
+
+		<div class="cookie_message">
+
+			<div class="container">
+
+				<div class="on_the_sides">
+
+					<div class="left_side">Please note this website requires cookies in order to function correctly, they do not store any specific information about your personally.</div>
+
+					<div class="right_side">
+
+						<div class="buttons_row">
+
+							<a href="#" class="button_blue accept_cookie">Accept Cookies</a>
+
+							<a href="#" class="button_dark_grey">Read More</a>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		 <!- - - - - - - - - - - - - End of Cookie Message - - - - - - - - - - - - - - - - -->
+
+		<!-- - - - - - - - - - - - - - Old ie alert message - - - - - - - - - - - - - - - - -->
+
+		<!--[if lt IE 9]>
+
+			<div class="ie_alert_message">
+
+				<div class="container">
+
+					<div class="on_the_sides">
+
+						<div class="left_side">
+
+							<i class="icon-attention-5"></i> <span class="bold">Attention!</span> This page may not display correctly. You are using an outdated version of Internet Explorer. For a faster, safer browsing experience.</span>
+
+						</div>
+	
+						<div class="right_side">
+
+							<a target="_blank" href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode" class="button_black">Update Now!</a>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+				
+		<![endif]-->
+
+		<div class="wide_layout">
+
+			<header id="header" class="type_6">
+			
+				<div class="top_part">
+
+					<div class="container">
+
+						<div class="row">
+
+							<div class="col-lg-6 col-md-7 col-sm-8">
+
+								<!-- - - - - - - - - - - - - - Login - - - - - - - - - - - - - - - - -->
+
+								
+								<?php if (isset($account) && count($account)>0){ ?>
+									<p><a href="<?=HTTP_ROOT?>/account/" class="button_blue mini_btn"><?=$translates['myprofile']?></a> <a href="<?=HTTP_ROOT?>/account/logout/" class="button_grey mini_btn"><?=$translates['front.exit']?></a> </p>
+								<?php }else{ ?>
+									<p><a href="#" data-modal-url="<?=HTTP_ROOT?>/account/signin_window/" class="button_blue mini_btn"><?=$translates['login']?></a> <a href="<?=HTTP_ROOT?>/account/signup/" class="button_red mini_btn"><?=$translates['front.act.reg']?></a> </p>
+								<?php }?>
+								<!-- - - - - - - - - - - - - - End login - - - - - - - - - - - - - - - - -->
+
+							</div> <!--/ [col]-->
+
+							<div class="col-lg-6 col-md-5 col-sm-4">
+
+								<div class="clearfix">
+
+									<div class="alignright site_settings">
+
+										<span class="current open_"><img width="16" src="<?=HTTP_ROOT?>/static/images/flags/<?=$lang?>.png" alt="<? echo $langs[$lang]['TEX_TEXT'];?>"><? echo $langs[$lang]['TEX_TEXT'];?></span>
+										<?php if (count($langs)>1){?>
+										<ul class="dropdown site_setting_list language">
+											<?php if (isset($langs) && count($langs)){?>
+												<?php foreach ($langs as $key=>$lang_one){?>
+													<li class="animated_item"><a href="<?=UriViewHelper::uri($_SERVER['REQUEST_URI'])?>lang=<?=$key?>"><img width="16" src="<?=HTTP_ROOT?>/static/images/flags/<?=$key?>.png" alt="<?=$lang_one['TEX_TEXT']?>"> <?=$lang_one['TEX_TEXT']?></a></li>
+												<?php }?>
+											<?php }?> 
+										</ul>
+										<?php }?>
+
+									</div><!--/ .alignright.site_settings-->
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="bottom_part">
+					<div class="container">
+						<div class="row">
+							<div class="main_header_row">
+								<div class="col-sm-3">
+									<a href="<?=HTTP_ROOT?>" class="logo align_center">
+										<img src="<?=HTTP_ROOT?>/static/images/autoresurs-logo.png?v=<?php echo VERSION; ?>" alt="" style="width:100%;">
+									</a>
+								</div>
+								<div class="col-sm-6">
+									<form class="clearfix search" action="<?=HTTP_ROOT?>/search/preload/" method="get">
+										<input type="text" value="<?=(isset($_REQUEST['article']))?$_REQUEST['article']:''?>" name="article" tabindex="1" placeholder="<?=$translates["f.artikelsuche"];?>..." class="alignleft">
+										<button class="button_blue def_icon_btn alignleft"></button>
+									</form>
+								</div>
+								<div class="col-sm-3">
+									<div class="call_us align_center">
+										<?php echo $header_contacts;
+										/*
+											<div class="col-sm-12">
+												<h3>
+													Hotline Online-Shop</h3>
+												<h2>
+													+49 30 895 65 839</h2>
+											</div>
+											<div class="col-sm-6 align_left">
+												<p>
+													Montag - Freitag<br />
+													Samstag</p>
+											</div>
+											<div class="col-sm-6">
+												<p>
+													10:00 - 16:00 Uhr<br />
+													10:00 - 15:00 Uhr</p>
+											</div>
+										*/
+										?>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="main_navigation_wrap">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="sticky_inner type_2">
+									<div class="nav_item">
+										<nav class="main_navigation">
+											<ul>
+												<li <?php if ($_controller=='index'){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/"><?=$translates['front.home']?></a></li>
+												<li <?php if ($_SERVER['REQUEST_URI']=="/catalog/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/catalog/"><?=$translates["f.katalog_avtomobiley"];?></a></li>	
+												<li <?php if ($_SERVER['REQUEST_URI']=="/page/zahlung-und-versandinfo"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/page/zahlung-und-versandinfo"><?=$translates['front.delivery.block']?></a></li>
+												<li <?php if ($_SERVER['REQUEST_URI']=="/about/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/about/"><?=$translates['front.about']?></a></li>
+												<li <?php if ($_SERVER['REQUEST_URI']=="/contacts/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/contacts/"><?=$translates['front.contacts']?></a></li>
+												<li <?php if ($_SERVER['REQUEST_URI']=="/page/impressum"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/page/impressum"><?=$translates["f.impressum"];?></a></li>
+											</ul>
+										</nav>
+
+									</div>
+									<div class="nav_item size_3">
+									
+										<button id="open_shopping_cart" class="open_button" data-amount="<?=$xcart?>">
+											<b class="title"><?=$translates['front.cart']?></b>
+											<b class="total_price">&euro;<?=PriceHelper::number($xcarttotalsum)?></b>
+										</button>
+
+										<div class="shopping_cart dropdown" style="height: 368px !important;">
+												<div class="animated_item">
+													<!--<a href="<?=HTTP_ROOT?>/cart/" class="button_grey">View Cart</a>-->
+													<a href="<?=HTTP_ROOT?>/cart/" class="button_red align_center"><?=$translates['front.cart.form.send.order']?></a>
+
+												</div>
+										
+												<div class="animated_item">
+												
+													<div id="cart_data">
+														<div style="text-align:center;">
+															<?=$translates["front.loading"];?>...
+															<br/>
+															<img src="<?=HTTP_ROOT?>/static/images/loader.gif" alt="<?=$translates["front.loading"];?>..."/>
+														</div>
+														<!--
+															<p class="title" style="color:#666666;"><?=$translates["f.nedavno_dobavlennye_produkty_"];?></p>
+															<div class="clearfix sc_product">
+																<a href="#" class="product_thumb"><img src="images/sc_img_1.jpg" alt=""></a>
+																<a href="#" class="product_name">Natural Factors PGX Daily Ultra Matrix...</a>
+																<p>1 x $499.00</p>
+																<button class="close"></button>
+															</div>-->
+													</div>
+													
+
+												</div>
+										</div>
+										
+									</div>
+
+								</div><!--/ .sticky_inner -->
+
+							</div><!--/ [col]-->
+
+						</div><!--/ .row-->
+
+					</div><!--/ .container-->
+
+				</div><!--/ .main_navigation_wrap-->
+
+			</header>
+
+			<div class="page_wrapper" >
+				<?php $this->content();?>
+			</div><!--/ .page_wrapper-->
+
+			<footer id="footer">
+				<style>
+					.infoblocks_container::before { background: none;}
+				</style>
+				<div class="container" style="background: #fff; padding: 10px 0 10px;">
+					
+					<div class="infoblocks_container">
+
+						<ul class="infoblocks_wrap">
+
+							<li>
+								<a href="#" class="infoblock type_1">
+
+									<i class="icon-paper-plane"></i>
+									<span class="caption"><b><?=$translates["f._bystraya_dostavka"];?></b></span>
+
+								</a><!--/ .infoblock-->
+							</li>
+
+							<li>
+								<a href="#" class="infoblock type_1">
+
+									<i class="icon-lock"></i>
+									<span class="caption"><b><?=$translates["f.bezopasnaya_oplata"];?></b></span>
+
+								</a><!--/ .infoblock-->
+							</li>
+
+							<li>
+								<a href="#" class="infoblock type_1">
+
+									<i class="icon-money"></i>
+									<span class="caption"><b><?=$translates["f.100_garantiya_vozvrata_sredstv"];?></b></span>
+
+								</a><!--/ .infoblock-->
+							</li>
+
+						</ul><!--/ .infoblocks_wrap.section_offset.clearfix-->
+						
+						<div style="float: left; width: 400px; text-align: center; margin-top:5px">
+							<!-- Start Subscribe Email -->
+							<a href="#" class="button_blue" data-toggle="modal" data-target="#subscribe" style="background: #4AC4FA">Subscribe News Email</a> 
+							<!-- End Subscribe Email -->
+							
+							<br></br>
+							<span style="color: #0632AD; font-size: 19px; font-weight: bold">Hotline Online-Shop</span>
+							<br>Tel.: +49 30 856 13 095
+							<br>Tel.: +49 30 856 13 456
+							<br>Tel.: +49 30 857 41 263
+							<br>Montag - Freitag 10:00 - 16:00 Uhr
+							<br>Samstag 10:00 - 15:00
+							<br></br>
+							<img src="<?=HTTP_ROOT?>/static/images/footer.jpg" style=" width: 150px;text-align:center"/>
+						</div>
+						
+						<div style="float: left; width: 740px">
+							<div style="width: 250px; display: inline-block; font-size: 17px">
+								<b>Autoresurs Service:</b>
+								<br><a href="<?=HTTP_ROOT?>/about/"><?=$translates['front.about']?></a>	
+								<br><a href="<?=HTTP_ROOT?>/page/zahlung">Zahlung</a>
+								<br><a href="<?=HTTP_ROOT?>/page/zahlung-und-versandinfo"><?=$translates['front.delivery.block']?></a>
+								<br><a href="<?=HTTP_ROOT?>/page/reklamation">Reklamation</a>
+								<!--<br><a href="<?=HTTP_ROOT?>/page/partnerschaft">Partnerschaft</a>-->
+								<br><a href="<?=HTTP_ROOT?>/brand"><?=$translates['brands']?></a>
+								<br><a href="<?=HTTP_ROOT?>/page/widerruf">Widerruf</a>
+								<br><a href="<?=HTTP_ROOT?>/page/datenschutz">Datenschutz</a>
+								<br><a href="<?=HTTP_ROOT?>/page/agb">AGB</a>
+								<br><a href="<?=HTTP_ROOT?>/contacts/"><?=$translates['front.contacts']?></a>
+								<br><br>
+							</div>	
+							
+							<div style="width: 450px; display: inline-block; text-align: center">
+								<img src="<?=HTTP_ROOT?>/static/images/autoresurs-logo.png" width="300">
+								<img src="<?=HTTP_ROOT?>/static/images/buy_system.png">
+								<br>Unser Autoteile-Onlineshop ist ein Unternehmen
+								<br>mit dynamischer Entwicklung im GroB- und
+								<br>Einzelhandel. Wir bieten uber 1 000 000 Autoersatzteile
+								<br>und Autozubehör fur lhr PKW an.
+								<br>
+							</div>
+							
+							<div style="display: inline-block">
+								<b>AutoResurs Interactive:</b>
+								<!-- AddToAny BEGIN -->
+									<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+									<a class="a2a_button_facebook"></a>
+									<a class="a2a_button_twitter"></a>
+									<a class="a2a_button_google_plus"></a>
+									<a class="a2a_button_pinterest"></a>
+									</div>
+									<script async src="https://static.addtoany.com/menu/page.js"></script>
+								<!-- AddToAny END -->
+							</div>
+							<div style="display: inline-block; margin-left: 150px">
+								<b>Kundenservice:</b>
+								<span style="color: blue">
+								<br>Fur Kunden: service@autoresurs.de
+								<br>Fur Handler: info@autoresurs.de
+								</span>
+							</div>
+						</div>
+						<div style="clear: both"></div>
+						
+					</div><!--/ .infoblocks_container -->
+
+				</div><!--/ .container -->
+
+				<div style="height: 50px"></div>		
+				<!-- <div class="footer_section_3 align_center"> -->
+
+					<!-- <div class="container"> -->
+						
+						<!-- - - - - - - - - - - - - - End of payments - - - - - - - - - - - - - - - - -->
+						
+						
+						
+						<!-- - - - - - - - - - - - - - Footer navigation 
+						
+
+						- - - - - - - - - - - - - - - - -->
+
+						<!-- <nav class="footer_nav">
+
+							<ul class="bottombar">
+
+								<li><a href="<?=HTTP_ROOT?>/"><?=$translates['front.home']?></a></li>
+								<li><a href="<?=HTTP_ROOT?>/catalog/"><?=$translates["f.katalog_avtomobiley"];?></a></li>		
+								<li><a href="<?=HTTP_ROOT?>/page/datenschutz">Datenschutz</a></li>
+								<li><a href="<?=HTTP_ROOT?>/page/agb">AGB</a></li>
+								<li><a href="<?=HTTP_ROOT?>/brand/"><?=$translates['brands']?></a></li>
+								<li><a href="<?=HTTP_ROOT?>/page/zahlung-und-versandinfo"><?=$translates['front.delivery.block']?></a></li>
+								<li><a href="<?=HTTP_ROOT?>/about/"><?=$translates['front.about']?></a></li>
+								<li><a href="<?=HTTP_ROOT?>/contacts/"><?=$translates['front.contacts']?></a></li>
+
+							</ul>
+
+						</nav> -->
+						
+						<!-- - - - - - - - - - - - - - End of footer navigation - - - - - - - - - - - - - - - - -->
+
+						<!-- <p class="copyright">&copy; 2015-2016 <a href="http://www.autoresurse.de">AutoResurs</a>. All Rights Reserved.</p> -->
+
+					<!-- </div> --><!--/ .container -->
+
+				<!-- </div> --><!--/ .footer_section-->
+
+			</footer>
+
+		</div><!--/ [layout]-->
+		<ul class="social_feeds">
+
+
+			<li>
+
+				<button class="icon_btn middle_btn social_facebook open_"><i class="icon-facebook-1"></i></button>
+
+				
+				<section class="dropdown">
+
+					<div class="animated_item">
+
+						<h3 class="title">Facebook</h3>
+
+					</div><!--/ .animated_item-->
+
+					<div class="animated_item">
+
+						<div class="fb-page" data-href="https://www.facebook.com/autoresurs.de/?fref=ts" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/autoresurs.de/?fref=ts"><a href="https://www.facebook.com/autoresurs.de/?fref=ts">AutoResurs</a></blockquote></div></div>
+
+					</div><!--/ .animated_item-->
+
+				</section><!--/ .dropdown-->
+
+			</li>
+			<li>
+
+				<button class="icon_btn middle_btn social_gmap open_"><i class="icon-location-4"></i></button>
+
+				<!--Location-->
+
+				<section class="dropdown">
+
+					<div class="animated_item">
+
+						<h3 class="title"><?=$translates['front.map']?></h3>
+
+					</div><!--/ .animated_item-->
+					 
+					<div class="animated_item">
+						
+						<p class="c_info_location">Alt-Friedrichsfelde 103, <br/> 10315, Berlin, Deutschland</p>
+
+						<div class="proportional_frame">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.2989524749196!2d13.518347315961787!3d52.50992864472787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a84eb5a8b9e8ad%3A0xad50d63bbc2e1a8b!2zQWx0LUZyaWVkcmljaHNmZWxkZSAxMDMsIDEwMzE1IEJlcmxpbiwg0JPQtdGA0LzQsNC90LjRjw!5e0!3m2!1sru!2s!4v1450786300869" style="border:0"></iframe>
+						</div>
+
+						<ul class="c_info_list">
+
+							<li class="c_info_phone">+49 30 856 13 095</li>
+							<li class="c_info_mail"><a href="mailto:info@autoresurs.de">info@autoresurs.de</a></li>
+							<li class="c_info_schedule">
+
+								<ul>
+
+									<li><?=$translates["f.ponedelnik"];?>-<?=$translates["f.pyatnica"];?>: 10.00-16.00</li>
+
+								</ul>
+
+							</li>
+
+						</ul>
+
+					</div><!--/ .animated_item-->
+
+				</section><!--/ .dropdown-->
+			
+			</li>
+		</ul>
+<div class="modal fade" id="subscribe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="    margin-top: 10px;
+    margin-right: 15px;"></button>
+        <h4 class="modal-title" id="myModalLabel">Subscription Form</h4>
+
+      </div>
+      <div class="modal-body">
+      
+<!--End mc_embed_signup-->
+
+   <!-- Begin MailChimp Signup Form -->
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <div for="inputEmail3" class="col-sm-2 control-label">Email</div>
+    <div class="col-sm-10">
+	<input type="email" value="" name="EMAIL" class="required email form-control" id="mce-EMAIL"/>
+	</div>
+	 </div>
+	<div id="mce-responses" class="clear">
+		<div class="response" id="mce-error-response" style="display:none"></div>
+		<div class="response" id="mce-success-response" style="display:none"></div>
+	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;"><input type="text" name="b_9e279011b21a23e1aed5e4868_cca4394bc9" value=""/></div>
+	<div class="form-group remove-bottom">
+    <div class="col-sm-offset-2 col-sm-10">
+	<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-default"/>
+	</div>
+  </div>
+</form>
+
+<!--End mc_embed_signup-->
+      </div>
+
+    </div>
+  </div>
+</div>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery-2.1.1.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery.browser.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery-autocomplete/jquery.autocomplete.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/queryloader2.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery.appear.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/owlcarousel/owl.carousel.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/arcticmodal/jquery.arcticmodal.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/colorpicker/colorpicker.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/retina.min.js"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/jquery.wizard.js?v=222"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/theme.plugins.js?v=<?php echo VERSION; ?>"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/theme.core.js?v=<?php echo VERSION; ?>"></script>
+		<script src="<?=HTTP_ROOT?>/static/js/main.js?v=1.192"></script>
+				<script src="<?=HTTP_ROOT?>/static/js/bootstrap.min.js"></script>
+	</body>
+</html>
+
+<?php
+// print("<pre>");
+// print_r(get_defined_vars());

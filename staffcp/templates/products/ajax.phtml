@@ -1,0 +1,24 @@
+<table id="result-filters">
+<?php if (isset($filters) && count($filters)>0){?>
+<?php foreach ($filters as $dd){?>
+<tr>
+	<td><b>[<a href="#" onclick="$('#result-filters').append($(this).parent().parent().parent().clone());return false;">+</a>] <?=$dd['name']?></b></td>
+	<td>
+		<select name="value_id[<?=$dd['id']?>][]" style="width:100%;">
+			<option value=""></option>
+			<?php $values = Filters_valuesModel::fetchingAll($dd['id']);?>
+			<?php if (count($values)>0){?>
+			<?php foreach ($values as $vv){?>
+			<option value="<?=$vv['id']?>" <?=(isset($dd['selvalue'])&&($dd['selvalue']==$vv['id']))?'selected':'';?>><?=$vv['name']?></option>
+			<?php }?>
+			<?php }?>
+		</select>
+	</td>
+	<td><?=$translates['newlavue']?></td>
+	<td>
+		<input type="text" name="value[<?=$dd['id']?>][]"/>
+	</td>
+</tr>
+<?php }?>
+<?php }?>
+</table>

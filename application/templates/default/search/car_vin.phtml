@@ -1,0 +1,79 @@
+<?php 
+if (!isset($MFA['MFA_BRAND'])) {
+?>
+<div class="container" itemscope itemtype="http://schema.org/Product">
+   <div class="row">
+        <main class="col-md-12 col-sm-12 align_center">
+			<h3>Es wurde kein Fahrzeug mit eingegebener KBA-Nummer gefunden.</h3>
+			<h3>Bitte geben Sie gultige KBA-Nummer ein. </h3>
+		</main>
+	</div>
+</div>
+<?php
+} else {
+?>
+<div class="container" itemscope itemtype="http://schema.org/Product">
+    <ul class="breadcrumbs">
+        <li>
+			<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/" itemprop="url"><span itemprop="title"><?=$translates['front.home']?></span></a> &rarr;</span>
+			<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/catalog/" itemprop="url"><span itemprop="title"><?=$translates["f.katalog_avtomobiley"];?></a> &rarr;</span>
+			<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/" itemprop="url"><span itemprop="title"><?=$MFA['MFA_BRAND']?></a> &rarr;</span>
+			<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?=$_SERVER['REQUEST_URI']?>" itemprop="url"><span itemprop="title"><?=$MOD[0]->MOD_CDS_TEXT?></span></a></span>
+		</li>
+    </ul>
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+            <h1><span itemprop="name"><?=$MFA['MFA_BRAND']?> <?=$MOD[0]->MOD_CDS_TEXT?></span></h1>
+            <div class="theme_box clearfix" itemprop="description">
+                <?php if (isset($tabs) && count($tabs)>0){?>
+					<ul class="htabs">
+						<li><?=$translates["f.varianty_modifikaciy"];?>:</li>
+						<?php foreach ($tabs as $key=>$tab){?>
+						<li id="li<?=$key?>" <?=($key == $tabs_cur)?'class="cur"':''?>><a onclick="ctab(<?=$key?>);" href="#type-<?=$key?>"><?=$tab?></a> (<b><?=count($data[$key])?></b>)</li>
+						<?php }?>
+					</ul>
+					<br/>
+					<div class="tabs">
+						<?php foreach ($tabs as $key=>$tab){?>
+						<div class="tab" id="type-<?=$key?>">
+							<?php if (isset($data[$key]) && count($data[$key])>0){?>
+							<table class="details-list" width="100%">
+							<thead>
+							<tr>
+								<th><?=$translates['front.engine']?></th>
+								<th><?=$translates['front.car.start']?></th>
+								<th>pH</th>
+								<th>V </th>
+								<th>kW </th>
+								<th><?=$translates['front.car.engine.code']?></td>
+							</tr>
+							</thead>
+							<tbody>
+							<?php $i=0;?>
+							<?php foreach ($data[$key] as $dd){?>
+							<?php $i++;?>
+								<tr class="pointer" onclick="location='/auto/<?=AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/<?=AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT)?>-<?=$MOD[0]->MOD_ID?>/<?=AliasViewHelper::doTraslitSearchAuto($dd->SHORT_DES)?>-<?=$dd->TYP_ID?>';">
+									<td class="<?=($i%2)?'cell':''?>"><a href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/<?=AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT)?>-<?=$MOD[0]->MOD_ID?>/<?=AliasViewHelper::doTraslitSearchAuto($dd->SHORT_DES)?>-<?=$dd->TYP_ID?>"><?=$MFA['MFA_BRAND']?> <?/*=$MOD[0]->MOD_CDS_TEXT*/?> <?=$dd->SHORT_DES?></a></td>
+									<td class="<?=($i%2)?'cell':''?>"><?=substr($dd->PCON_START,0,4)?>.<?=substr($dd->PCON_START,4,6)?><?php if ($dd->PCON_END){?>-<?=substr($dd->PCON_END,0,4)?>.<?=substr($dd->PCON_END,4,6)?><?}?></td>
+									<td class="<?=($i%2)?'cell':''?>"><?=$dd->HP_FROM?><?=($dd->HP_UPTO)?'-'.$dd->HP_UPTO:''?></td>
+									<td class="<?=($i%2)?'cell':''?>"><?=$dd->CCM?></td>
+									<td class="<?=($i%2)?'cell':''?>"><?=$dd->KW_FROM?><?=($dd->KW_UPTO)?'-'.$dd->KW_UPTO:''?></td>
+									<td class="<?=($i%2)?'cell':''?>" style="font-size:11px;"><?=($dd->TYP_ENGINE_DES_TEXT)?$dd->TYP_ENGINE_DES_TEXT.'':''?> <?=$dd->ENG_CODE?></td>
+								</tr>
+							<?php }?>
+							</tbody>
+							</table>
+							<?php }?>
+						</div>
+						<?php }?>
+					</div>
+				<?php } ?>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+	var tabs_cur = <?=$tabs_cur?>;
+</script>
+
+<?php } ?>

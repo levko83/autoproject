@@ -1,0 +1,11 @@
+<div id="tabs" class="tabs">
+	<ul>
+		<li><a href="#tab-1"><span>Список позиций</span></a></li>
+		<li><a href="/staffcp/index/crm_list_orders/?ajax=true"><span>Список заказов</span></a></li>
+		<li><a href="#tab-2"><span><?=$translates['admin.main.topicstoimps']?></span></a></li>
+		<li><a href="#tab-3"><span><?=$translates['admin.main.sendtopics']?></span></a></li>
+	</ul>
+	<div id="tab-1"><?$this->block('index/crm/orders');?></div>
+	<div id="tab-2"><?$this->block('index/crm/imps');?></div>
+	<div id="tab-3"><?$this->block('index/crm/imps_sent');?></div>
+</div>

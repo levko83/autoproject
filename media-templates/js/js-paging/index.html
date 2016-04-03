@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Концепция постраничной навигации (с использованием слайдера jQuery)</title>
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script src="js/modernizr.custom.63321.js"></script>
+	</head>
+	<body>
+		<div class="container">	
+			<!-- Верхняя панель -->
+			<div class="codrops-top clearfix">
+				<a href="http://www.ruseller.com" target="_blank">
+					<strong>&laquo; Материалы сайта </strong>RUSELLER.COM
+				</a>
+			</div><!--/ Верхняя панель  -->
+			<header class="clearfix">
+				<h1>Концепция постраничной навигации <span>с использованием слайдера jQuery UI</span></h1>
+			</header>
+			<div class="main">
+				<div id="preview" class="preview">
+					<span>1</span>
+				</div>
+				<div id="slider" class="sp-slider-wrapper">
+					<nav>
+						<a href="#" class="sp-prev">Предыдущий</a>
+						<a href="#" class="sp-next">Дальше</a>
+					</nav>
+				</div>
+			</div>
+		</div><!-- /container -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<script src="js/jquery.ui.touch-punch.min.js"></script>
+		<script src="js/jquery.pagination.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var $update = $('#preview>span');
+				$("#slider").pagination( {
+					total : 100,
+					onChange : function(value) {
+						$update.text(value);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+<?php if (isset($favicon) && $favicon){?><link rel="shortcut icon" href="<?=HTTP_ROOT?>/media/files/settings/<?=$favicon?>?version=<?=VERSION?>"/><?php }?>
+<link type="text/css" href="/media-templates/css/font.css?version=<?=VERSION?>" rel="stylesheet" media="screen" />
+<link type="text/css" href="/media-templates/ui/css/ui-lightness/jquery-ui-1.10.3.custom.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/js/theme/ui.all.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/css/main.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/css/menudropdown.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/css/table.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/css/tree.css?version=<?=VERSION?>" rel="Stylesheet" />
+<link type="text/css" href="/staffcp/media/js/calendar/calendar-win2k-cold-1.css?version=<?=VERSION?>" rel="Stylesheet" />	
+<link type="text/css" href="/media-templates/js/js-paging/css/style.css?version=<?=VERSION?>" rel="stylesheet" />
+<link type="text/css" href="/media-templates/js/jquery-autocomplete/jquery.autocomplete.css?version=<?=VERSION?>" rel="stylesheet" />
+<link type="text/css" href="/staffcp/media/js/fancybox/jquery.fancybox-1.3.4.css?version=<?=VERSION?>" rel="Stylesheet" />	
+<link type="text/css" href="/staffcp/media/js/colorpicker/css/colorpicker.css?version=<?=VERSION?>" rel="stylesheet" media="screen" />
+
+<script type="text/javascript" src="/media-templates/js/jquery.min.v1.8.3.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/ui/js/jquery-ui-1.10.3.custom.min.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/jquery.dataTables.min.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/jquery.tablednd_0_5.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/dtree.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/jquery.dimensions.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/calendar/calendar.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/calendar/lang/calendar-ru.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/calendar/calendar-setup.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/tiny_mce/tiny_mce.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/tiny_mce/filemanager/fo.js?version=<?=VERSION?>"></script>
+
+<!-- CK EDITOR -->
+<script type="text/javascript" src="/staffcp/media/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/staffcp/media/js/ckeditor/AjexFileManager/ajex.js"></script>
+<!-- CK EDITOR END -->
+
+<script type="text/javascript" src="/staffcp/media/js/init.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/fancybox/jquery.mousewheel-3.0.4.pack.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/fancybox/jquery.fancybox-1.3.4.pack.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/js-paging/js/modernizr.custom.63321.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/js-paging/js/jquery.ui.touch-punch.min.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/js-paging/js/jquery.pagination.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/jquery-autocomplete/lib/jquery.bgiframe.min.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/jquery-autocomplete/lib/jquery.ajaxQueue.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/jquery-autocomplete/lib/thickbox-compressed.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/media-templates/js/jquery-autocomplete/jquery.autocomplete.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/colorpicker/js/colorpicker.js?version=<?=VERSION?>"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.list').dataTable({"oLanguage":{ "sUrl": "/staffcp/media/language/<?=(isset($lang)?$lang:'ru')?>.txt" },"sPaginationType":"full_numbers","iDisplayLength":100,"aaSorting":[[1, 'desc']],"bAutoWidth":false,"fnFooterCallback": function ( nRow, aaData, iDataStart, iDataEnd ) {$('.dataTables_length').remove();}});
+	$(".popup-info").fancybox({'titlePosition':'inside','transitionIn':'none','transitionOut':'none'});
+	$(".form-action").fancybox({'width' : '75%','height' : '75%','autoScale' : false,'transitionIn':'none','transitionOut':'none'});
+	$(".iframe").fancybox({'width':'75%','height':'75%','autoScale':false,'transitionIn':'none','transitionOut':'none','type':'iframe','top':'100px'});
+	$(window).scroll(function() {
+		var offset = $("#left_fixed").height();
+		var content = $(window).height();
+		if (offset > content)
+		$("#left_fixed").css({position:'relative'});
+	});
+});
+</script>
+
+<link type="text/css" href="/staffcp/media/css/validationEngine.jquery.css?version=<?=VERSION?>" rel="stylesheet" media="screen" />
+<script type="text/javascript" src="/staffcp/media/js/jquery.validationEngine-en.js?version=<?=VERSION?>"></script>
+<script type="text/javascript" src="/staffcp/media/js/jquery.validationEngine.js?version=<?=VERSION?>"></script>

@@ -1,0 +1,35 @@
+<?php if (isset($listimporters) && count($listimporters)>0){?>
+<!-- .item -->
+<div class="item-menu radius no-left-border">
+	<div class="layout radius inside">
+		<div class="h2 uppercase">Производители</div>
+		
+		<select class="chosen-select chosen-fixed" onchange="location=this.value;">
+			<option>поиск по производителю</option>
+			<?php if (isset($listBrands) && count($listBrands)>0){?>
+			<?php foreach ($listBrands as $dd){?>
+			<option <?=($_controller == 'pricelist' && (isset($brand) && $dd['BRAND_NAME']==$brand))?'selected':'';?> value="<?=HTTP_ROOT?>/pricelist/brand/<?=rawurlencode($dd['BRAND_NAME'])?>/"><?=$dd['BRAND_NAME']?></option>
+			<?php }?>
+			<?php }?>
+		</select>
+		
+	</div>
+</div>
+<!-- .item -->
+
+<!-- .item -->
+<div class="item-menu radius no-left-border">
+	<div class="layout radius inside">
+		<div class="h2 uppercase">Склад</div>
+		
+		<select class="chosen-select chosen-fixed" onchange="location=this.value;">
+			<option>поиск по складу</option>
+			<?php foreach ($listimporters as $dd){?>
+			<option <?=($_controller == 'pricelist' && (isset($imp) && $dd['id']==$imp['id']))?'selected':'';?> value="<?=HTTP_ROOT?>/pricelist/code/<?=$dd['id']?>/"><?=$dd['name_price']?></option>
+			<?php }?>
+		</select>
+		
+	</div>
+</div>
+<!-- .item -->
+<?php }?>

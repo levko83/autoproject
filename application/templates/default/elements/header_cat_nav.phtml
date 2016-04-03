@@ -1,0 +1,33 @@
+
+<div id="cat_nav">
+	<ul class="cat_menu_list">
+		<li <?php if ($_controller=='index'){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/">Главная</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/catalog/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/catalog/">Каталог автомобилей</a></li>		
+		<li <?php if ($_SERVER['REQUEST_URI']=="/page/garanty"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/page/garanty">Гарантия</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/brand/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/brand/">Бренды</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/page/pay4delivery"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/page/pay4delivery">Оплата и доставка</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/page/servisnoe_obslujivanie"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/page/servisnoe_obslujivanie">Сервисное обслуживание</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/about/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/about/">О компании</a></li>
+
+		
+		<li <?php if ($_SERVER['REQUEST_URI']=="/contacts/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/contacts/">Контакты</a></li>		
+		
+		<? /*
+		<li <?php if ($_SERVER['REQUEST_URI']=="/to/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/to/">Запчасти для авто</a></li>
+		<li <?php if ($_SERVER['REQUEST_URI']=="/category/"){?>class="current"<?php }?>><a href="<?=HTTP_ROOT?>/category/">Каталог продукции</a></li>		
+				
+		<?php if (isset($catalog_main) && count($catalog_main)>0){?>
+		<?php foreach ($catalog_main as $cm){?>
+		<li <?=(isset($home_select) && ($home_select && in_array($cm['id'],$home_select)))?'class="current"':'class="menu_head"'?>>
+			<a class="cat_list_item" href="<?php if($cm['url']){?><?=$cm['url']?><?php }else{?><?=HTTP_ROOT?>/category/<?=AliasViewHelper::doTraslit($cm['name'])?>-<?=$cm['id']?>/<?php }?>">
+				<?php /*if ($cm['img']){?><img width="60px" height="60px" src="<?=StaticimgViewHelper::chk('products',$cm['img'])?>"><?php }*/?>
+				<?/*=$cm['name']?>
+			</a>
+		</li>
+		<?php }?>
+		<?php }*/?>
+		
+	</ul>
+	
+	<div class="clear"></div>
+</div>

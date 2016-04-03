@@ -1,0 +1,27 @@
+<h1>Настройка платежной системы "ASSIST"</h1>
+<form action="" method="POST">
+<input type="hidden" name="save" value="1">
+<table>
+<?php if (isset($data) && count($data)>0){?>
+<?php foreach ($data as $dd){?>
+<tr>
+	<td><b><?=$dd['name']?></b></td>
+	<td>
+		<?php if ($dd['type'] == 'radio'){?>
+			<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="1" <?=($dd['value']==1)?'checked':''?>> Да
+			<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="0" <?=($dd['value']==0)?'checked':''?>> Нет
+		<?php }else{?>
+			<input type="<?=$dd['type']?>" name="code[<?=$dd['id']?>]" value="<?=$dd['value']?>" class="iput">
+		<?php }?>
+	</td>
+</tr>
+<?php }?>
+<?php }?>
+<tr>
+	<td></td>
+	<td><input type="submit" value="Сохранить" class="btn btn-green"></td>
+</tr>
+</table>
+</form>
+
+<p><b>Неправильная настройка может привести к ошибкам работы сайта. В случае ошибок просим писать запросы в техподдержку в разделе "billing" блока "Настройка / Управление"</b></p>

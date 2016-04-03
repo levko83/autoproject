@@ -1,0 +1,8 @@
+<?php if (isset($result) && count($result)>0){?>
+<?php foreach ($result as $dd){?>
+<div style="width:422px;border:solid 1px #dadada;padding:5px;margin:5px;float:left;border-radius:5px;">
+	<h1><?=$dd['name']?></h1>
+	<img src="/cache/<?=md5($dd['id'])?>.png"/>
+</div>
+<?php }?>
+<?php }?>

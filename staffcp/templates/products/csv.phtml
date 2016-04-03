@@ -1,0 +1,47 @@
+<form action="/staffcp/products/search/" method="POST">
+<table class="cat" width="100%">
+<tr>
+	<td class="fst"><a class="dotted" href="#" onclick="$('#csv_update_frm').toggle(); return false;"><b><?=$translates['admin.products.csv.title']?></b></a></td>
+	<td class="fst"><a href="/staffcp/products/?set_index=true"><b>Товары на главной</b></a></td>
+	<td class="fst">Найти товар по ID</td>
+	<td><input type="text" name="product_id" value="" class="iput" style="width:100%;"></td>
+	<td class="thd"><input type="submit" value="Найти" class="btn btn-blue"></td>
+</tr>
+</table>
+</form>
+
+<?php if ($parent){?>
+<?php
+if (isset($_REQUEST['st'])) {
+	switch ($_REQUEST['st']) {
+		case 'true': echo '<p><span style="color:green;">Обновление успешно выполнено!</span></p>'; break;
+		case 'false': echo '<p><span style="color:red;">Ошибка обновления!</span></p>'; break;
+		case 'file_error': echo '<p><span style="color:green;">Неверный формат файла!</span></p>'; break;
+	}
+}
+?>
+<form class="no-display" id="csv_update_frm" action="/staffcp/products/updatecsv/?place=<?=$_controller?>&parent=<?=$parent?>" method="POST" enctype="multipart/form-data">
+<table width="100%" style="border:solid 1px #dadada;border-radius:5px;padding:5px;margin:5px 0px;">
+<tr>
+	<td><b><?=$translates['admin.products.csv.step']?> 1.</b></td>
+	<td><input type="button" value="<?=$translates['admin.products.csv.download']?>" onclick="location='/staffcp/products/csv/?id=<?=$parent?>';" class="btn btn-blue"></td>
+</tr>
+<tr>
+	<td><b><?=$translates['admin.products.csv.step']?> 2.</b></td>
+	<td><?=$translates['admin.products.csv.step2']?></td>
+</tr>
+<tr>
+	<td><b><?=$translates['admin.products.csv.step']?> 3.</b></td>
+	<td><?=$translates['admin.products.csv.step3']?></td>
+</tr>
+<tr>
+	<td><b><?=$translates['admin.products.csv.step']?> 4.</b></td>
+	<td><?=$translates['admin.products.csv.step4']?> <input type="file" name="csv_price" value=""/></td>
+</tr>
+<tr>
+	<td></td>
+	<td><input type="submit" value="Обновить" class="btn btn-blue"></td>
+</tr>
+</table>
+</form>
+<?php }?>

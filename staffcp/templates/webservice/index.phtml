@@ -1,0 +1,155 @@
+<h1 class="h1-header"><span>Собственный веб-сервис</span></h1>
+
+<p>Доступ разрешен пользователям:</p>
+
+<table class="list">
+<thead>
+<tr>
+	<th>ID</th>
+	<th>Пользователь</th>
+	<th>Количество заказов</th>
+	<th>Логин доступа</th>
+	<th>Пароль доступа</th>
+	<th>Разрешить получать цены основных поставщиков</th>
+	<th>Разрешить получать цены от веб-сервисов</th>
+	<th>Доступ к поставщикам</th>
+	
+	<th>Редактировать</th>
+</tr>
+</thead>
+<tbody>
+<?php if (isset($access_accounts) && count($access_accounts)>0){?>
+<?php foreach ($access_accounts as $dd){?>
+<?php $cc = BillsModel::getBills($dd['id']);?>
+<tr>
+	<td><?=$dd['id']?></td>
+	<td><?=$dd['name']?> (<?=$dd['email']?>)</td>
+	<td><?=$cc?></td>
+	<td><?=$dd['web_service_login']?></td>
+	<td><?=$dd['web_service_pass']?></td>
+	<td><?=($dd['web_service_tecdoc'])?'<img src="/staffcp/media/images/checkbox1.gif">':''?></td>
+	<td><?=($dd['web_service_wbs'])?'<img src="/staffcp/media/images/checkbox1.gif">':''?></td>
+	<td><?=$dd['CC']?></td>
+	
+	
+	<td><a href="/staffcp/accounts/edit/?id=<?=$dd['id']?>#tab-3"><img src="/staffcp/media/images/pencil_16.png"></a></td>
+</tr>
+<?php }?>
+<?php }?>
+</tbody>
+</table>
+
+<div style="clear:both;margin-top:40px;"></div>
+<h1 class="h1-header"><span>Описание программистам и Как это работает?</span></h1>
+<p>Собственный веб-сервис позволяет транслировать цены сайтам-партнерам для получения актуальной информации наличия и остатков.</p>
+<p>Для того чтобы открыть доступ клиенту, нужно активировать ему веб-сервис во вкладке "Доступ к веб-сервису", завести логин и пароль. Далее можно разрешить получения информации по общему прайсу, а также удаленным веб-сервисам, чтобы ретранслировать цены, если это необходимо. Далее нужно активировать поставщиков от которых необходимо транслировать цены. После активации клиента можно проверить формой ниже. Ценообразование происходит по общему принципу, как у всего сайта и транслируется конечная стоимость деталий.</p>
+<p>&nbsp;</p>
+<p><b>Для программистов:</b></p>
+<p>Подключение стороннего сайта к системе для получения цен.</p>
+<p><b>Получение списка брендов:</b></p>
+<p>http://<?=$_SERVER['HTTP_HOST']?>/webservice/getGroups/?login={login}&pass={pass}&article={article}</p>
+<p>Получаете данные в формате json</p>
+<ul>
+	<li>BRAND - бренд</li>
+	<li>ARTICLE - артикул</li>
+	<li>DESCR - наименование</li>
+	<li>GROUP - ключ группы</li>
+</ul>
+<p><b>Получение списка цен по бренду:</b></p>
+<p>http://<?=$_SERVER['HTTP_HOST']?>/webservice/getArticles/?login={login}&pass={pass}&group={article}</p>
+<p>Получаете данные в формате json</p>
+<ul>
+	<li>BRAND - бренд</li>
+	<li>ARTICLE - артикул</li>
+	<li>DESCR - наименование</li>
+	<li>WAREHOUSE - склад</li>
+	<li>DAYsDELIVERY - срок поставки</li>
+	<li>BOX - количество</li>
+	<li>PRICE - цена</li>
+</ul>
+
+<div style="clear:both;margin-top:20px;"></div>
+<h1 class="h1-header"><span>Проверить веб-сервис для клиента</span></h1>
+
+<form action="/staffcp/webservice/" method="GET">
+<table>
+<tr>
+	<td>Клиент</td>
+	<td>
+		<select name="wbs[client]" class="iput">
+			<?php if (isset($access_accounts) && count($access_accounts)>0){?>
+			<?php foreach ($access_accounts as $dd){?>
+			<option value="<?=$dd['id']?>" <?=(isset($_REQUEST['wbs']['client']) && $_REQUEST['wbs']['client'] == $dd['id'])?'selected':''?>><?=$dd['id']?>: <?=$dd['name']?> (<?=$dd['email']?>)</option>
+			<?php }?>
+			<?php }?>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>Артикул</td>
+	<td><input type="text" name="wbs[article]" value="<?=(isset($_REQUEST['wbs']['article']))?$_REQUEST['wbs']['article']:''?>" class="iput"></td>
+</tr>
+<tr>
+	<td></td>
+	<td><input type="submit" value="Проверить" class="btn btn-blue"></td>
+</tr>
+</table>
+</form>
+
+<?php if (isset($result_groups) && count($result_groups)>0){?>
+<div style="clear:both;margin-top:20px;"></div>
+<h1 class="h1-header"><span>Производители</span></h1>
+<table class="cms-list">
+<thead>
+<tr>
+	<th>Бренд</th>
+	<th>Артикул</th>
+	<th>Наименование</th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($result_groups as $group){?>
+<?php $group = (array)$group;?>
+<tr>
+	<td><a href="/staffcp/webservice/?wbs[client]=<?=(isset($_REQUEST['wbs']['client']))?$_REQUEST['wbs']['client']:''?>&wbs[group]=<?=$group['GROUP']?>"><?=$group['BRAND']?></a></td>
+	<td><?=$group['ARTICLE']?></td>
+	<td><?=$group['DESCR']?></td>
+</tr>
+<?php }?>
+</tbody>
+</table>
+<?php }?>
+
+<?php if (isset($result_articles) && count($result_articles)>0){?>
+<div style="clear:both;margin-top:20px;"></div>
+<h1 class="h1-header"><span>Цены</span></h1>
+<table class="cms-list">
+<thead>
+<tr>
+	<th>Бренд</th>
+	<th>Артикул</th>
+	<th>Описание</th>
+	
+	<th>Склад</th>
+	<th>Срок.ожид.</th>
+	<th>Кол-во</th>
+	<th>Цена</th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($result_articles as $article){?>
+<?php $article = (array)$article;?>
+<tr>
+	<td><?=$article['BRAND']?></td>
+	<td><?=$article['ARTICLE']?></td>
+	<td><?=$article['DESCR']?></td>
+	
+	<td><?=$article['WAREHOUSE']?></td>
+	<td><?=$article['DAYsDELIVERY']?></td>
+	<td><?=$article['BOX']?></td>
+	<td><?=$article['PRICE']?></td>
+</tr>
+<?php }?>
+</tbody>
+</table>
+<?php }?>

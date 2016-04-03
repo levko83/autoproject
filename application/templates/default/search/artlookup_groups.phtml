@@ -1,0 +1,62 @@
+<table width="100%">
+<tr>
+	<td><h1 class="uppercase"><?=$translates['front.producers']?></h1></td>
+	<td>
+    	<div class="filter-search float-right-article-search">
+			<input type="text" name="filter-query" value="" class="filter-query"  onclick="if (this.value == '<?=$translates['filtrclicktosearch']?>') this.value='';" onblur="if (this.value == '') this.value='<?=$translates['filtrclicktosearch']?>';" value="<?=$translates['filtrclicktosearch']?>"/>
+		</div>
+	</td>
+</tr>
+</table>
+<table width="100%" class="details-list filterResultTable set-search-grid xsmalls artgroups">
+<thead>
+<tr>
+	<th style="width:50px;"></th>
+    <th class="th-td-result-brand"><?=$translates['front.brand']?></th>
+    <th class="th-td-result-article"><?=$translates['front.article']?></th>
+    <th class="t-center">Описание</th>
+    <th class="th-td-result-brand t-center">Цены и заменители</th>
+</tr>
+</thead>
+<tbody>
+<?php if (isset($originalsSearch) && count($originalsSearch)>0){?>
+<?php $i=0;?>
+<?php foreach ($originalsSearch as $found){?>
+<?php $found = unserialize($found);?>
+<?php $i++;?>
+<tr class="cursor">
+	<td class="<?=($i%2)?'cell':''?>" style="padding:0px; text-align:center;">
+	<?php $imageIcon = (isset($found->PATH_IMAGES[0]->PATH) && $found->PATH_IMAGES[0]->PATH)?$found->PATH_IMAGES[0]->PATH:false;?>
+	<?php if ($imageIcon){?>
+		<?php $iChk = @getimagesize(IMGPATH.'/'.$found->PATH_IMAGES[0]->PATH);?>
+		<?php if ($iChk){?>
+		<img alt="<?=addslashes($found->SUP_BRAND)?> <?=addslashes($found->ART_ARTICLE_NR)?>" title="<?=addslashes($found->SUP_BRAND)?> <?=addslashes($found->ART_ARTICLE_NR)?>" src="<?=IMGPATH?>/<?=$imageIcon?>" width="50px" height="28px" style="border-radius:5px 5px 5px 5px;"/>
+		<?php }?>
+	<?php }?>
+	</td>
+	<td class="<?=($i%2)?'cell':''?>"><strong><a href="<?=$found->URL?>" onclick="preload_search('<?=$found->URL?>');return false;"><?=mb_strtoupper($found->SUP_BRAND,'utf8')?></a></strong></td>
+	<td class="<?=($i%2)?'cell':''?>"><strong><a href="<?=$found->URL?>" onclick="preload_search('<?=$found->URL?>');return false;"><?=mb_strtoupper($found->ART_ARTICLE_NR,'utf8')?></a></strong></td>
+	<td class="<?=($i%2)?'cell':''?>"><a href="<?=$found->URL?>" onclick="preload_search('<?=$found->URL?>');return false;"><span class="descr-hide-overflow"><?=$found->TEX_TEXT?></span></a></td>
+	<td class="<?=($i%2)?'cell':''?> t-center"><a href="<?=$found->URL?>" onclick="preload_search('<?=$found->URL?>');return false;"><b>Цены и наличие</b></a></td>
+</tr>
+<?php }?>
+<?php }?>
+</tbody>
+</table>
+
+<script type="text/javascript" src="<?=HTTP_ROOT?>/media-templates/js/table-filter.js?version=<?=VERSION?>"></script>
+<script type="text/javascript">
+function preload_search(url){
+	location.hash = url;
+	$('#ajax_indicator').show();
+	$("#ajax_load_search_data").html('');
+	$.get(url+'&ajax=true', null,
+	function(data) {		
+		$('#ajax_indicator').hide();		
+		$("#ajax_load_search_data").html(data);
+	});
+}
+jQuery(document).ready(function(){
+	$(".details-list").tablesorter();
+});
+</script>

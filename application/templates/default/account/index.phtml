@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <aside class="col-md-3 col-sm-4">
+            <?php $this->block('account/left_menu');?>	
+        </aside>
+
+        <main class="col-md-9 col-sm-8">
+
+            <h1><?=$translates['front.personal.room']?></h1>
+			<?php if (isset($_REQUEST['pass']) && $_REQUEST['pass']=='accept'){?>
+				<div class="alert_box success"><?=$translates['front.pass.ok']?></div>
+				<br/>
+			<?php }?>
+			
+			<?php if (isset($_REQUEST['pass']) && $_REQUEST['pass']=='deny'){?>
+				<div class="alert_box error"><?=$translates['front.pass.err']?></div>
+				<br/>
+			<?php }?>
+	
+            <section class="theme_box">
+			
+				<?php if (isset($data['is_firm']) && $data['is_firm']==1){?>
+					<h3><?=(!empty($data['firm_name']))?$data['firm_name']:$translates['front.nodata']?></h3>
+				<?php } ?>
+
+                <h4><?=$translates["f.dobro_pozhalovat"];?>, <?=(!empty($data['name']))?$data['name']:$translates['front.nodata']?> <?=(!empty($data['nachname']))?$data['nachname']:''?> !</h4>
+
+            </section>
+
+            <section class="theme_box">
+
+                <h4><?=$translates['front.contact.data']?></h4>
+				
+				<b><?=$translates["f.lichnyy_nomer"];?> <?=$data['id']?></b>
+                
+				<p><?=(!empty($data['name']))?$data['name']:$translates['front.nodata']?>
+                    <br><a class="mail_to" href="#"><?=(!empty($data['email']))?$data['email']:$translates['front.error']?></a></p>
+
+                <div class="buttons_row">
+
+                    <a class="button_grey middle_btn" href="<?=HTTP_ROOT?>/account/edit/"><span><?=$translates['front.person.edit']?></a>
+
+                    <a class="button_grey middle_btn" href="<?=HTTP_ROOT?>/account/password/"><?=$translates['front.changepassword']?></a>
+
+                </div>
+
+            </section>
+
+            <div class="table_layout">
+
+                <div class="table_row">
+
+                    <div class="table_cell">
+                        <section>
+
+                            <h4>Newsletter: <?=($data['is_scribe'])?$translates['yes']:$translates['no'];?></h4>
+
+                            <p><?=$translates['addscribeuser']?></p>
+
+                            <a class="button_grey middle_btn" href="<?=HTTP_ROOT?>/account/edit/"><span><?=$translates['front.person.edit']?></a>
+
+                        </section>
+                    </div>
+
+                    <div class="table_cell">
+                        <section>
+
+                            <h4><?=$translates["f.adres_dostavki"];?></h4>
+							
+							<p><?=(!empty($data['address']))?$data['address']:""?> <?=(!empty($data['hausnummer']))?$data['hausnummer']:""?></p>
+
+                            <a class="button_grey middle_btn" href="<?=HTTP_ROOT?>/account/edit/"><span><?=$translates['front.person.edit']?></a>
+
+                        </section>
+                    </div>
+                </div>
+            </div>
+			
+        </main>
+    </div>
+</div>

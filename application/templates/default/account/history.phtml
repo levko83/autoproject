@@ -1,0 +1,139 @@
+﻿<div class="container">
+	<!--<ul class="breadcrumbs">
+        <li>
+            <?=$bread?>
+        </li>
+    </ul>-->
+    <div class="row">
+        <main class="col-md-12 col-sm-12">
+			<h1><?=$translates['front.history']?></h1>
+			
+			<?php if (isset($fetchbills) && count($fetchbills)>0){
+				//print("<pre>");
+				//print_r($fetchbills);
+				
+				?>
+				<table class="details-list2 pad-lft-rgt top-10">
+				<thead>
+				<tr>
+					<th>№</th>
+					<th><?=$translates['front.article']?></th>
+					<th><?=$translates['front.brand']?></th>
+					<th><?=$translates['front.descr']?></th>
+					<th align="center"><?=$translates['front.price']?></th>
+					<th align="center"><?=$translates['front.box']?></th>
+					<th align="center"><?=$translates['front.summ']?></th>
+					<th><?=$translates['front.status']?></th>
+					<th><?=$translates['front.comment']?></th>
+					
+					<?php /*<th>Долг(<?=(Register::get('accountRate')?$currenciesNames[$curExchangeType]:$translates['front.money'])?>)</th>*/?>
+					<th>Напр.</th>
+					<th>Ожид.</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php $sum=$credit=$i=0;?>
+				<?php $history_number = ''; foreach ($fetchbills as $element){?>
+				<?php $i++;?>
+				
+				<?php if ($element['bill_number'] != $history_number){?>
+				<?php $credit += (($element['balance_minus'])?0:$element['price']*$element['cc']);?>
+				
+				<?php $sum += ($element['ss']+PriceHelper::rate($element['delivery_price']));?>
+				<tr bgcolor="#f1f1f1">
+					<td><a href="<?=HTTP_ROOT?>/cart/md5/key/<?=$element['md5_hash']?>/" target="_blank"><b>№<?=$element['bill_number']?></b></a></td>
+					<td><b><?=date("d.m.Y",$element['bill_dt'])?></b></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><b><?=PriceHelper::number($element['ss']+PriceHelper::rate($element['delivery_price']))?></b></td>
+					<td></td>
+					<td><b><?=PriceHelper::number(PriceHelper::rate($element['delivery_price']))?></b></td>
+					
+					<?php /*<td></td>*/?>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr style="background-color:#<?=$element['ds_color']?>;">
+					<td></td>				
+					<td><b><?=$element['name']?></b></td>
+					<td><b><?=$element['brand']?></b></td>
+					<td><?=$element['descr']?></td>
+					<td><?=PriceHelper::number($element['price'])?></td>
+					<td><?=$element['cc']?></td>
+					<?php $ss = $element['price']*$element['cc'];?>
+					<td><?=PriceHelper::number($ss)?></td>
+					<td>
+						<b><?=($element['ds_name']?$element['ds_name']:$translates['front.new'])?></b>
+						<?php if ($element['is_payback']){?>
+						<b style="color:red;"><?=$translates['otkazzayvka']?></b>
+						<?php }else{?>
+							<?php if (!$element['ds_name']){?>
+							<a href="?is_payback=<?=$element['id']?>" class="current-err" onclick="return confirm('<?=$translates['isitotkaz']?> <?=$element['name']?> <?=$element['brand']?>?');"><?=$translates['otkaz']?></a>
+							<?php }?>
+						<?php }?>
+					</td>
+					<td>
+						<?=$element['status_descr']?>
+						<?php if ($element['balance_minus']){?>
+						<p><b>списано с баланса - оплачено</b></p>
+						<?php }?>
+					</td>
+					
+					<?php /*<td><?=($element['balance_minus'])?0:PriceHelper::number($ss)?></td>*/?>
+					<td><?=$element['impNameClient']?></td>
+					<td><?=date("d.m.Y",$element['time_delivery_wait_dt'])?></td>
+				</tr>
+				<?php }else{?>
+				<?php $credit += (($element['balance_minus'])?0:$element['price']*$element['cc']);?>
+				
+				<tr style="background-color:#<?=$element['ds_color']?>;">
+					<td></td>				
+					<td><b><?=$element['name']?></b></td>
+					<td><b><?=$element['brand']?></b></td>
+					
+					<td><?=$element['descr']?></td>
+					<td><?=PriceHelper::number($element['price'])?></td>
+					<td><?=$element['cc']?></td>
+					<?php $ss = $element['price']*$element['cc'];?>
+					<td><?=PriceHelper::number($ss)?></td>
+					<td>
+						<b><?=($element['ds_name']?$element['ds_name']:$translates['front.new'])?></b>
+						<?php if ($element['is_payback']){?>
+						<b style="color:red;"><?=$translates['otkazzayvka']?></b>
+						<?php }else{?>
+							<?php if (!$element['ds_name']){?>
+							<a href="?is_payback=<?=$element['id']?>" class="current-err" onclick="return confirm('<?=$translates['isitotkaz']?> <?=$element['name']?> <?=$element['brand']?>?');"><?=$translates['otkaz']?></a>
+							<?php }?>
+						<?php }?>
+					</td>
+					<td>
+						<?=$element['status_descr']?>
+						<?php if ($element['balance_minus']){?>
+						<p><b>списано с баланса - оплачено</b></p>
+						<?php }?>
+					</td>
+					
+					<?php /*<td><?=($element['balance_minus'])?0:PriceHelper::number($ss)?></td>*/?>
+					<td><?=$element['impNameClient']?></td>
+					<td><?=date("d.m.Y",$element['time_delivery_wait_dt'])?></td>
+				</tr>
+				<?php }?>
+				<?php $history_number = $element['bill_number']; }?>
+				</tbody>
+				<tfoot>
+				<tr bgcolor="#f1f1f1">
+					<td></td>
+					<td colspan="5"><b><?=$translates['front.total']?>:</b></td>
+					<td colspan="5"><b><?=($sum)?PriceHelper::number($sum):0?></b></td>
+				</tr>
+				</tfoot>
+				</table>
+			<?php }else{?>
+				<p class="top-10"><?=$translates['noorders']?></p> 
+			<?php }?>
+			
+		</main>
+    </div>
+</div>

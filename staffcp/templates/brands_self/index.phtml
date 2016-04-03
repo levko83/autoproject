@@ -1,0 +1,51 @@
+<style type="text/css">
+.list-custom {}
+.list-custom td,.list-custom th { padding:3px; }
+.list-custom input { padding:5px; border:#B5B5B5 solid 1px; }
+</style>
+
+<script type="text/javascript">
+$().ready(function() {
+	<?php $str = '';?>
+	<?php if (isset($brandsList)&&count($brandsList)>0){?>				
+	<?php $i=0; foreach ($brandsList as $dd){ $i++;?>
+		<?php $str .= '"'.addslashes($dd['BRA_BRAND']).'"'.(($i!=count($brandsList))?',':'');?>
+	<?php }?>
+	<?php }?>
+	var str = [<?=$str?>];
+	$(".auto-searcher").focus().autocomplete(str, {
+		matchContains: true,
+		minChars: 0
+	});
+	function treeviewer(event, data, formatted) {}
+	$(".auto-searcher").result(treeviewer);
+});
+</script>
+
+<h1 class="h1-header"><span>Непривязанные бренды каталога запчастей</span></h1>
+
+<form action="/staffcp/brands_self/upgrade/" method="post">
+<table class="cms-list list-custom">
+<thead>
+<tr>
+	<th width="40%">Бренд</th>
+	<th>Обучить (привязать)</th>
+	<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><input style="width:90%;" type="text" name="incorrectbrand" value=""/></td>
+	<td>
+		<input style="width:80%;" type="text" name="upgrade" value="" class="auto-searcher"/>
+	</td>
+	<td><input type="submit" value="Обучить" class="btn btn-blue"></td>
+</tr>
+<tr>
+	<td>Необходимо прописать неправильный бренд, который записан в прайслистах</td>
+	<td>Необходимо выбрать правильный бренд</td>
+</tr>
+</tbody>
+</table>
+</form>
+<div style="clear:both;"></div>

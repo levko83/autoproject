@@ -1,0 +1,8 @@
+<?php if (isset($items)&&count($items)>0){?>
+	<select name="car[model]" class="inputs" onchange="ajax_types(this);" id="s2">
+		<option value=""></option>
+	<?php foreach ($items as $item){?>
+		<option value="<?=$item->MOD_ID?>"><?=$item->MOD_CDS_TEXT?> (<?=substr($item->MOD_PCON_START,0,4)?>.<?=substr($item->MOD_PCON_START,4,6)?>) </option>
+	<?php }?>
+	</select>
+<?php }?>

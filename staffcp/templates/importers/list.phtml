@@ -1,0 +1,126 @@
+<?php
+$actions = array();
+$actions = $this->dataModel->getDisabledFields();
+if (empty($actions)) $actions = array();
+?>
+
+<?php if (isset($tableajax) && $tableajax) {?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.list-ajax').dataTable({
+		"oLanguage":{ "sUrl": "/staffcp/media/language/<?=$lang?>.txt" },
+		"sPaginationType":"full_numbers",
+		"iDisplayLength":100,
+		"aaSorting":[[1, 'desc']],
+		"bAutoWidth":false,
+		"bInfo":false,
+		"fnFooterCallback": function ( nRow, aaData, iDataStart, iDataEnd ) {
+			$('.dataTables_length').remove();
+			$('.dataTables_filter').remove();
+		},
+	});
+});
+</script>
+<?php }?>
+
+<h1 class="h1-header">
+	<span><?=$title;?></span>
+	<?php if (!in_array("add", $actions)){?>
+		<?php if ($acl->canViewMenuItem($addUrl)){?>
+		<input type="button" name="" value="<?=$addTitle;?> поставщика" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+		<?php }?>
+		<input type="button" name="" value="Группы наценок" onclick="location='/staffcp/margins/';" class="btn btn-green">
+	<?php }?>
+</h1>
+
+<?php if (isset($tableajax) && $tableajax) {?>
+	<?php if ($totalPage>1) {?>
+	<div class="simple-paging">
+	Страницы: <?=PagingViewHelper::paging("/staffcp/".$this->_controller."/?page=:page:",$totalPage,$currentPage);?>
+	</div>
+	<?php }?>
+	<div class="static-search-ajax f-right">
+	<form action="">
+		Поиск на странице из <?=(isset($total)?$total:0)?> записей: 
+		<input type="text" name="search" value="<?=$search?>" class="iput">
+		<input type="submit" value="искать" class="btn btn-blue">
+	</form>
+	</div>
+<?php }?>
+
+<div class="clear"></div>
+
+<div id="tabs" class="tabs">
+<ul>
+	<?php foreach ($countries as $tabId=>$tabName){?>
+    <li><a href="#tab-<?=$tabId;?>"><span><?=($tabName['country'])?$tabName['country']:'Общий';?></span></a></li>
+    <?php }?>
+</ul>
+<?php foreach ($countries as $tabId=>$tabName){?>
+<div id="tab-<?=$tabId;?>">
+
+<form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
+<table class="list">
+	<thead>
+	<tr>
+		<?php if (!in_array("delete", $actions)){?><th width="30px;"><input class="status_check" type="checkbox" onclick="checked_all();"/></th><?}?>
+		<?php foreach ($fieldTitles as $fieldTitle){?>
+		<th><?=$fieldTitle;?></th>
+		<?php }?>
+		<?php if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?}?>
+		<?php if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?}?>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($data as $row){?>
+	<?php if ($row['country'] == $tabName['country'] || $row['country'] == ''){?>
+	
+		<?php $dataModel->setValues($row);?>
+		<tr id="key[<?=$row[$indexField];?>][]">
+			<?php if (!in_array("delete", $actions)){?><td><input class="input_check" style="margin-left:19px;" type="checkbox" name="delete_list[]" value="<?=$row[$indexField];?>"/></td><?php }?>
+			
+			<?php foreach ($dataModel->getListFields() as $field){?>
+				<td><?=$field->getViewValue();?></td>
+			<?php }?>
+			
+			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
+			
+			<?php if (!in_array("edit", $actions)){?>
+			<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>
+			<?php }?>
+			
+			<?php if (!in_array("delete", $actions)){?>
+				<?php if (!in_array($row[$indexField],array())){?>
+					<td width="25px;" style="text-align:right;"><a href="/staffcp/<?=$dataModel->getModelName();?>/delete/?<?=$indexField;?>=<?=$row[$indexField];?>" onclick="return confirm('<?=$translates['admin.main.confirm']?>');"><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></a></td>
+				<?php }else{?>
+					<td width="25px;" style="text-align:right;">x</td>
+				<?php }?>
+			<?php }?>
+			
+			<?php } else {?>
+			<td width="100" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<td width="50" align="center"><i><?=$translates['admin.main.deny']?></i></td>
+			<?php }?>
+		</tr>
+		
+	<?php }?>
+	<?php }?>
+	</tbody>
+</table>
+</div>
+<?php }?>
+
+
+<?php if ((isset($tableajax) && $tableajax) && (isset($totalPage)&&$totalPage>1)) {?>
+<div class="clear top-20"></div>
+<div class="paging-ajax">
+	<?=PagingViewHelper::paging("/staffcp/".$this->_controller."/?page=:page:",$totalPage,$currentPage);?>
+</div>
+<?php }?>
+
+<?php if (!in_array("delete", $actions)){?>
+<div class="clear"><!-- --></div>
+<input type="submit" value="<?=$translates['admin.main.delete']?>" id="submit_action" class="btn btn-red">
+<?php }?>
+</form>
+</div>

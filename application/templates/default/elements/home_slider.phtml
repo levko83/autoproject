@@ -1,0 +1,23 @@
+<!-- slider_block -->
+<div id="slider_block" class="float_left">
+	
+	<?php if (isset($sliders) && count($sliders)>0){?>
+	<div class="slider-form">
+		<div id="marketing-slider" class="nivoSlider">
+			<?php foreach ($sliders as $dd){?>
+			<a href="<?=$dd['url']?>"><img src="<?=HTTP_ROOT?>/media/files/slider/<?=$dd['img']?>" data-thumb="<?=HTTP_ROOT?>/media/files/settings/<?=$dd['img']?>" alt="" title="#htmlcaption_<?=$dd['id']?>" /></a>
+			<?php }?>
+		</div>
+		<?php foreach ($sliders as $dd){?>
+		<?php if ($dd['name']){?>
+		<div id="htmlcaption_<?=$dd['id']?>" class="nivo-html-caption">
+			<?=$dd['name']?>
+		</div>
+		<?php }?>
+		<?php }?>
+	</div>
+	<?php }?>
+
+	<div class="clear"></div>
+</div>
+<!-- end slider_block -->

@@ -1,0 +1,42 @@
+<h1>View languages</h1>
+<h1><?=$side_title?></h1>
+
+<?php if($langSide === 0){?>
+
+	<h1 class="h1-header">
+		<span><?=$title;?></span>
+		<input type="button" name="" value="<?=$addTitle;?>" onclick="location='<?=$addUrl;?>';" class="btn btn-blue">
+	</h1>
+	
+	<form action="/staffcp/langs/multisave/" method="POST">
+	<table class="cms-list">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Код</th>
+			<th>Русский: Значение</th>
+			<th><?=$langs[$sololang]['TEX_TEXT']?>: Значение</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($data as $row){?>
+		<tr>
+			<td><?=$row['id'];?></td>
+			<td><?=$row['code'];?></td>
+			<td><input type="text" name="lang_ru[<?=$row['id']?>]" value="<?=$row['ru'];?>" class="iput"/></td>
+			<td><input type="text" name="lang_<?php echo $sololang; ?>[<?=$row['id']?>]" value="<?=$row[$sololang];?>" class="iput"/></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	
+	<h1 class="h1-header">
+		<input type="submit" value="Сохранить" class="btn btn-blue">
+	</h1>
+	
+	</form>
+
+
+<?php }else{?>
+	<?php $this->block('generator/list');?>
+<?php }?>

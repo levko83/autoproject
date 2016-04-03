@@ -1,0 +1,121 @@
+<style>
+.cart-filters {}
+</style>
+<h1 class="h1-header">Искать/Сортировать</h1>
+<form method="GET" action="/staffcp/index/crm/">
+<table style="margin:0 auto;width:100%;" class="ss cart-filters">
+<tr>
+	<td style="padding:2px 5px;"><b>по артикулу<br/>(несколько через запятую)</b></td>
+	<td style="padding:2px 5px;" class="tdbrd"><input type="text" name="search[article]" value="<?=(isset($search['article'])&&$search['article'])?$search['article']:'';?>" class="iput"/></td>
+	
+	<td style="padding:2px 5px;"><b>по бренду</b></td>
+	<td style="padding:2px 5px;" class="tdbrd"><input type="text" name="search[brand]" value="<?=(isset($search['brand'])&&$search['brand'])?$search['brand']:'';?>" class="iput"/></td>
+	
+	<td style="padding:2px 5px;"><b>по наименованию</b></td>
+	<td style="padding:2px 5px;" class="tdbrd"><input type="text" name="search[descr]" value="<?=(isset($search['descr'])&&$search['descr'])?$search['descr']:'';?>" class="iput"/></td>
+	
+	<td><b>по поставщику</b></td>
+	<td style="width:200px;" class="tdbrd">
+	<select name="search[importer_id]" class="iput"  style="width:100%;">
+		<option value=""></option>
+		<?php if (isset($imps_list) && count($imps_list)>0){?>
+		<?php reset($imps_list); foreach ($imps_list as $impdata){?>
+		<option value="<?=$impdata['id']?>" <?=(isset($search['importer_id']) && $search['importer_id'] == $impdata['id'])?'selected':'';?>><?=$impdata['name']?> (<?=$impdata['code']?>)</option>
+		<?php }?>
+		<?php }?>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td><b>по номеру заказа</b></td>
+	<td class="tdbrd"><input type="text" name="search[number]" value="<?=(isset($search['number'])&&$search['number'])?$search['number']:'';?>" class="iput"/></td>
+	<td><b>по клиенту (ID клиента)</b></td>
+	<td class="tdbrd">
+		<script type="text/javascript">
+		$(document).ready(function() {
+			var akey = new Array();
+			<?php $str = '';?>
+			<?php if (isset($accountsList) && count($accountsList)>0){?>
+			<?php foreach ($accountsList as $account){?>
+				<?php $str .= '"'.addslashes($account['id'].' - '.$account['name'].' '.$account['email'].' '.$account['phones']).'"'.(($i!=count($account))?',':'');?>
+				akey[<?='"'.addslashes($account['id'].' - '.$account['name'].' '.$account['email'].' '.$account['phones']).'"'?>]= <?=$account['id']?>;
+			<?php }?>
+			<?php }?>
+			var str = [<?=$str?>];
+			$(".auto-searcher").focus().autocomplete(str, {
+				matchContains: true,
+				minChars: 0
+			});
+			function treeviewer(event, data, formatted) {
+				$('#set_account_id').val(akey[formatted]);
+			}
+			$(".auto-searcher").result(treeviewer);
+		});
+		</script>
+		<input type="text" name="search[account_id]" class="iput auto-searcher" id="set_account_id" value="<?=(isset($search)&&$search['account_id'])?$search['account_id']:''?>"/>
+	</td>
+	<td><b>по статусу</b></td>
+	<td class="tdbrd" style="font-size:10px !important;width:200px;" rowspan="2">
+		<select name="search[status][]" size="5" multiple style="width:100%;">
+			<option value="-1" <?=(isset($search['status'])&&count($search['status'])&&in_array(-1,$search['status']))?'selected':''?> <?=(!isset($search['status'])?'selected':'')?>>Новые</option>
+			<?php if (isset($statuses)&&count($statuses)>0){?>
+			<?php foreach ($statuses as $st){?>
+			<option style="background:#<?=$st['color']?>;" value="<?=$st['id']?>"  <?=(isset($search['status'])&&count($search['status'])&&in_array($st['id'],$search['status']))?'selected':''?>  <?=(!isset($search['status']) && !in_array($st['type'],array(1,3))?'selected':'')?>><?=$st['name']?></option>
+			<?php }?>
+			<?php }?>
+		</select>
+	</td>
+	
+	<td><b>по офису</b></td>
+	<td class="tdbrd">
+	<select name="search[office_id]" class="iput"  style="width:100%;">
+		<option value=""></option>
+		<?php if (isset($offices) && count($offices)>0){?>
+		<?php reset($offices); foreach ($offices as $office){?>
+		<option value="<?=$office['office_id']?>" <?=(isset($search['office_id']) && $search['office_id'] == $office['office_id'])?'selected':'';?>><?=$office['city_name']?> &raquo; <?=$office['office_name']?></option>
+		<?php }?>
+		<?php }?>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td><b>по номеру телефона</b></td>
+	<td class="tdbrd">
+		<input type="text" name="search[phonenumber]" value="<?=(isset($search['phonenumber'])&&$search['phonenumber'])?$search['phonenumber']:'';?>" class="iput"/>
+	</td>
+	<td><b>по дате</b></td>
+	<td class="tdbrd">
+		<b>c</b>&nbsp;<input type="text" name="search[dt_from]" id="dt_from" value="<?=(isset($search['dt_from'])&&$search['dt_from'])?$search['dt_from']:'';?>" class="iput" style="width:100px;"/>
+		<input type="button" id="dt_from_picker" value="&raquo;" class="btn">
+		<b>по</b>&nbsp;<input type="text" name="search[dt_to]" id="dt_to" value="<?=(isset($search['dt_to'])&&$search['dt_to'])?$search['dt_to']:'';?>" class="iput" style="width:100px;"/>
+		<input type="button" id="dt_to_picker" value="&raquo;" class="btn">
+		<script type="text/javascript">
+		$(document).ready(function() {
+			Calendar.setup({inputField: 'dt_from',button: 'dt_from_picker',date: '<?=(isset($search['dt_from']) && $search['dt_from'])?$search['dt_from']:date('d.m.Y')?>'});
+			Calendar.setup({inputField: 'dt_from',button: 'dt_from',date: '<?=(isset($search['dt_from']) && $search['dt_from'])?$search['dt_from']:date('d.m.Y')?>',eventName: 'focus'});
+			Calendar.setup({inputField: 'dt_to',button: 'dt_to_picker',date: '<?=(isset($search['dt_to']) && $search['dt_to'])?$search['dt_to']:date('d.m.Y')?>'});
+			Calendar.setup({inputField: 'dt_to',button: 'dt_to',date: '<?=(isset($search['dt_to']) && $search['dt_to'])?$search['dt_to']:date('d.m.Y')?>',eventName: 'focus'});
+		});
+		</script>
+	</td>
+	<td><b><?=$translates['admin.set.view.archive']?> (<?=$cc_bills_archive['cc']?>)</b> <input type="checkbox" name="search[archive]" value="1" style="padding:2px;border:solid 1px #bebebe;" <?=(isset($search['archive'])&&$search['archive'])?'checked':''?>/></td>
+	
+	<td><b>по менеджеру</b></td>
+	<td class="tdbrd">
+	<select name="search[manager_id]" class="iput"  style="width:100%;">
+		<option value=""></option>
+		<?php if (isset($managers) && count($managers)>0){?>
+		<?php reset($managers); foreach ($managers as $manager){?>
+		<option value="<?=$manager['id']?>" <?=(isset($search['manager_id']) && $search['manager_id'] == $manager['id'])?'selected':'';?>><?=$manager['name']?> (<?=$manager['city']?> / <?=$manager['office']?>)</option>
+		<?php }?>
+		<?php }?>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td colspan="8" class="tdbrd">
+		<button type="submit" class="btn btn-blue">Найти <img src="/media-templates/icons/magnifier.png"/></button>
+	</td>
+</tr>
+</table>
+</form>

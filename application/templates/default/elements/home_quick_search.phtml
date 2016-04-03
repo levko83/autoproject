@@ -1,0 +1,70 @@
+<h3 class="widget_title"><?=$translates["f.bystryy_poisk"];?></h3>
+<script>
+var objname = '<?=$translates['objname']?>';
+</script>
+				<div class="product_item" style="height: 498px; padding-top: 48px;background:rgba(255, 255, 255, 0.5)!important;">
+					<div class="form-group">
+						<label for="scar"><strong><?=$translates['selmark']?></strong></label>
+						<select name="s[car]" id="scar" onchange="get_mods(this.value);" class="form-control">
+							<option><?=$translates['selmark']?></option>
+							<?php if (isset($manufacturers) && count($manufacturers)>0){?>
+								<?php foreach ($manufacturers as $manuf){?>
+									<option value="<?=$manuf['MFA_ID']?>"><?=$manuf['MFA_BRAND']?></option>
+								<?php }?>
+							<?php }?>
+						</select>
+					</div>
+					<br />
+					<div class="form-group">
+						<label for="carmodell"><strong><?=$translates['selmodel']?></strong></label>
+						<div id="carmodel">
+							<select id="carmodell" class="form-control">
+								<option><?=$translates['selmodel']?></option>
+							</select>
+						</div>
+					</div>
+					<br />
+					 <div class="form-group">
+						<label for="carob"><strong><?=$translates['objname']?></strong></label>
+						<div id="carvolume">
+							<select id="carob" class="form-control">
+								<option><?=$translates['objname']?></option>
+							</select>
+						</div>
+					</div>
+					<br />
+					<strong><?=$translates["f.nach_schlsselnummer"];?></strong>
+					<style>
+					
+					</style>
+					<br />
+						<div class="table_layout ">
+							<div class="table_row quicksearch">
+								<div class="table_cell">
+									<section>
+										<div class="form_el">
+											<input type="text" name="zu2" id="zu2" maxlength="4" placeholder="<?=$translates["f.4-stellig"];?>">
+											<span class="small_font"><?=$translates["f.zu_2_oder_zu_21"];?></span>
+										</div>
+									</section>
+								</div>
+								<div class="table_cell">
+									<section>
+										<div class="form_el">
+											<input type="text" name="zu3" id="zu3" maxlength="3" placeholder="<?=$translates["f.3-stellig"];?>">
+											<span class="small_font"><?=$translates["f.zu_3_oder_zu_22"];?></span>
+										</div>
+									</section>
+								</div>
+								<div class="table_cell">
+									<section style="margin-top:4px;">
+										<a class="button_red icon_btn" href="#" data-modal-url="/static/ajax/quick_search.html"><i class="icon-question"></i></a>    <a href="#" data-modal-url="/static/ajax/quick_search.html" style="line-height:30px;"><?=$translates["f.pomoshch"];?></a>
+									</section>
+								</div>
+								
+							</div>
+						</div>
+					<br />
+					<a class="button_blue middle_btn" onclick="zusubmit()" style="cursor:pointer;width:100%;"><?=$translates['front.search']?></a>
+					
+                </div>

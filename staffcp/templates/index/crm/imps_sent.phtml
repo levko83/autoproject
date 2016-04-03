@@ -1,0 +1,20 @@
+<?php if (isset($imps_sents) && count($imps_sents)>0){?>
+<table cellpadding="10px">
+<tr>
+	<td style="background:#f1f1f1;"><img src="/staffcp/media/images/trash_16.png" title="<?=$translates['admin.main.delete']?>" /></td>
+	<td style="background:#f1f1f1;"><b><?=$translates['admin.main.dt']?></b></td>
+	<td style="background:#f1f1f1;"><b><?=$translates['admin.main.topic']?></b></td>
+	<td style="background:#f1f1f1;"><b><?=$translates['admin.details.impinfo']?></b></td>
+</tr>
+<?php foreach ($imps_sents as $dd){?>
+<tr>
+	<td valign="top"><a href="?del_imp_message=<?=$dd['id']?>"><img src="/staffcp/media/images/trash_16.png" title="Удалить" /></a></td>
+	<td valign="top"><?=date("d.m.Y H:i:s",$dd['dt'])?></td>
+	<td valign="top"><?=$dd['message']?></td>
+	<td><?=$translates['admin.details.importer']?> <?=$dd['importer']?></td>
+</tr>
+<?php }?>
+</table>
+<?php } else {?>
+<p><?=$translates['admin.details.notopics']?></p>
+<?php }?>

@@ -1,0 +1,63 @@
+<div id="informer_block">
+
+	<div class="informer_item">
+		<?php if ($pview_news) {?>	
+		<!-- News -->				
+							
+			<?php if (isset($news) && count($news)>0){?>
+				<h3 class="uppercase title_fly">
+					<span><?=$translates['front.news.title']?></span>
+					<a class="all_info" href="<?=HTTP_ROOT?>/news/">все новости</a>
+				</h3> 
+					
+				<div class="news_list">	
+					<?php $i=0; foreach ($news as $dd){ $i++; ?>
+					<div class="news_box">						
+						<div class="news_box_data"><b><?=date("d.m.Y",$dd['dt'])?></b></div>
+						
+						<div class="news_box_name">
+							<?php if (isset($dd['url']) && $dd['url']){?>
+							<a href="<?=$dd['url']?>" target="_blank"><?=$dd['name']?></a>
+							<?php }else{?>
+							<a href="<?=HTTP_ROOT?>/news/view/<?=$dd['code']?>/"><?=$dd['name']?></a>
+							<?php }?>
+						</div>
+					
+						
+							<?php/* if (isset($dd['img']) && !empty($dd['img'])){?>
+							<a href="<?=HTTP_ROOT?>/news/view/<?=$dd['code']?>/"><img class="f-left p5 news-image" src="<?=HTTP_ROOT?>/media/files/load/normal-<?=$dd['img']?>" title="<?=$dd['name']?>" alt="<?=$dd['name']?>"/></a>
+							<?php } */?>
+							
+							<? /* <p><?=Utf8::str_limit(strip_tags($dd['brief']),150)?></p> */?>
+							
+						<div class="clear"></div>
+					</div>
+					<?php }?>
+				</div>	
+						
+			<div class="clear"></div>	
+			<?php }?>
+		
+		<?php }?>
+		
+		
+		<div class="clear"></div>
+	</div>
+	
+	
+	
+	<div class="informer_item">
+		
+	
+		<div class="clear"></div>
+	</div>
+	
+	
+	<div class="informer_item">
+	
+	
+		<div class="clear"></div>
+	</div>
+	
+	<div class="clear"></div>
+</div>

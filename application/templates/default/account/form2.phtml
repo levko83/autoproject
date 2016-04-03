@@ -1,0 +1,319 @@
+<form action="<?=HTTP_ROOT?>/account/add/" method="POST" id="form_log" onsubmit="return chkreg2();">
+<input type="hidden" name="form[is_firm]" value="1"/>
+<table class="contact-form reg-form" style="margin:10px;">
+	<?php if (isset($errors) && count($errors)>0){?>
+	<tr>
+		<th></th>
+		<td>
+			<ul class="err">
+			<?php foreach ($errors as $dd){?>
+				<li><?=$dd?></li>
+			<?php }?>
+			</ul>
+		</td>
+	</tr>
+	<?php }?>
+	<tr>
+		<th><?=$translates['front.account.firm']?> <span class="red">*</span></th>
+		<td>
+			<input type="text" name="form[firm_name]" id="form_firm_name" class="form_elements" value="<?=(isset($errors_data['firm_name'])?$errors_data['firm_name']:'')?>"/>
+			<p class="msg-error" id="form_firm_name_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.person']?> <span class="red">*</span></th>
+		<td>
+			<input type="text" name="form[name]" id="form_name22" class="form_elements" value="<?=(isset($errors_data['name'])?$errors_data['name']:'')?>"/>
+			<p class="msg-error" id="form_name22_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.phones']?> <span class="red">*</span></th>
+		<td>
+		
+			<script type="text/javascript">
+			jQuery(document).ready(function(){
+				<?php if(IS_BELARUS){?>$("#form_phones22").inputmask("+375(99)999-99-99");<?php }?>
+				<?php if(IS_RUSSIA && !IS_BELARUS){?>$("#form_phones22").inputmask("+7(999)999-99-99");<?php }?>
+				<?php if(IS_UKRANIA && !IS_BELARUS){?>$("#form_phones22").inputmask("+380(99)999-99-99");<?php }?>
+				<?php if(IS_KAZAHSTAN && !IS_BELARUS){?>$("#form_phones22").inputmask("+7(999)999-99-99");<?php }?>
+				$('.set-phone-number').click(function(){
+					$('.set-phone-number').removeClass('set-pn-current');
+					$(this).addClass('set-pn-current');
+					var lang = $(this).attr("lang");
+					if (lang == 'by'){
+						$("#form_phones22").inputmask("+375(99)999-99-99");
+					}
+					else if (lang == 'ru'){
+						$("#form_phones22").inputmask("+7(999)999-99-99");
+					}
+					else if (lang == 'ua'){
+						$("#form_phones22").inputmask("+380(99)999-99-99");
+					}
+					else if (lang == 'kz'){
+						$("#form_phones22").inputmask("+7(999)999-99-99");
+					}
+					return false;
+				});
+			});
+			</script>
+			<table width="100%">
+			<tr>
+				<td style="width: 120px; vertical-align: middle; text-align: center;">
+					<a href="#" class="set-phone-number <?=(IS_BELARUS)?'set-pn-current':'';?>" lang="by"><img src="/media-templates/img/langs/by.png"/></a>
+					<a href="#" class="set-phone-number <?=(IS_RUSSIA && !IS_BELARUS)?'set-pn-current':'';?>" lang="ru"><img src="/media-templates/img/langs/ru.png"/></a>
+					<a href="#" class="set-phone-number <?=(IS_UKRANIA && !IS_BELARUS)?'set-pn-current':'';?>" lang="ua"><img src="/media-templates/img/langs/ua.png"/></a>
+					<a href="#" class="set-phone-number <?=(IS_KAZAHSTAN && !IS_BELARUS)?'set-pn-current':'';?>" lang="kz"><img src="/media-templates/img/langs/kz.png"/></a>
+				</td>
+				<td>
+					<input type="text" name="form[phones]" id="form_phones22" class="form_elements" value="<?=(isset($errors_data['phones'])?$errors_data['phones']:'')?>"/>
+				</td>
+			</tr>
+			</table>
+			<p class="msg-error" id="form_phones22_err"></p>
+			
+		</td>
+	</tr>
+	
+	<?php /* ************************************** */?>
+	<tr>
+		<th><?=$translates['front.account.city']?> <span class="red">*</span></th>
+		<td>
+			<table width="100%">
+			<tr>
+				<td>
+					<input 
+						type="text" 
+							name="form[city]" 
+								id="form_city" 
+									class="form_elements city-searcher" 
+										value="<?=(isset($errors_data['city'])?$errors_data['city']:'')?>" />
+					<p class="msg-error" id="form_city_err"></p>
+					<?/*
+					<select name="form[city]" id="form_city" class="form_elements">
+					<?php if (isset($cities) && count($cities)>0){?>
+					<?php foreach ($cities as $dd){?>
+					<option value="<?=$dd['id']?>"><?=$dd['name']?></option>
+					<?php }?>
+					<?php }?>
+					</select>
+					<p class="msg-error" id="form_city_err"></p>
+					*/?>
+				</td>
+				<?php if (isset($offices) && count($offices)>0){?>
+				<th style="width:60px;text-align:right;">Офис</th>
+				<td class="ajax-offices"><?php $this->block('account/signup_offices_by_city');?></td>
+				<?php }?>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<?php /* ************************************** */?>
+	
+	<tr>
+		<th><?=$translates['front.account.address']?> доставки <span class="red">*</span></th>
+		<td>
+			<input type="text" name="form[address]" id="form_address2" class="form_elements" value="<?=(isset($errors_data['address'])?$errors_data['address']:'')?>"/>
+			<p class="msg-error" id="form_address2_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.email']?> <span class="red">*</span></th>
+		<td>
+			<input type="text" name="form[email]" id="form_email2" class="form_elements" value="<?=(isset($errors_data['email'])?$errors_data['email']:'')?>"/>
+			<p class="msg-error" id="form_email2_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.password']?>&nbsp;<span class="red">*</span></th>
+		<td>
+			<input type="password" name="form[pass1]" id="form_pass12" class="form_elements" value="<?=(isset($errors_data['pass1'])?$errors_data['pass1']:'')?>"/>
+			<p class="msg-error" id="form_pass12_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.password.repeat']?>&nbsp;<span class="red">*</span></th>
+		<td>
+			<input type="password" name="form[pass2]" id="form_pass22" class="form_elements" value="<?=(isset($errors_data['pass2'])?$errors_data['pass2']:'')?>"/>
+			<p class="msg-error" id="form_pass22f_err"></p>
+			<p class="msg-error" id="form_pass222_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.inn']?></th>
+		<td>
+			<input type="text" name="form[firm_inn]" id="form_firm_inn" class="form_elements" value="<?=(isset($errors_data['firm_inn'])?$errors_data['firm_inn']:'')?>"/>
+			<p class="msg-error" id="form_firm_inn_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.kpp']?></th>
+		<td>
+			<input type="text" name="form[firm_kpp]" id="form_firm_kpp" class="form_elements" value="<?=(isset($errors_data['firm_kpp'])?$errors_data['firm_kpp']:'')?>"/>
+			<p class="msg-error" id="form_firm_kpp_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.bank']?></th>
+		<td>
+			<input type="text" name="form[firm_bank]" id="form_firm_bank" class="form_elements" value="<?=(isset($errors_data['firm_bank'])?$errors_data['firm_bank']:'')?>"/>
+			<p class="msg-error" id="form_firm_bank_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.rs']?></th>
+		<td>
+			<input type="text" name="form[firm_pc]" id="form_firm_pc" class="form_elements" value="<?=(isset($errors_data['firm_pc'])?$errors_data['firm_pc']:'')?>"/>
+			<p class="msg-error" id="form_firm_pc_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.ks']?></th>
+		<td>
+			<input type="text" name="form[firm_kc]" id="form_firm_kc" class="form_elements" value="<?=(isset($errors_data['firm_kc'])?$errors_data['firm_kc']:'')?>"/>
+			<p class="msg-error" id="form_firm_kc_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.bnk']?></th>
+		<td>
+			<input type="text" name="form[firm_bnk]" id="form_firm_bnk" class="form_elements" value="<?=(isset($errors_data['firm_bnk'])?$errors_data['firm_bnk']:'')?>"/>
+			<p class="msg-error" id="form_firm_bnk_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.ogrn']?></th>
+		<td>
+			<input type="text" name="form[firm_ogrn]" id="form_firm_ogrn" class="form_elements" value="<?=(isset($errors_data['firm_ogrn'])?$errors_data['firm_ogrn']:'')?>"/>
+			<p class="msg-error" id="form_firm_ogrn_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.okpo']?></th>
+		<td>
+			<input type="text" name="form[firm_okpo]" id="form_firm_okpo" class="form_elements" value="<?=(isset($errors_data['firm_okpo'])?$errors_data['firm_okpo']:'')?>"/>
+			<p class="msg-error" id="form_firm_okpo_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th><?=$translates['front.account.captcha']?> <span class="red">*</span></th>
+		<td>
+			<p><img src="/extensions/captcha/index.php" /></p>
+			<input type="text" name="form[code]" id="form_code2" value="" class="form_elements"/>
+			<p class="msg-error" id="form_code2_err"></p>
+		</td>
+	</tr>
+	<tr>
+		<th></th>
+		<td>
+		<input type="checkbox" value="1" name="form[agree]" id="is_agree2" style="vertical-align:text-bottom;"/> 
+		<a href="<?=HTTP_ROOT?>/cartrules/" target="_blank"><?=$translates['agreewithacartrules']?></a>
+		<br/><span class="msg-error" id="form_agree2_err"></span>
+		</td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><input type="submit" value="<?=$translates['front.reg']?>" class="custom-button gradient"/></td>
+	</tr>
+</table>
+</form>
+
+<script>
+function chkreg2() {
+var err = "";
+
+$('.form_elements_err').removeClass('form_elements_err').addClass('form_elements');
+$('.msg-error').html('');
+
+var msg1 = $('#form_pass12').val();
+if (msg1=="") {
+	err += 'err';
+	$('#form_pass12_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_pass12').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var msg1 = $('#form_pass22').val();
+if (msg1=="") {
+	err += 'err';
+	$('#form_pass22f_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_pass22').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var p1 = $('#form_pass12').val();
+var p2 = $('#form_pass22').val();
+if (p1!=p2) {
+	err += 'err';
+	$('#form_pass222_err').html('<?=$translates['front.fields.err.pass']?>');
+	$('#form_pass22').removeClass('form_elements').addClass('form_elements_err');
+}	
+
+var email = $('#form_email2').val();
+if (email=="" || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+	err += 'err';
+	$('#form_email2_err').html('<?=$translates['front.fields.err.email']?>');
+	$('#form_email2').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var msg2 = $('#form_code2').val();
+if (msg2=="") {
+	err += 'err';
+	$('#form_code2_err').html('<?=$translates['front.fields.err2']?>');
+	$('#form_code2').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var v = $('#form_name22').val();
+if (v=="") {
+	err += 'err';
+	$('#form_name22_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_name22').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var v = $('#form_phones22').val();
+if (v=="") {
+	err += 'err';
+	$('#form_phones22_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_phones22').removeClass('form_elements').addClass('form_elements_err');
+}
+
+/*var v = $('#form_country2').val();
+if (v=="") {
+	err += 'err';
+	$('#form_country2_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_country2').removeClass('form_elements').addClass('form_elements_err');
+}*/
+
+var v = $('#form_city2').val();
+if (v=="") {
+	err += 'err';
+	$('#form_city2_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_city2').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var v = $('#form_address2').val();
+if (v=="") {
+	err += 'err';
+	$('#form_address2_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_address2').removeClass('form_elements').addClass('form_elements_err');
+}
+
+var v = $('#form_firm_name').val();
+if (v=="") {
+	err += 'err';
+	$('#form_firm_name_err').html('<?=$translates['front.fields.err']?>');
+	$('#form_firm_name').removeClass('form_elements').addClass('form_elements_err');
+}
+	
+if (!$('#is_agree2').is(":checked")){
+	err += 'err';
+	$('#form_agree2_err').html('<?=$translates['agreecartrul']?>');
+	$('#form_agree2').removeClass('form_elements').addClass('form_elements_err');
+}
+
+if (err == "") {
+	return true;
+}
+else {
+	return false;
+}
+}
+</script>
