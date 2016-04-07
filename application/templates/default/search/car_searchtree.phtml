@@ -430,6 +430,12 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
             	<?php }?>
             	
             	<?php if ($viewitem){?>
+				<!-- if is page assortiment view -->
+				<script> 
+					$(document).ready(function(){
+						$('.pagination').css('display', 'none');
+					});
+				</script>
                 <div class="tdoc_cat col-md-3">
                     <div class="tdoc_img"><img src="<?=$tdoc_cat['img'];?>" title="<?=$tdoc_cat['title'];?>" alt="<?=$tdoc_cat['title'];?>" class="img-responsive"></div>
                     <div class="tdoc_info">
@@ -594,6 +600,7 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 								</div>
 							</div>
 						</section>
+						
 						<section class="section_offset">
 							<?php if (isset($algoritm)&&$algoritm){?>
 								
@@ -613,7 +620,7 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 								<div class="table_layout list_view list_view_products" id="products_container">
 									<div class="table_row">
 									<?php 
-									$i=0; 
+									$i=1; 
 									if (count($data_without_cost) > 0) {
 									foreach ($data_without_cost as $fetchData)
 									{ 
@@ -658,9 +665,84 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 							<?php }?>
 							
 						</section>
+						<!-- Start pagination -->
+						<script>
+							$(document).ready(function(){
+								var pages = $('input[name=pages]').val();
+								for (var i=11; i<=pages; i++)
+								{
+									$('#page-item-'+i).css('display', 'none');
+								}
+							});
+							
+							function changePage(page)
+							{
+								pages = $('input[name=pages]').val();
+								for (var i=1; i<=pages; i++) {
+									$('#page-item-'+i).css('display', 'none');
+								}
+								
+								for (var c=1; c<50; c++)
+								{
+									if (page==c)
+									{
+										var endFor=c+'0';
+										var startFor=parseInt(endFor)-9;
+										for (var i=startFor; i<=parseInt(endFor); i++)
+										{
+											$('#page-item-'+i).css('display', 'block');
+										}
+									}
+								}
+								/*
+								if (page==1) {
+									for (var i=1; i<=10; i++) {
+										$('#page-item-'+i).css('display', 'block');
+									}
+								}*/
+							}
+						</script>
+						
+						<div>
+							<center>	
+								<nav>
+								  <ul class="pagination pagination-lg">
+									<li>
+									  <a href="#" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									  </a>
+									</li>
+									<?php
+										$total_article = $i-1;
+										$total_page = ceil($total_article/10);	
+										echo "<input type='hidden' name='pages' value='".$total_article."'>";	
+										
+										for ($c=1; $c<=$total_page; $c++)
+										{	
+											echo "<li> <a href='#' onclick='changePage(".$c.")'> $c </a> </li>";
+										}
+									?>
+									<li>
+									  <a href="#" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									  </a>
+									</li>
+								  </ul>
+								</nav>
+							</center>
+						</div>
+						<!-- End pagination -->
 					</div>
 				</div>
 			</main>
 		</div>
     </div>
 </div>
+
+
+
+
+
+
+
+

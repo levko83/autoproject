@@ -1,4 +1,4 @@
-<?php 
+<?php 	
 	$cur_lang = $_SESSION["setLang"];
 	$itemInfo = array(
 		'DB_ID' => $fetchData["tecdoc_id"],
@@ -20,7 +20,7 @@
 		$descr_items .= "<li>".$translates['f.nasha_cena'].": ". $itemInfo['PRICE']." &euro;</li>";
 		$descr_items .= "<li>".$translates['brands'].": <a href='".HTTP_ROOT."/search/preload/?article=".$itemInfo['BRAND']."'>". $itemInfo['BRAND']."</a></li>";
 		$descr_items .= "</ul>";
-		$itemInfo["DESCR"] = str_replace ('</ul>', $descr_items, $itemInfo["DESCR"]);
+		$itemInfo["DESCR"] = str_replace ('</ul>', $descr_items, $itemInfo["DESCR"]); 
 	} else {
 		$descr_items = "<ul>";
 		$descr_items .= "<li>Art. Nr.: ". $itemInfo['ART_NR']."</li>";
@@ -47,11 +47,11 @@
     <?php*/
 	}
 ?>
-		<div class="table_cell">
+		<div class="table_cell" id="page-item-<?=$i?>">
             <div class="product_item">
 				
                 <div class="image_wrap"><ul class="seller_stats align_center" style="background-color: #ff8400; color:#fff; margin-bottom: 14px;  padding: 5px 0;">
-                    <li>Art. Nr.: <?=$itemInfo['ART_NR']?> </li>
+                    <li>Art. Nr.: <?=$itemInfo['ART_NR']?> <?php echo $i; ?> </li>
                </ul>
 				<br/><br/>
                     <?php 

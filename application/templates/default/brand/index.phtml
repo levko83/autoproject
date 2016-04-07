@@ -1,3 +1,4 @@
+<?php $db = new mysqli('178.63.86.9', 'admin_autoresurs', 'nI82GlX4mV', 'admin_autoresursde'); ?>
 <div class="container">
 <style>
 .page_wrapper { background: url('<?=HTTP_ROOT?>/static/images/background-primary.jpg')  no-repeat center center fixed;  -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;}
@@ -33,6 +34,12 @@ figcaption {
 	background:rgba(255, 255, 255, 0.5)!important;
 	border:none;
 }
+
+.brand-count {
+	color: #148c0d;
+    font-weight: bold;
+    font-size: 18px;
+}
 </style>
     <div class="row">
 	
@@ -43,7 +50,7 @@ figcaption {
             <div class="table_layout">
 
                 <div class="table_row">
-				
+				    
 					<?php if (isset($data) && count($data)>0){
 						$i = 1;
 						?>
@@ -56,7 +63,19 @@ figcaption {
 										$braimg = HTTP_ROOT."/media/files/brands/".$dd['BRA_IMG'];
 										echo "<img id='element' src='".$braimg."' style='text-align:center;width:110px;margin-top:10px;' />";
 									?>
-									<figcaption class="align_center"><?=trim($dd['BRA_BRAND'])?></figcaption>
+									<figcaption class="align_center">
+										<?=trim($dd['BRA_BRAND'])?>
+										<br>
+										<div class="brand-count">
+											<i class="fa fa-cart-arrow-down"></i>
+											<?php
+												$count_brand = $db->query(" SELECT total as count FROM count_brands WHERE brand like '%".$dd['BRA_BRAND']."%' ");
+												$count_brand = $count_brand->fetch_array();
+												
+												echo $count_brand['count'];
+											?>
+										</div>
+									</figcaption>
 
 								</figure></a>
 							</div>
