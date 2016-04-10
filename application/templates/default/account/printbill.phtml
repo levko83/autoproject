@@ -152,10 +152,10 @@ body {
 					$pfand += $descr['pfand'];
 				?>		
 			</td>
-			<td><?=PriceHelper::number($element['price'])?> &euro;</td>
+			<td><?=PriceHelper::number( $element['price'] - ($element['price']*19/100) )?> &euro;</td>
 			<td><?=$element['cc']?></td>
 			<!-- Total sum -->
-			<?php $ss = $element['price']*$element['cc'];?>
+			<?php $ss = ($element['price'] - ($element['price']*19/100)) * $element['cc'];?>
 			<?php $sum += $ss;?>
 			<td><?=PriceHelper::number($ss)?> &euro;</td>
 		</tr>
