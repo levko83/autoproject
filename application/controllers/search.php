@@ -793,14 +793,18 @@ class SearchController  extends BaseController {
 				$this->view->MFA = $MFA;
 				
 				$this->get_one_models($MOD_ID); //getnr
-				$this->get_list_vin($zu2, $zu3); 
+				$data = $this->get_list_vin($zu2, $zu3); 
 				
 				$MOD = ($this->view->MOD);
+				header("Location: /auto/".AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])."-".$MFA['MFA_ID']."/".AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT)."-".$MOD[0]->MOD_ID."/".AliasViewHelper::doTraslitSearchAuto($data[1][0]->SHORT_DES)."-".$data[1][0]->TYP_ID."");
 				$this->view->_seo = array(
 					"title"=>$MFA['MFA_BRAND']." ".$MOD[0]->MOD_CDS_TEXT,
 					"kwords"=>$MFA['MFA_BRAND']." ".$MOD[0]->MOD_CDS_TEXT,
 					"descr"=>$MFA['MFA_BRAND']." ".$MOD[0]->MOD_CDS_TEXT
 				);
+				// print("<pre>");
+				// print_r($data);
+				// die($data);
 			}
 		}
 			$this->totaltime();
@@ -1040,6 +1044,7 @@ class SearchController  extends BaseController {
 				}
 				
 				$this->view->data = $convertData;
+				return $convertData;
 			}
 		} catch (Exception $e) {
 		    echo "<h2>Exception Error! The server is unavailable.".__line__."</h2>";

@@ -52,7 +52,7 @@ return $out;
 
 $per_page = 1000;         // number of results to show per page
 
-$result = mysql_query("SELECT * FROM user_info where city='9' and b_y >1986 and b_y < 2000");
+$result = mysql_query("SELECT * FROM user_info where city='9' and b_y >1992 and b_y < 1998 and sex=0");
 
 $total_results = mysql_num_rows($result);
 $total_pages = ceil($total_results / $per_page);//total pages we going to have

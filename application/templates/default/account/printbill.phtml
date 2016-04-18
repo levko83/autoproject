@@ -18,6 +18,9 @@ body {
     font-weight: bold;
     text-align: center;
 }
+.totalsum td:nth-child(2) {
+	width: 163px;
+}
 .footer {
 	clear: both;
     border-top: 3px solid black;
@@ -162,10 +165,13 @@ body {
 	<?php } ?>
 </table>
 
-<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered totalsum">
+<?php
+$total = $sum+$pfand+$bill['delivery_price']+$bill['nachname'];
+?>
 	<tr>
-		<td>Netto Warenpreis:</td>
-		<td><?=$sum?> &euro;</td>
+		<td>Warenpreis netto:</td>
+		<td><?=round($sum, 2)?> &euro;</td>
 	</tr>	
 	
 	<tr>
@@ -180,17 +186,17 @@ body {
 	
 	<tr>
 		<td>Nachnamegebühr:</td>
-		<td></td>
+		<td><?=$bill['nachname']?> &euro;</td>
 	</tr>	
 	
 	<tr>
-		<td>Gesamtnettobetrag zzgl. 19 % MwSt.:</td>
-		<td><?=number_format(($sum / 100)*81, 2)?> &euro;</td>
+		<td>zzgl. 19 % MwSt.:</td>
+		<td><?=$procent = round($total*19/100, 2)?> &euro;</td>
 	</tr>	
 	
 	<tr class="danger">	
 		<td>Brutto Zahlbetrag:</td>
-		<td><?=$sum+$pfand+$bill['delivery_price']?> &euro;</td>
+		<td><?=round($total*19/100+$total, 2)?> &euro;</td>
 	</tr>
 </table>
 

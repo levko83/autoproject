@@ -749,14 +749,14 @@ class AccountsModel extends Orm {
 		(
 			`scSID`,`account_id`,`manager_id`,
 			`office_id`,`status`,`dt`,`number`,`message`,
-			`f1`,`f2`,`f3`,
+			`f1`,`f2`,`f3`,`nachname`,
 			`delivery`,`delivery_price`,`md5_hash`,
 			`payment_name`,`delivery_addess`,`is_bill_byfrontend`
 		) 
 		VALUES (
 			'".$scSID."','".(int)$id."','".(int)$set_manager_id."',
 			'".(int)$office_id."','0','".time()."','".$number."','".addslashes($data['message'])."',
-			'".addslashes($data['name'])."','".addslashes($data['phone'])."','".addslashes($data['email'])."',
+			'".addslashes($data['name'])."','".addslashes($data['phone'])."','".addslashes($data['email'])."','".addslashes($data['delivery']['price2'])."',
 			'".addslashes($data['delivery']['name'])."','".addslashes($data['delivery']['price'])."','".md5("o.".$number)."',
 			'".mysql_real_escape_string($data['paymentname'])."','".mysql_real_escape_string($data['address'])."','1'
 		);";
