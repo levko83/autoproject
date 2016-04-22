@@ -185,8 +185,10 @@ class SearchController  extends BaseController {
 				
 			if (strlen($wh) > 1) {
 					$db = Register::get('db');
-					$sql = " SELECT * from ".DB_PREFIX."products where {$wh} order by art_nr ASC limit 0,100;";
+				
+					$sql = " SELECT * from ".DB_PREFIX."products where {$wh} AND supplier_name NOT IN (SELECT BRA_BRAND FROM w_brands WHERE BRA_ACTIVE=0) order by art_nr ASC limit 0,100;";
 					// $sql = " SELECT * from ".DB_PREFIX."products where tecdoc_id='997367' OR tecdoc_id='997368' OR tecdoc_id='997369';";
+					
 					$fv2p = $db->query($sql);
 					if (isset($fv2p) && count($fv2p)>0) {
 						foreach ($fv2p as $item){

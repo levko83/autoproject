@@ -308,14 +308,14 @@
 			<div class="page_wrapper" >
 				<?php $this->content();?>
 			</div><!--/ .page_wrapper-->
-
-			<footer id="footer" style="background: url('<?=HTTP_ROOT?>/static/images/bg_footer6.jpg') center no-repeat; background-size: cover">
+			
+			<footer id="footer" style="background: url('<?=HTTP_ROOT?>/static/images/bg_footer_left.jpg'), url('<?=HTTP_ROOT?>/static/images/bg_footer_right.jpg'); background-position: left, right; background-size: contain; background-repeat: no-repeat;">
 				<style>
 					.infoblocks_container::before { background: none;}
 				</style>
 				<div class="container" style="background: transparent; padding: 10px 0 10px;">
 					
-					<div class="infoblocks_container">
+					<div class="infoblocks_container" style="background-color: #fff;">
 
 						<ul class="infoblocks_wrap">
 
@@ -347,7 +347,7 @@
 							</li>
 
 						</ul><!--/ .infoblocks_wrap.section_offset.clearfix-->
-						
+						<br/>
 						<div style="float: left; width: 400px; text-align: center; margin-top:5px">
 							<!-- Start Subscribe Email -->
 							<a href="#" class="button_blue" data-toggle="modal" data-target="#subscribe" style="background: #4AC4FA">Subscribe News Email</a> 

@@ -168,7 +168,7 @@ class AccountsModel extends Orm {
 			DS.name statusName,
 			DS.color,
 			COUNT(C.id) CC2,
-			(SUM( (( C.price*C.count ) + CB.delivery_price) )) sumOrder
+			(SUM( ( C.price*C.count ) ))+ CB.delivery_price sumOrder
 		FROM ".DB_PREFIX."cart_bills CB
 		LEFT JOIN ".DB_PREFIX."dic_statuses DS ON DS.id=CB.status
 		JOIN ".DB_PREFIX."cart C ON C.scSID=CB.scSID

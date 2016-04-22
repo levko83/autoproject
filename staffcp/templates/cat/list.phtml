@@ -12,8 +12,6 @@ if (empty($actions)) $actions = array();
 	<?php }?>
 </h1>
 
-<?php $this->block('products/csv');?>
-
 <form action="/staffcp/<?=$dataModel->getModelName();?>/delete_list/" method="POST" onsubmit="return confirm('<?=$translates['admin.main.confirm']?>');return false;">
 <input type="hidden" name="delete_parent" value="<?=$parent?>">
 <table class="list">
@@ -23,9 +21,7 @@ if (empty($actions)) $actions = array();
 		<?php foreach ($fieldTitles as $fieldTitle){?>
 		<th><?=$fieldTitle;?></th>
 		<?php }?>
-		<?php if (!in_array("edit", $actions)){?><th><?=$translates['admin.main.prods']?></th><?php }?>
-		<?php if (!in_array("edit", $actions)){?><th><?=$translates['admin.main.subcats']?></th><?php }?>
-		<th>Экспорт</th>
+		
 		<?php if (!in_array("edit", $actions)){?><th><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></th><?php }?>
 		<?php if (!in_array("delete", $actions)){?><th><img title="<?=$translates['admin.main.delete']?>" border="0" src="/staffcp/media/images/trash_16.png"/></th><?php }?>
 	</tr>
@@ -40,19 +36,7 @@ if (empty($actions)) $actions = array();
 			<?php }?>
 			<?php if ($acl->canViewMenuItem($dataModel->getModelName().'/edit/?'.$indexField.'='.$row[$indexField])){?>
 			
-			<?php if (!in_array("edit", $actions)){?>
-			<td align="center"><a title="<?=$translates['admin.main.see']?>" href="/staffcp/products/?parent=<?=$row[$indexField];?>">Товары&nbsp;(<?=CatController::countProducts($row[$indexField])?>)</a>&nbsp;[<a title="<?=$translates['admin.main.addprod']?>" href="/staffcp/products/add/?parent=<?=$row[$indexField];?>">+</a>]</td>
-			<?php }?>
 			
-			<?php if (!in_array("edit", $actions)){?>
-			<td align="center"><a title="<?=$translates['admin.main.inparent']?>" href="/staffcp/<?=$dataModel->getModelName();?>/?parent=<?=$row[$indexField];?>"><?=$translates['admin.main.subcats']?>&nbsp;(<?=CatController::countCats($row[$indexField])?>)</a>&nbsp;[<a title="<?=$translates['admin.main.addcat']?>" href="/staffcp/<?=$dataModel->getModelName();?>/add/?parent=<?=$row[$indexField];?>">+</a>]</td>
-			<?php }?>
-			
-			<td align="center">
-			<?php if(CatController::countProducts($row[$indexField]) >0) {?>
-				<a title="" href="/staffcp/<?=$dataModel->getModelName();?>/export?id=<?=$row[$indexField];?>">Экспорт (<?=CatController::countProducts($row[$indexField])?> шт.)</a>
-			<?php } else echo '--';?>
-			</td>
 				
 			<?php if (!in_array("edit", $actions)){?>
 			<td align="center"><a href="/staffcp/<?=$dataModel->getModelName();?>/edit/?<?=$indexField;?>=<?=$row[$indexField];?>"><img title="<?=$translates['admin.main.edit']?>" border="0" src="/staffcp/media/images/pencil_16.png"/></a></td>

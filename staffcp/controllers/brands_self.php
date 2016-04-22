@@ -34,15 +34,16 @@ class Brands_selfController  extends CmsGenerator {
 		else {
 			return 0;
 		}
-	}
+	}/*
 	function addNode($id=0,$brand=''){
 		if ($id && $brand){
 			$db = Register::get('db');
 			$sql = "INSERT INTO ".DB_PREFIX."brands (BRA_ID_GET,BRA_BRAND) VALUES ('".(int)$id."','".mysql_real_escape_string($brand)."');";
+			
 			#var_dump($sql);
 			$db->post($sql);
 		}
-	}
+	}*/
 	function updatePrices($NewId=0,$Brand=''){
 		if ($NewId && $Brand){
 			$db = Register::get('db');

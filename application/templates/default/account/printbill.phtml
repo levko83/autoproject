@@ -1,9 +1,15 @@
-<?php $db = new mysqli('178.63.86.9', 'admin_autoresurs', 'nI82GlX4mV', 'admin_autoresursde'); ?>
+<?php 
+$db = new mysqli('178.63.86.9', 'admin_autoresurs', 'nI82GlX4mV', 'admin_autoresursde'); 
+$db->query(" SET NAMES 'utf8' ");
+$db->query(" SET CHARACTER SET 'utf8' ");
+$db->query(" SET SESSION collation_connection = 'utf8_general_ci' ");
+?>
 <html>
 <head>
 <link rel="stylesheet" href="<?=HTTP_ROOT?>/static/css/bootstrap.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <script src="<?=HTTP_ROOT?>/static/js/bootstrap.min.js"></script>
+<script src="<?=HTTP_ROOT?>/static/js/jquery-2.1.1.min.js"></script>
 </head>
 <style>
 body {
@@ -12,13 +18,15 @@ body {
 }
 .article {
 	padding: 5px 20px;
-	margin-top: -50px;
     border-radius: 10px;
     width: 200px;
     font-weight: bold;
     text-align: center;
 }
-.totalsum td:nth-child(2) {
+.totalsum-1 td:nth-child(6) {
+	width: 163px;
+}
+.totalsum-2 td:nth-child(2) {
 	width: 163px;
 }
 .footer {
@@ -131,7 +139,7 @@ body {
 	</tr>
 </table>
 
-<table class="table table-bordered table-condensed table-hover table-striped table-bordered">
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered totalsum-1">
 	<tr class="info">
 		<td>Pos.</td>
 		<td>Artikel Nr.</td>
@@ -155,19 +163,24 @@ body {
 					$pfand += $descr['pfand'];
 				?>		
 			</td>
-			<td><?=PriceHelper::number( $element['price'] - ($element['price']*19/100) )?> &euro;</td>
+			<td><?=PriceHelper::number($element['price'])?> &euro;</td>
 			<td><?=$element['cc']?></td>
 			<!-- Total sum -->
-			<?php $ss = ($element['price'] - ($element['price']*19/100)) * $element['cc'];?>
+			<?php $ss = ($element['price'] * $element['cc']);?>
 			<?php $sum += $ss;?>
 			<td><?=PriceHelper::number($ss)?> &euro;</td>
 		</tr>
 	<?php } ?>
 </table>
 
-<table class="table table-bordered table-condensed table-hover table-striped table-bordered totalsum">
+<table class="table table-bordered table-condensed table-hover table-striped table-bordered totalsum-2">
 <?php
-$total = $sum+$pfand+$bill['delivery_price']+$bill['nachname'];
+if ($bill['payment_name']=='Nachnahme') {
+	$nachname = $bill['nachname'];
+} else {
+	$nachname = 0;
+}
+$total = $sum+$pfand+$bill['delivery_price']+$nachname;
 ?>
 	<tr>
 		<td>Warenpreis netto:</td>
@@ -186,7 +199,7 @@ $total = $sum+$pfand+$bill['delivery_price']+$bill['nachname'];
 	
 	<tr>
 		<td>Nachnamegebühr:</td>
-		<td><?=$bill['nachname']?> &euro;</td>
+		<td><?=$nachname?> &euro;</td>
 	</tr>	
 	
 	<tr>
@@ -196,7 +209,7 @@ $total = $sum+$pfand+$bill['delivery_price']+$bill['nachname'];
 	
 	<tr class="danger">	
 		<td>Brutto Zahlbetrag:</td>
-		<td><?=round($total*19/100+$total, 2)?> &euro;</td>
+		<td><?=round($total, 2)?> &euro;</td>
 	</tr>
 </table>
 
@@ -230,3 +243,4 @@ $total = $sum+$pfand+$bill['delivery_price']+$bill['nachname'];
 </body>
 
 </html>
+

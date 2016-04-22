@@ -12,452 +12,45 @@ function onlyAutoComplTreeConvert($tree=array()){
 	}
 	return $newTree;
 }
-
-function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path ){
-	$translates = Register::get('translates');
-	
-    $data = array(); 
-    $issetTree = array();
-    
-    foreach($tdoc_data as $st){
-    	$issetTree []= $st->ID;
-    	
-        switch($st->ID){
-            case '10105': //фильтры
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' =>  $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10360' => array(
-                            'child_id'=>10360,
-                            'child_name'=>$translates['f.vozdushnyy'],
-                            'child_link'=>$td_url.'/10360/'
-                        ),
-                        '10359' => array(
-                            'child_id'=>10359,
-                            'child_name'=>$translates['f.maslyanyy'],
-                            'child_link'=>$td_url.'/10359/'
-                        ),
-                        '10361' => array(
-                            'child_id'=>10361,
-                            'child_name'=>$translates['f.toplivnyy'],
-                            'child_link'=>$td_url.'/10361/'
-                        )
-                    )
-                );
-                break;
-            case '10103': //механизм газораспределения
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10523' => array(
-                            'child_id'=>10523,
-                            'child_name'=>$translates['f.klapany'],
-                            'child_link'=>$td_url.'/10523/'
-                        ),
-                        '10504' => array(
-                            'child_id'=>10504,
-                            'child_name'=>$translates['f.remen_grm'],
-                            'child_link'=>$td_url.'/10504/'
-                        )
-                    )
-                );
-                break;
-            case '10182': //поликлиновый механизм
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10535' => array(
-                            'child_id'=>10535,
-                            'child_name'=>$translates['f.parazitnyy_rolik'],
-                            'child_link'=>$td_url.'/10535/'
-                        ),
-                        '10531' => array(
-                            'child_id'=>10531,
-                            'child_name'=>$translates['f.poliklinovyy_remen'],
-                            'child_link'=>$td_url.'/10531/'
-                        ),
-                        '10534' => array(
-                            'child_id'=>10534,
-                            'child_name'=>$translates['f.rolik_natyazhitelya'],
-                            'child_link'=>$td_url.'/10534/'
-                        )
-                    )
-                );
-                break;
-            case '10726': //дисковый тормозной механизм
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10132' => array(
-                            'child_id'=>10132,
-                            'child_name'=>$translates['f.tormoznoy_disk'],
-                            'child_link'=>$td_url.'/10132/'
-                        ),
-                        '10130' => array(
-                            'child_id'=>10130,
-                            'child_name'=>$translates['f.tormoznye_kolodki'],
-                            'child_link'=>$td_url.'/10130/'
-                        )
-                    )
-                );
-                break;
-            case '10727': //барабанный тормозной механизм
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10133' => array(
-                            'child_id'=>10133,
-                            'child_name'=>$translates['f.tormoznoy_baraban'],
-                            'child_link'=>$td_url.'/10133/'
-                        ),
-                        '10131' => array(
-                            'child_id'=>10131,
-                            'child_name'=>$translates['f.tormoznye_kolodki'],
-                            'child_link'=>$td_url.'/10131/'
-                        )
-                    )
-                );
-                break;
-            case '10111': //амортизаторы
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10221' => array(
-                            'child_id'=>10221,
-                            'child_name'=>$translates['f.amortizator'],
-                            'child_link'=>$td_url.'/10221/'
-                        ),
-                        '10213' => array(
-                            'child_id'=>10213,
-                            'child_name'=>$translates['f.pruzhiny'],
-                            'child_link'=>$td_url.'/10213/'
-                        )
-                    )
-                );
-                break;
-            case '10113': //подвеска
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10313' => array(
-                            'child_id'=>10313,
-                            'child_name'=>$translates['f.kreplenie_kolesa'],
-                            'child_link'=>$td_url.'/10313/'
-                        ),
-                        '10678' => array(
-                            'child_id'=>10678,
-                            'child_name'=>$translates['f.stupica_kolesa'],
-                            'child_link'=>$td_url.'/10678/'
-                        ),
-                        '10681' => array(
-                            'child_id'=>10681,
-                            'child_name'=>$translates['f.sharnir_nezavisimoy_podveski'],
-                            'child_link'=>$td_url.'/10681/'
-                        )
-                    )
-                );
-                break;
-            case '10310': //Стабилизатор
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10677' => array(
-                            'child_id'=>10677,
-                            'child_name'=>$translates['f.soedinitelnaya_tyaga'],
-                            'child_link'=>$td_url.'/10677/'
-                        ),
-                        '10673' => array(
-                            'child_id'=>10673,
-                            'child_name'=>$translates['f.stabilizator'],
-                            'child_link'=>$td_url.'/10673/'
-                        ),
-                        '10690' => array(
-                            'child_id'=>10690,
-                            'child_name'=>$translates['f.stoyka_stabilizatora'],
-                            'child_link'=>$td_url.'/10690/'
-                        )
-                    )
-                );
-                break;
-            case '10112': //рулевое управление
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10301' => array(
-                            'child_id'=>10301,
-                            'child_name'=>$translates['f.kozhuhprokladki'],
-                            'child_link'=>$td_url.'/10301/'
-                        ),
-                        '10297' => array(
-                            'child_id'=>10297,
-                            'child_name'=>$translates['f.rulevaya_tyaga'],
-                            'child_link'=>$td_url.'/10297/'
-                        ),
-                        '10299' => array(
-                            'child_id'=>10299,
-                            'child_name'=>$translates['f.rulevoy_mehanizm'],
-                            'child_link'=>$td_url.'/10299/'
-                        )
-                    )
-                );
-                break;
-            case '10313': //колесо
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10679' => array(
-                            'child_id'=>10679,
-                            'child_name'=>$translates['f.podshipnik'],
-                            'child_link'=>$td_url.'/10679/'
-                        ),
-                        '10678' => array(
-                            'child_id'=>10678,
-                            'child_name'=>$translates['f.stupica'],
-                            'child_link'=>$td_url.'/10678/'
-                        )
-                    )
-                );
-                break;
-            case '10114': //рулевое управление
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10171' => array(
-                            'child_id'=>10171,
-                            'child_name'=>$translates['f.shrus'],
-                            'child_link'=>$td_url.'/10171/'
-                        ),
-                        '10162' => array(
-                            'child_id'=>10162,
-                            'child_name'=>$translates['f.privodnoy_val'],
-                            'child_link'=>$td_url.'/10162/'
-                        ),
-                        '10174' => array(
-                            'child_id'=>10174,
-                            'child_name'=>$translates['f.pylnik'],
-                            'child_link'=>$td_url.'/10174/'
-                        )
-                    )
-                );
-                break;
-            case '10150': //сцепление
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10153' => array(
-                            'child_id'=>10153,
-                            'child_name'=>$translates['f.disk_scepleniya'],
-                            'child_link'=>$td_url.'/10153/'
-                        ),
-                        '10152' => array(
-                            'child_id'=>10152,
-                            'child_name'=>$translates['f.nazhimnoy_disk'],
-                            'child_link'=>$td_url.'/10152/'
-                        ),
-                        '10151' => array(
-                            'child_id'=>10151,
-                            'child_name'=>$translates['f.komplekt_scepleniya'],
-                            'child_link'=>$td_url.'/10151/'
-                        )
-                    )
-                );
-                break;
-            case '10110': //электрика
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10450' => array(
-                            'child_id'=>10450,
-                            'child_name'=>$translates['f.generator'],
-                            'child_link'=>$td_url.'/10450/'
-                        ),
-                        '10459' => array(
-                            'child_id'=>10459,
-                            'child_name'=>$translates['f.starter'],
-                            'child_link'=>$td_url.'/10459/'
-                        )
-                    )
-                );
-                break;
-            case '10108': //зажигание
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10251' => array(
-                            'child_id'=>10251,
-                            'child_name'=>$translates['f.svecha_zazhiganiya'],
-                            'child_link'=>$td_url.'/10251/'
-                        ),
-                        '10253' => array(
-                            'child_id'=>10253,
-                            'child_name'=>$translates['f.kabeli'],
-                            'child_link'=>$td_url.'/10253/'
-                        )
-                    )
-                );
-                break;
-            case '10104': //система выпуска
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '13514' => array(
-                            'child_id'=>13514,
-                            'child_name'=>$translates['f.datchiki'],
-                            'child_link'=>$td_url.'/13514/'
-                        ),
-                        '10148' => array(
-                            'child_id'=>10148,
-                            'child_name'=>$translates['f.lyambda-zond'],
-                            'child_link'=>$td_url.'/10148/'
-                        )
-                    )
-                );
-                break;
-            case '10354': //приготовление смеси
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '12899' => array(
-                            'child_id'=>12899,
-                            'child_name'=>$translates['f.forsunka'],
-                            'child_link'=>$td_url.'/12899/'
-                        )
-                    )
-                );
-                break;
-            case '10635': //крепление двигателя
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10636' => array(
-                            'child_id'=>10636,
-                            'child_name'=>$translates['f.kronshteyn'],
-                            'child_link'=>$td_url.'/10636/'
-                        ),
-                        '10639' => array(
-                            'child_id'=>10639,
-                            'child_name'=>$translates['f.otboynik'],
-                            'child_link'=>$td_url.'/10639/'
-                        ),
-                        '10638' => array(
-                            'child_id'=>10638,
-                            'child_name'=>$translates['f.podveska'],
-                            'child_link'=>$td_url.'/10638/'
-                        )
-                    )
-                );
-                break;
-            case '10620': //поршень
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10631' => array(
-                            'child_id'=>10631,
-                            'child_name'=>$translates['f.kolca'],
-                            'child_link'=>$td_url.'/10631/'
-                        ),
-                        '10629' => array(
-                            'child_id'=>10629,
-                            'child_name'=>$translates['f.porshen'],
-                            'child_link'=>$td_url.'/10629/'
-                        )
-                    )
-                );
-                break;
-            case '10118': //Стеклоочиститель
-                $data[$st->ID] = array(
-                    'ID' => $st->ID,
-                    'img' => $img_path.'td_m'.$st->ID.'.jpg',
-                    'title' => $st->NAME,
-                    'childrens' => array(
-                        '10233' => array(
-                            'child_id'=>10233,
-                            'child_name'=>$translates['f.stekloochistitel'],
-                            'child_link'=>$td_url.'/10233/'
-                        )
-                    )
-                );
-                break;
-        }
+function removeElementWithValue($array, $key, $value){
+     foreach($array as $subKey => $subArray){
+          if($subArray[$key] == $value){
+               unset($array[$subKey]);
+          }
+     }
+     return $array;
+}
+function unique_multidim_array($array, $key) {
+														$temp_array = array();
+														$i = 0;
+														$key_array = array();
+													   
+														foreach($array as $val) {
+															if (!in_array($val[$key], $key_array)) {
+																$key_array[$i] = $val[$key];
+																$temp_array[$i] = $val;
+															}
+															$i++;
+														}
+														return $temp_array;
+													} 
+function array_orderby()
+{
+    $args = func_get_args();
+    $data = array_shift($args);
+    foreach ($args as $n => $field) {
+        if (is_string($field)) {
+            $tmp = array();
+            foreach ($data as $key => $row)
+                $tmp[$key] = $row[$field];
+            $args[$n] = $tmp;
+            }
     }
-	$i = 0;
-    ?>
-		<h3 class="align_center"><?=$translates['f.bystryy_poisk']?></h3>
-		<div class="tdoc-categories">
-            <?php foreach($data as $tdoc_cat){?>
-            
-            	<?php $viewitem = false;?>
-            	<?php foreach($tdoc_cat['childrens'] as $child){ ?>
-            	<?php if (in_array($child['child_id'], $issetTree)){?>
-            		<?php $viewitem = true;?>
-            	<?php }?>
-            	<?php }?>
-            	
-            	<?php if ($viewitem){?>
-				<!-- if is page assortiment view -->
-				<script> 
-					$(document).ready(function(){
-						$('.pagination').css('display', 'none');
-					});
-				</script>
-                <div class="tdoc_cat col-md-3">
-                    <div class="tdoc_img"><img src="<?=$tdoc_cat['img'];?>" title="<?=$tdoc_cat['title'];?>" alt="<?=$tdoc_cat['title'];?>" class="img-responsive"></div>
-                    <div class="tdoc_info">
-                        <div class="tdoc_title"><?=FunctionsViewHelper::mb_ucfirst($tdoc_cat['title']);?></div>
-                        <div class="tdoc_childrens">
-                        <?php if(count($tdoc_cat['childrens'])>0){?>
-                        <ul>
-                            <?php foreach($tdoc_cat['childrens'] as $child){ ?>
-                            <?php if (in_array($child['child_id'], $issetTree)){?>
-                                <li data_id="<?=$child['child_id'];?>"><a href="<?=$child['child_link'];?>"><?php echo $child['child_name']; ?></a></li>
-							<?php }?>
-                            <?php }?>
-                        </ul>
-                        <?php }?>
-                        </div>
-                    </div>
-                </div>
-                <?php }?>
-                
-            <?php } ?>
-        </div>
-    <?php } ?>
+    $args[] = &$data;
+    call_user_func_array('array_multisort', $args);
+    return array_pop($args);
+}
+?>
 
 <div class="container">
 	<div itemscope itemtype="http://schema.org/Product">
@@ -479,8 +72,9 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 			</li>
 		</ul>
 		<div class="row">
-			
+			<?php if (isset($algoritm)&&$algoritm){?>
 			<aside class="col-md-3 col-sm-4">
+				<? /* ?>
 				<script src="<?=HTTP_ROOT?>/static/js/dtree/dtree.js"></script>
 				<h3><?=$translates['searchcategoryname']?></h3>
 				<div class="theme_box clearfix">
@@ -512,19 +106,19 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 							$dName = FunctionsViewHelper::mb_ucfirst($dd->NAME);
 							$set_express = false;
 							switch ($dd->ID){
-								case 10697: $set_express = true; $dName = $translates['front.zap.to']; break; //Запчасти для ТО
-								case 10359: $set_express = true; break; //Масляный фильтр
-								case 10360: $set_express = true; break; //Воздушный фильтр
-								case 10363: $set_express = true; break; // Салонный фильтр
-								case 10130: $set_express = true; break; //Тормозные колодки
-								case 10132: $set_express = true; break; //Тормозные диски
-								case 10221: $set_express = true; break; //Амортизаторы
-								case 10472: $set_express = true; $dName = $translates['f.pylniki_i_otboyniki']; break; //Пыльники и отбойники
-								case 10690: $set_express = true; break; //Стойка стабилизатора
-								case 10504: $set_express = true; break; //Ремень ГРМ
-								case 10203: $set_express = true; $dName = $translates['f.radiatory_ohlazhdeniya']; break; //Радиаторы охлаждения
-								case 10151: $set_express = true; break; //Комплекты сцепления
-								case 10671: $set_express = true; break; //рычаг
+								case 10697: $set_express = true; $dName = $translates['front.zap.to']; break; //�������� ��� ��
+								case 10359: $set_express = true; break; //�������� ������
+								case 10360: $set_express = true; break; //��������� ������
+								case 10363: $set_express = true; break; // �������� ������
+								case 10130: $set_express = true; break; //��������� �������
+								case 10132: $set_express = true; break; //��������� �����
+								case 10221: $set_express = true; break; //������������
+								case 10472: $set_express = true; $dName = $translates['f.pylniki_i_otboyniki']; break; //�������� � ���������
+								case 10690: $set_express = true; break; //������ �������������
+								case 10504: $set_express = true; break; //������ ���
+								case 10203: $set_express = true; $dName = $translates['f.radiatory_ohlazhdeniya']; break; //��������� ����������
+								case 10151: $set_express = true; break; //��������� ���������
+								case 10671: $set_express = true; break; //�����
 							}
 							if ($set_express){
 								$express_navigation [$dName]= "/auto/".AliasViewHelper::doTraslit($MFA['MFA_BRAND'])."-".$MFA['MFA_ID']."/".AliasViewHelper::doTraslit($MOD[0]->MOD_CDS_TEXT)."-".$MOD[0]->MOD_ID."/".AliasViewHelper::doTraslit($TYP[0]->TYP_CDS_TEXT)."-".$TYP[0]->TYP_ID."/".$dd->ID."/?node=".$i."";
@@ -552,8 +146,12 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 					</script>
 					<?php }?>
 				</div>
+				<? */ ?>
 				<div class="col-md-12 col-sm-12 stickybanner"  style="margin-top:10px;">
 					<img src="http://autoresurs.de/static/images/banners/banner3.jpg"  >
+					<br/>
+					<br/>
+					<a style="margin-left:20px;width:195px;" class="button_red middle_btn align_center" title="ZUM KATALOG" href="<?=HTTP_ROOT?>/auto/<?=AliasViewHelper::doTraslit($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/<?=AliasViewHelper::doTraslit($MOD[0]->MOD_CDS_TEXT)?>-<?=$MOD[0]->MOD_ID?>/<?=AliasViewHelper::doTraslit($TYP[0]->TYP_CDS_TEXT)?>-<?=$TYP[0]->TYP_ID?>/">< ZUM KATALOG<a>
 				</div>
 			</aside>
 			<main class="col-md-9 col-sm-8">
@@ -600,9 +198,8 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 								</div>
 							</div>
 						</section>
-						
 						<section class="section_offset">
-							<?php if (isset($algoritm)&&$algoritm){?>
+
 								
 								<header class="top_box on_the_sides">
 									<div class="left_side clearfix v_centered">
@@ -620,7 +217,7 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 								<div class="table_layout list_view list_view_products" id="products_container">
 									<div class="table_row">
 									<?php 
-									$i=1; 
+									$i=0; 
 									if (count($data_without_cost) > 0) {
 									foreach ($data_without_cost as $fetchData)
 									{ 
@@ -645,104 +242,190 @@ function build_tdoc_categories($tdoc_data, $td_url, $where = 'main', $img_path )
 									?>
 									</div>
 								</div>
-								
-								<?php  } else {?>
-							
-							
-							<?php $img_path = HTTP_ROOT.'/media-templates/img/auto/';
-							
-
-							
-							
-							?>
-							<?php $td_url = '/auto/'.AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND']).'-'.$MFA['MFA_ID'].'/'.AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT).'-'.$MOD[0]->MOD_ID.'/'.AliasViewHelper::doTraslitSearchAuto($TYP[0]->TYP_CDS_TEXT).'-'.$TYP[0]->TYP_ID;?>
-							<?php if (isset($search_tree) OR !empty($search_tree)) {?>
-								<?=build_tdoc_categories($search_tree,$td_url,$where='main',$img_path)?>
-											
-							<?php } else { ?>
-								<h1 class="align_center"><?=$translates["f.netu_produktov"];?>!</h1>
-							<?php }?>
-							<?php }?>
-							
 						</section>
-						<!-- Start pagination -->
-						<script>
-							$(document).ready(function(){
-								var pages = $('input[name=pages]').val();
-								for (var i=11; i<=pages; i++)
-								{
-									$('#page-item-'+i).css('display', 'none');
-								}
-							});
-							
-							function changePage(page)
-							{
-								pages = $('input[name=pages]').val();
-								for (var i=1; i<=pages; i++) {
-									$('#page-item-'+i).css('display', 'none');
-								}
-								
-								for (var c=1; c<50; c++)
-								{
-									if (page==c)
-									{
-										var endFor=c+'0';
-										var startFor=parseInt(endFor)-9;
-										for (var i=startFor; i<=parseInt(endFor); i++)
-										{
-											$('#page-item-'+i).css('display', 'block');
-										}
-									}
-								}
-								/*
-								if (page==1) {
-									for (var i=1; i<=10; i++) {
-										$('#page-item-'+i).css('display', 'block');
-									}
-								}*/
-							}
-						</script>
-						
-						<div>
-							<center>	
-								<nav>
-								  <ul class="pagination pagination-lg">
-									<li>
-									  <a href="#" aria-label="Previous">
-										<span aria-hidden="true">&laquo;</span>
-									  </a>
-									</li>
-									<?php
-										$total_article = $i-1;
-										$total_page = ceil($total_article/10);	
-										echo "<input type='hidden' name='pages' value='".$total_article."'>";	
-										
-										for ($c=1; $c<=$total_page; $c++)
-										{	
-											echo "<li> <a href='#' onclick='changePage(".$c.")'> $c </a> </li>";
-										}
-									?>
-									<li>
-									  <a href="#" aria-label="Next">
-										<span aria-hidden="true">&raquo;</span>
-									  </a>
-									</li>
-								  </ul>
-								</nav>
-							</center>
-						</div>
-						<!-- End pagination -->
 					</div>
 				</div>
 			</main>
+			<?php  } else { $carname = $MFA['MFA_BRAND']." ". $MOD[0]->MOD_CDS_TEXT." ". $TYP[0]->TYP_CDS_TEXT; ?>
+			<main class="col-md-12 col-sm-12">
+					
+					<script type="text/javascript">
+						var akey = new Array();
+						<?php $trees = '';?> 
+						<?php $FirstLevelTreeConvert = onlyAutoComplTreeConvert($search_tree);?>
+						<?php $i=0; foreach ($FirstLevelTreeConvert as $nameNode=>$NodeId){ $i++;?>
+							<?php $trees .= '"'.$nameNode.'"'.(($i!=count($FirstLevelTreeConvert))?',':'');?>
+							akey["<?=$nameNode?>"]= <?=$NodeId?>;
+						<?php }?>
+						var atree = [<?=$trees?>];
+						
+						function treeviewer(event, data, formatted) {
+							location = "/auto/<?=AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND'])?>-<?=$MFA['MFA_ID']?>/<?=AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT)?>-<?=$MOD[0]->MOD_ID?>/<?=AliasViewHelper::doTraslitSearchAuto($TYP[0]->TYP_CDS_TEXT)?>-<?=$TYP[0]->TYP_ID?>/"+akey[formatted];
+						}
+					</script>
+					<div class="col-sm-12">
+						<div class="col-sm-5"><h1><?=$carname?></h1></div>
+						<div class="col-sm-2"><h5 style="text-align:right;"><?=$translates['searchcategoryname']?>:</h5></div>
+						<div class="col-sm-5">
+							<form autocomplete="off">
+								<input type="text" id="auto-searcher" class="autoinput"/>
+							</form>
+						</div>
+					</div>
+					<br />
+					<br />
+					<?php $img_path = HTTP_ROOT.'/media-templates/img/auto/';
+							$td_url = '/auto/'.AliasViewHelper::doTraslitSearchAuto($MFA['MFA_BRAND']).'-'.$MFA['MFA_ID'].'/'.AliasViewHelper::doTraslitSearchAuto($MOD[0]->MOD_CDS_TEXT).'-'.$MOD[0]->MOD_ID.'/'.AliasViewHelper::doTraslitSearchAuto($TYP[0]->TYP_CDS_TEXT).'-'.$TYP[0]->TYP_ID;
+							if (isset($search_tree) OR !empty($search_tree)) {
+								
+								if (isset($search_tree) && count($search_tree)>0)
+								{
+									$i=0; 
+									$p=0; 
+									foreach ($search_tree as $dd)
+									{ 
+										$i++; 
+										$dName = FunctionsViewHelper::mb_ucfirst($dd->NAME);
+										if ($dd->PARENT == 10001 && ($dd->ID!="10119" && $dd->ID!="10442"))
+										{
+											$p++; 
+											?>
+											<div class="theme_box addpad">
+												<div class="row">
+													<div class="col-sm-3 rightborder">
+														<ul>
+
+															<li><h4><?=$dName?></h4></li>
+															<li><small><?=strtolower($translates['f.dlya'])?> <?=$carname?></small></li>
+															<li><img height="100" src="<?=HTTP_ROOT?>/static/images/cats/<?=$dd->ID?>.jpg" alt="<?=$dName?> <?=strtolower($translates['f.dlya'])?> <?=$carname?>" class="align_center"></li>
+
+														</ul>
+													</div>
+													<div class="col-sm-9 ">
+													<?
+													$arr = array();
+													$a = 0;
+													foreach ($search_tree as $dds)
+													{ 
+														$i++; 
+														$dName = FunctionsViewHelper::mb_ucfirst($dds->NAME);
+														if ($dds->PARENT == $dd->ID && $dds->DESCENDANTS==0)
+														{
+															$arr[$a]["id"] = $dds->ID;
+															$arr[$a]["name"] = $dName;													
+														}
+														$a++;
+													} 
+													foreach ($search_tree as $ddc)
+													{ 
+														$dName = FunctionsViewHelper::mb_ucfirst($ddc->NAME);
+														$dCat = $ddc->PARENT;
+														if ($ddc->PARENT == $dd->ID && $ddc->DESCENDANTS==1)
+														{
+															
+															foreach ($search_tree as $dds)
+															{ 
+																
+																$dName = FunctionsViewHelper::mb_ucfirst($dds->NAME);
+																if ($dds->PARENT == $ddc->ID && $dds->DESCENDANTS==0)
+																{
+																	$arr[$a]["id"] = $dds->ID;
+																	$arr[$a]["name"] = $dName;													
+																}
+																$a++;
+															} 														
+														}
+														
+													}
+													foreach ($search_tree as $ddc)
+													{ 
+														$dName = FunctionsViewHelper::mb_ucfirst($ddc->NAME);
+														$dCat = $ddc->PARENT;
+														if ($ddc->PARENT == $dd->ID && $ddc->DESCENDANTS==1)
+														{
+															
+															foreach ($search_tree as $dds)
+															{ 
+																
+																$dName = FunctionsViewHelper::mb_ucfirst($dds->NAME);
+																if ($dds->PARENT == $ddc->ID && $dds->DESCENDANTS==1)
+																{
+																	foreach ($search_tree as $dda)
+																	{ 
+																		
+																		$dName = FunctionsViewHelper::mb_ucfirst($dda->NAME);
+																		if ($dda->PARENT == $dds->ID && $dda->DESCENDANTS==0)
+																		{
+																			$arr[$a]["id"] = $dda->ID;
+																			$arr[$a]["name"] = $dName;													
+																		}
+																		$a++;
+																	}													
+																}
+																$a++;
+															} 														
+														}
+														
+													}
+													
+													
+													
+													$arr = array_orderby($arr, 'name', SORT_ASC, 'id', SORT_ASC);
+													$arr = unique_multidim_array($arr, 'name');
+													$arr = removeElementWithValue($arr, "id", "11937"); //Artikelsuche uber Grafik
+													$arr = removeElementWithValue($arr, "id", "12873"); //Artikelsuche uber Grafik
+													$arr = removeElementWithValue($arr, "id", "13609"); //Artikelsuche uber Grafik
+													$arr = removeElementWithValue($arr, "id", "12871"); //Artikelsuche uber Grafik
+													$nrarr = count($arr) / 4;
+													$nrarr = round($nrarr); 
+													
+													
+
+													// $arr = array();
+
+													// foreach($arr as $key => $item)
+													// {
+													   // $arr[$item['name']][$key] = $item;
+													// }
+
+													// ksort($arr, SORT_REGULAR);
+													// ksort($arr, SORT_REGULAR);
+
+
+														// echo $nrarr;
+														/*?>
+														<div class="col-sm-3 "><ul class="list_type_1">
+														<?
+														$ir = 1;*/
+														foreach ($arr as $ii => $va) {
+															?>
+																<div class="col-sm-3 "><ul class="list_type_1"> <li><a href="<?=$td_url.'/'.$va["id"].'/'?>"><?=$va["name"]?></a></li></ul></div>
+															<?
+															/*	if ($nrarr > 1) {
+																	if ($ir % $nrarr == 0){
+																		?> </ul></div><div class="col-sm-3 "><ul class="list_type_1"> <?php
+																	}
+																}
+															$ir++;*/
+															
+														}
+														 
+														?>
+														<!--</ul></div>-->
+													</div>
+												</div>
+											</div>
+											<?
+								
+										}
+									}
+								} 
+								} else { ?>
+									<h1 class="align_center"><?=$translates["f.netu_produktov"];?>!</h1>
+								<?php }?>
+				
+			</main>
+							<?php }?>
 		</div>
     </div>
 </div>
-
-
-
-
-
-
-
-

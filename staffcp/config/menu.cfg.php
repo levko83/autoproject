@@ -14,6 +14,7 @@ $GLOBALS['menu'] = array(
 		'Поиск' => '/staffcp/products/',
 		'Поставщики' => '/staffcp/importers/',
 		'Производители' => '/staffcp/brands/',
+		'Категории' => '/staffcp/cat/',
 		'Список марок авто' => '/staffcp/manufacturers/',
 		'Добавить продукт с TecDoc на сайты' => '#',
 	),

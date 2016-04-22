@@ -620,7 +620,7 @@
 			color:#fff;
 			border:1px solid #D5D9DD;
 		}
-		#back_to_top { background: rgb(41, 147, 88);!important; }
+		#back_to_top { background: #D80707!important; }
 		.button_grey{
 			color:rgb(41, 147, 88);
 			background: #f8f8f8;
@@ -6695,3 +6695,9 @@ width:100%;
 			-webkit-transition: color .1s ease, background-color .1s ease;
 					transition: color .1s ease, background-color .1s ease;
 		}
+.addpad {
+	margin:10px 0;
+}
+.rightborder {
+	border-right: 1px solid #D5D9DD;
+}
