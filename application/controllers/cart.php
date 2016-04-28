@@ -529,13 +529,13 @@ $price1 = $paymentName['price'];
 		/* ****************************************************** */
 		
 		$translates = Register::get('translates');
-		$list = '<table cellpadding="10" cellspacing="0" border="0" width="100%">';
-		$list .= '<tr>';
-		$list .= '<td><b>'.$translates['front.title'].'</b></td>';
-		$list .= '<td><b>'.$translates['front.price'].'</b></td>';
-		$list .= '<td><b>'.$translates['front.box'].'</b></td>';
-		$list .= '<td><b>'.$translates['front.cost'].'</b></td>';
-		$list .= '</tr>';
+		//$list = '<table cellpadding="10" cellspacing="0" border="0" width="100%">';
+		//$list .= '<tr>';
+		//$list .= '<td><b></b></td>';
+		//$list .= '<td><b>'.$translates['front.price'].'</b></td>';
+		//$list .= '<td><b>'.$translates['front.box'].'</b></td>';
+		//$list .= '<td><b>'.$translates['front.cost'].'</b></td>';
+		//$list .= '</tr>';
 		$sum=0;
 		$i=0;
 		
@@ -546,12 +546,12 @@ $price1 = $paymentName['price'];
 		foreach ($elements as $dd){
 		$i++;
 			$colors = ($i%2)?"#f1f1f1":"";
-			$list .= '<tr bgcolor="'.$colors.'">';
-			$list .= '<td>'.$dd['name_'.$lang].' '.$dd['supplier_name'].'</td>';
-			$list .= '<td>'.PriceHelper::number($dd['price']).' Euro</td>';
-			$list .= '<td>'.$dd['cc'].'</td>';
-			$list .= '<td>'.PriceHelper::number($dd['cc']*$dd['price']).'</td>';
-			$list .= '</tr>';
+			//$list .= '<tr bgcolor="'.$colors.'">';
+			//$list .= '<td>'.$dd['name_'.$lang].' '.$dd['supplier_name'].'</td>';
+			//$list .= '<td>'.PriceHelper::number($dd['price']).' Euro</td>';
+			//$list .= '<td>'.$dd['cc'].'</td>';
+			//$list .= '<td>'.PriceHelper::number($dd['cc']*$dd['price']).'</td>';
+			//$list .= '</tr>';
 			$sum += round($dd['cc']*$dd['price'],2);
 		}
 		$sum +=$price1;
@@ -559,18 +559,18 @@ $price1 = $paymentName['price'];
 		if($sum>$delivery['free_from']&&$delivery['free_from']!=0) {
 			$delivery['price']= 0;
 		}
-			$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.delivery.block'].'</b>: '.PriceHelper::number($delivery['price']).'</td></tr>';
-			$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.paymentplus'].'</b>: '.PriceHelper::number($price1).'</td></tr>';
-			$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.summ'].'</b>: '.PriceHelper::number(($sum+$delivery['price'])).'</td></tr>';
+			//$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.delivery.block'].'</b>: '.PriceHelper::number($delivery['price']).'</td></tr>';
+			//$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.paymentplus'].'</b>: '.PriceHelper::number($price1).'</td></tr>';
+			//$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.summ'].'</b>: '.PriceHelper::number(($sum+$delivery['price'])).'</td></tr>';
 		}
 		else {
-			$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.summ'].'</b>: '.PriceHelper::number($sum).'</td></tr>';	
+			//$list .= '<tr><td colspan="4" align="right"><b>'.$translates['front.summ'].'</b>: '.PriceHelper::number($sum).'</td></tr>';	
 		}
-		$list .= '</table>';
+		//$list .= '</table>';
 		
-		$list .= '<span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:18px;"><span style="background-color: rgb(211, 211, 211);">'.$translates['front.delivery.payment.name'].'</span></span></span>';
-		$list .= '<p><strong>'.$translates['front.delivery.block'].':</strong> '.$delivery['name'].'. '.$translates['front.cost'].': '.PriceHelper::number($delivery['price']).'</p>';
-		$list .= '<p><strong>'.$translates['front.name.payment'].':</strong> '.$paymentName.'. '.$translates['front.cost'].': '.PriceHelper::number($price1).'</p>';
+		//$list .= '<span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:18px;"><span style="background-color: rgb(211, 211, 211);">'.$translates['front.delivery.payment.name'].'</span></span></span>';
+		//$list .= '<p><strong>'.$translates['front.delivery.block'].':</strong> '.$delivery['name'].'. '.$translates['front.cost'].': '.PriceHelper::number($delivery['price']).'</p>';
+		//$list .= '<p><strong>'.$translates['front.name.payment'].':</strong> '.$paymentName.'. '.$translates['front.cost'].': '.PriceHelper::number($price1).'</p>';
 		
 		$form ['date'] = date("d.m.Y H:i:s");
 		$form ['order_numer'] = $cart_counter;

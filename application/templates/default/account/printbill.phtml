@@ -91,7 +91,7 @@ body {
 				<td><?=$account['hausnummer']?></td>
 			</tr>
 			<tr>
-				<td>Zip Code:</td>
+				<td>Postleitzahl:</td>
 				<td><?=$account['zip']?></td>
 			</tr>
 			<tr>
@@ -204,7 +204,7 @@ $total = $sum+$pfand+$bill['delivery_price']+$nachname;
 	
 	<tr>
 		<td>zzgl. 19 % MwSt.:</td>
-		<td><?=$procent = round($total*19/100, 2)?> &euro;</td>
+		<td><?=$procent = round($total/119*19, 2)?> &euro;</td>
 	</tr>	
 	
 	<tr class="danger">	
@@ -218,13 +218,14 @@ $total = $sum+$pfand+$bill['delivery_price']+$nachname;
 		AUTORESURS
 		<br>Alt-Friedrichsfelde 103
 		<br>10315 Berlin
-		<br>Tel.: +49 176 323 60 425
+		<br>Tel.: +49 30 856 13 095 
+		<br>Tel.: +49 30 856 13 456 
+		<br>Fax: +49 30 857 41 263 
 	</div>
 	
 	<div class="bloc-footer">
 		Fur Kunden: service@autoresurs.de
 		<br>Fur Handler: info@autoresurs.de
-		<br>bestellung@autoresurs.de
 		<br>Internet: www.autoresurs.de
 	</div>
 	

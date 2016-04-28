@@ -25,10 +25,20 @@ class EmailsModel extends Orm {
 		$letter = str_replace(array("/media"),"http://".$_SERVER['SERVER_NAME']."/media",$letter);
 		// die($letter);
 		$mail = new Phpmailer();
+		
+		/*
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = 587;
+		$mail->SMTPSecure = 'tls';
+		$mail->SMTPAuth = true;
+		$mail->Username = 'autoresurs.de@gmail.com';
+		$mail->Password = 'autoresurs2016';
+		*/
+		
 		$mail->From     = $from;
 		$mail->FromName = $from_name;
 		$mail->Subject  = $subject;
-		$mail->MsgHTML($letter);
+		$mail->MsgHTML($letter.'this 22.04.2016');
 		
 		$splitEmails = explode(",",$to);
 		if (count($splitEmails)>1){
