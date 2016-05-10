@@ -241,6 +241,7 @@ class AccountsModel extends Orm {
 				cart.createDT as createDT,
 				cart.import_id as fk,
 				cart.`count` as cc,
+				cart.`price` as old_price,
 				cart.article as name,
 				cart.brand as brand,
 				cart.descr_tecdoc as descr,
@@ -320,7 +321,7 @@ class AccountsModel extends Orm {
 		$db = Register::get('db');
 		$sql = "
 		SELECT
-			COUNT(*) cc
+			COUNT(*) ccc
 		FROM
 			".DB_PREFIX."cart cart
 			LEFT JOIN ".DB_PREFIX."cart_bills cb on cart.scSID=cb.scSID
@@ -598,7 +599,7 @@ class AccountsModel extends Orm {
 					'".addslashes($data['city'])."',
 					'".addslashes($data['address'])."',
 					'".time()."',
-					'".($registration_confirm?0:1)."',
+					'1',
 					'1',
 					'".md5($data['email'])."',
 					'".addslashes($data['firm_name'])."',
@@ -654,7 +655,7 @@ class AccountsModel extends Orm {
 					'".addslashes($data['city'])."',
 					'".addslashes($data['address'])."',
 					'".time()."',
-					'".($registration_confirm?0:1)."',
+					'1',
 					'".md5($data['email'])."',
 					'".(int)$obj->getMarginIsAccount()."',
 					'1',

@@ -109,13 +109,13 @@
 												</td>
 												<td data-title="<?=$translates['f.nazvanie_produkta']?>" class="align_center"><?=(isset($element["supplier_name"])?$element["supplier_name"]:'')." ".(isset($element["name_".$cur_lang])?$element["name_".$cur_lang]:'');?></td>
 												<td data-title="Art. Nr." class="align_center"><?=$element["art_nr"]?></td>
-												<td data-title="<?=$translates['front.price']?>" class="subtotal align_center">&euro;<?=PriceHelper::number($element['price'])?></td>
+												<td data-title="<?=$translates['front.price']?>" class="subtotal align_center">&euro;<?=PriceHelper::number($element['old_price'])?></td>
 												<td data-title="<?=$translates['front.box']?>" class="align_center"><?=$element['cc']?></td>
-												<td data-title="<?=$translates['front.cost']?>" class="total align_center">&euro;<span id="new_pp_<?=$element['id']?>"><?=PriceHelper::number($element['cc']*$element['price'])?></span></td>
+												<td data-title="<?=$translates['front.cost']?>" class="total align_center">&euro;<span id="new_pp_<?=$element['id']?>"><?=PriceHelper::number($element['cc']*$element['old_price'])?></span></td>
 											</tr>
 											<?php
 
-												$sum += ($element['cc']*$element['price']);
+												$sum += ($element['cc']*$element['old_price']);
 												// $delivery_price = "5.00";
 												// $total_price = $sum + $delivery_price;
 											}?>

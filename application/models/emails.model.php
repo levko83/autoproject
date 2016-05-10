@@ -38,7 +38,7 @@ class EmailsModel extends Orm {
 		$mail->From     = $from;
 		$mail->FromName = $from_name;
 		$mail->Subject  = $subject;
-		$mail->MsgHTML($letter.'this 22.04.2016');
+		$mail->MsgHTML($letter);
 		
 		$splitEmails = explode(",",$to);
 		if (count($splitEmails)>1){

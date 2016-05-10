@@ -74,6 +74,7 @@ class CartModel extends Orm {
 				cart.createDT as createDT,
 				cart.import_id as fk,
 				cart.`count` as cc,
+				cart.`price` as old_price,
 				cart.article as name,
 				cart.brand as brand,
 				cart.descr_tecdoc as descr,

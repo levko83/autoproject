@@ -163,10 +163,10 @@ body {
 					$pfand += $descr['pfand'];
 				?>		
 			</td>
-			<td><?=PriceHelper::number($element['price'])?> &euro;</td>
+			<td><?=PriceHelper::number($element['old_price'])?> &euro;</td>
 			<td><?=$element['cc']?></td>
 			<!-- Total sum -->
-			<?php $ss = ($element['price'] * $element['cc']);?>
+			<?php $ss = ($element['old_price'] * $element['cc']);?>
 			<?php $sum += $ss;?>
 			<td><?=PriceHelper::number($ss)?> &euro;</td>
 		</tr>

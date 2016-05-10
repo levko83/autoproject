@@ -659,7 +659,8 @@ class AccountController  extends BaseController {
 					if (SettingsModel::get('registration_confirm')){
 						$u_hash = $last_id."-".$data['email']."-".$data['pass1']."-".$data['name'];
 						$u_hash = sha1(md5($u_hash));
-						$data['link'] = "http://".$site."/account/accept/?id=".$last_id."&hash=".$u_hash;
+						//$data['link'] = "http://".$site."/account/accept/?id=".$last_id."&hash=".$u_hash;
+						$data['link'] = "http://".$site."/account/";
 						EmailsModel::get('regconfirm',$data,$data['email'],('no-reply@'.$site),$translates['front.act.reg'].' '.$site,false);
 						$this->redirectUrl('/account/confirmation/');
 					} else {

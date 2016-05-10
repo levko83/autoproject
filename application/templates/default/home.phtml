@@ -1,5 +1,6 @@
 ﻿<!doctype html>
 <html lang="<?php echo $_SESSION["setLang"]; ?>">
+
 	<head> <!--<meta name= "keywords" lang="de" content="autoteile, ersatzteile, pkwteile, reparaturteile, kfzteile, pkwlkwteile, teile für auto, billige autoteile">-->
 		<?php 
 		if (!empty($_seo['title'])) $site_title = $_seo['title'];
@@ -76,6 +77,16 @@
 		<!-- End Bootstrap -->
 	</head>
 	<body class="front_page promo_popup">
+	
+		<!-- BEGIN JIVOSITE CODE {literal} -->
+
+		<script type='text/javascript'>
+		(function(){ var widget_id = 'AUFWCROqc8';var d=document;var w=window;function l(){
+		var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+		</script>
+		
+		<!-- {/literal} END JIVOSITE CODE -->
+		
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
 		  var js, fjs = d.getElementsByTagName(s)[0];
@@ -173,7 +184,7 @@
 
 								<div class="clearfix">
 
-									<div class="alignright site_settings">
+									<div class="alignright site_settings" style="display: none">
 
 										<span class="current open_"><img width="16" src="<?=HTTP_ROOT?>/static/images/flags/<?=$lang?>.png" alt="<? echo $langs[$lang]['TEX_TEXT'];?>"><? echo $langs[$lang]['TEX_TEXT'];?></span>
 										<?php if (count($langs)>1){?>
@@ -191,12 +202,13 @@
 								</div>
 							</div>
 						</div>
-						
+						<!--
 						<center> 
 							<div style="color: #d80707; font-weight: bold; position: relative; top: -30px; font-size: 18px; width: 740px;">
 								WIR BITTEN UM ENTSCHULDIGUNG! UNSERE WEBSEITE WIRD GERADE ÜBERARBEITET!
 							</div>
 						</center>
+						-->
 					</div>
 				</div>
 				<hr>

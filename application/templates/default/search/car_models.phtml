@@ -9,7 +9,7 @@
             <h1><span itemprop="name"><?=($MFA['h1'])?$MFA['h1']:(($MFA['name'])?$MFA['name']:$MFA['MFA_BRAND'])?></span></h1>
             <div class="theme_box clearfix" itemprop="description">
                 <div class="top-20 container-auto">
-				<?php if (isset($data) && count($data)>0){?>
+				<?php if (!isset($data)) { echo '01';} if (isset($data) && count($data)>0){?>
 				<?php foreach ($data as $letter=>$models){?>
 				<div class="auto-container auto-container-long">
 					<div class="letter" id="<?=$letter?>"><?=$letter?></div>
